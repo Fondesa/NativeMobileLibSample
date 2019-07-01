@@ -71,3 +71,6 @@ projectFilesBackup
 *.a
 *.out
 *.app
+
+/xcode_build
+/cmd_build
