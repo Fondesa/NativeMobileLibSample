@@ -1,8 +1,0 @@
-/Users/antoniolig/Developer/c++/native_mobile_lib/cmd_build/CMakeFiles/rebuild_cache.dir
-/Users/antoniolig/Developer/c++/native_mobile_lib/cmd_build/CMakeFiles/edit_cache.dir
-/Users/antoniolig/Developer/c++/native_mobile_lib/cmd_build/lib/CMakeFiles/rebuild_cache.dir
-/Users/antoniolig/Developer/c++/native_mobile_lib/cmd_build/lib/CMakeFiles/edit_cache.dir
-/Users/antoniolig/Developer/c++/native_mobile_lib/cmd_build/lib/CMakeFiles/lib.dir
-/Users/antoniolig/Developer/c++/native_mobile_lib/cmd_build/sample/CMakeFiles/rebuild_cache.dir
-/Users/antoniolig/Developer/c++/native_mobile_lib/cmd_build/sample/CMakeFiles/edit_cache.dir
-/Users/antoniolig/Developer/c++/native_mobile_lib/cmd_build/sample/CMakeFiles/sample.dir
