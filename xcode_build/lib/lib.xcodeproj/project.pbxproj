@@ -1,0 +1,646 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		2D14D44337CB4362AECDCC80 /* ZERO_CHECK */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 430FA915C9F04B16BD08E3EE /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */;
+			buildPhases = (
+				2BEFE98FC8144BAA86B01C24 /* CMake Rules */,
+			);
+			dependencies = (
+			);
+			name = ZERO_CHECK;
+			productName = ZERO_CHECK;
+		};
+		7C987CD33259433ABC4B96D0 /* ALL_BUILD */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 9256358D6954488BA5ECC62B /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */;
+			buildPhases = (
+				8B835FFA3900415A916AFA95 /* CMake Rules */,
+			);
+			dependencies = (
+				ED5DFD2130324F448277ECE4 /* PBXTargetDependency */,
+				0A1A35BA0D4644F288BD3E3E /* PBXTargetDependency */,
+			);
+			name = ALL_BUILD;
+			productName = ALL_BUILD;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		1A7B698242D14B10BC0A091C /* /Users/antoniolig/Developer/c++/native_mobile_lib/lib/include/foo.hpp */ = {isa = PBXBuildFile; fileRef = 91EDC88C7A9F461BB9281098 /* /Users/antoniolig/Developer/c++/native_mobile_lib/lib/include/foo.hpp */; };
+		3263F8C97E524B6CB957241C /* /Users/antoniolig/Developer/c++/native_mobile_lib/lib/src/foo.cpp */ = {isa = PBXBuildFile; fileRef = 191DE1AEDD714B80AD8C47AD /* /Users/antoniolig/Developer/c++/native_mobile_lib/lib/src/foo.cpp */; };
+		77FD5DC550A94A2ABA53ADB2 /* /Users/antoniolig/Developer/c++/native_mobile_lib/lib/CMakeLists.txt */ = {isa = PBXBuildFile; fileRef = EEA41F968DE6404E97B2506C /* /Users/antoniolig/Developer/c++/native_mobile_lib/lib/CMakeLists.txt */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildStyle section */
+		01712B2A453C4DBFAC26A4A0 /* MinSizeRel */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = MinSizeRel;
+		};
+		3605AA0E7A8A472F87F70DEE /* Debug */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Debug;
+		};
+		732A5527DCD14621A862E86B /* Release */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Release;
+		};
+		BF161F2D68384AA6AD263BEC /* RelWithDebInfo */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = RelWithDebInfo;
+		};
+/* End PBXBuildStyle section */
+
+/* Begin PBXContainerItemProxy section */
+		466FCD2110044E55B2F5D8B1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 104ABC4EB8AD4DDA8E25E8AE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BE6C6BA323AF44F3B8646C88;
+			remoteInfo = lib;
+		};
+		59C3870A4E7C45909F011483 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 104ABC4EB8AD4DDA8E25E8AE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2D14D44337CB4362AECDCC80;
+			remoteInfo = ZERO_CHECK;
+		};
+		835FF9D556EC4FD197D3E956 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 104ABC4EB8AD4DDA8E25E8AE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2D14D44337CB4362AECDCC80;
+			remoteInfo = ZERO_CHECK;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		191DE1AEDD714B80AD8C47AD /* /Users/antoniolig/Developer/c++/native_mobile_lib/lib/src/foo.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = foo.cpp; path = src/foo.cpp; sourceTree = SOURCE_ROOT; };
+		745D26206CAF4837A206D0A6 /* /Users/antoniolig/Developer/c++/native_mobile_lib/lib/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		91EDC88C7A9F461BB9281098 /* /Users/antoniolig/Developer/c++/native_mobile_lib/lib/include/foo.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = foo.hpp; path = include/foo.hpp; sourceTree = SOURCE_ROOT; };
+		D6D4814245C649879677480D /* lib */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = liblib.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		EEA41F968DE6404E97B2506C /* /Users/antoniolig/Developer/c++/native_mobile_lib/lib/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		0699A2CE1B0241188C9B9DD8 /* CMake Rules */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "CMake Rules";
+			sourceTree = "<group>";
+		};
+		0951C0B8F5574A19AAA36013 /* Source Files */ = {
+			isa = PBXGroup;
+			children = (
+				191DE1AEDD714B80AD8C47AD /* /Users/antoniolig/Developer/c++/native_mobile_lib/lib/src/foo.cpp */,
+			);
+			name = "Source Files";
+			sourceTree = "<group>";
+		};
+		24FA74257DDB445B88A2AB56 /* Header Files */ = {
+			isa = PBXGroup;
+			children = (
+				91EDC88C7A9F461BB9281098 /* /Users/antoniolig/Developer/c++/native_mobile_lib/lib/include/foo.hpp */,
+			);
+			name = "Header Files";
+			sourceTree = "<group>";
+		};
+		A860A5A11CA74EBCBCC5A7C9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D6D4814245C649879677480D /* lib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B4F325EF2774421D9CAB8912 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				0951C0B8F5574A19AAA36013 /* Source Files */,
+				24FA74257DDB445B88A2AB56 /* Header Files */,
+				EEA41F968DE6404E97B2506C /* /Users/antoniolig/Developer/c++/native_mobile_lib/lib/CMakeLists.txt */,
+			);
+			name = lib;
+			sourceTree = "<group>";
+		};
+		E36DE848A2324A09A1854B6D = {
+			isa = PBXGroup;
+			children = (
+				B4F325EF2774421D9CAB8912 /* lib */,
+				E4533094EABE4DACB91ACC2A /* ALL_BUILD */,
+				A860A5A11CA74EBCBCC5A7C9 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E4533094EABE4DACB91ACC2A /* ALL_BUILD */ = {
+			isa = PBXGroup;
+			children = (
+				0699A2CE1B0241188C9B9DD8 /* CMake Rules */,
+				745D26206CAF4837A206D0A6 /* /Users/antoniolig/Developer/c++/native_mobile_lib/lib/CMakeLists.txt */,
+			);
+			name = ALL_BUILD;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BE6C6BA323AF44F3B8646C88 /* lib */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 518C5A56C12B4AF2990052DC /* Build configuration list for PBXNativeTarget "lib" */;
+			buildPhases = (
+				BCF1E4C3D410477CB66A81AD /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				18271CB685524B919AE5DD69 /* PBXTargetDependency */,
+			);
+			name = lib;
+			productName = lib;
+			productReference = D6D4814245C649879677480D /* lib */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		104ABC4EB8AD4DDA8E25E8AE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1010;
+			};
+			buildConfigurationList = 7402D896B96B41F7BC448EC0 /* Build configuration list for PBXProject "lib" */;
+			buildSettings = {
+			};
+			buildStyles = (
+				3605AA0E7A8A472F87F70DEE /* Debug */,
+				732A5527DCD14621A862E86B /* Release */,
+				01712B2A453C4DBFAC26A4A0 /* MinSizeRel */,
+				BF161F2D68384AA6AD263BEC /* RelWithDebInfo */,
+			);
+			compatibilityVersion = "Xcode 3.2";
+			hasScannedForEncodings = 0;
+			mainGroup = E36DE848A2324A09A1854B6D;
+			projectDirPath = ../../lib;
+			projectRoot = "";
+			targets = (
+				7C987CD33259433ABC4B96D0 /* ALL_BUILD */,
+				2D14D44337CB4362AECDCC80 /* ZERO_CHECK */,
+				BE6C6BA323AF44F3B8646C88 /* lib */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1D502A2EAF7C4F21A2D41D28 = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+		2BEFE98FC8144BAA86B01C24 /* CMake Rules */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "CMake Rules";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "make -C /Users/antoniolig/Developer/c++/native_mobile_lib/xcode_build/lib -f /Users/antoniolig/Developer/c++/native_mobile_lib/xcode_build/lib/CMakeScripts/ZERO_CHECK_cmakeRulesBuildPhase.make$CONFIGURATION OBJDIR=$(basename \"$OBJECT_FILE_DIR_normal\") all";
+			showEnvVarsInLog = 0;
+		};
+		8B835FFA3900415A916AFA95 /* CMake Rules */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "CMake Rules";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "make -C /Users/antoniolig/Developer/c++/native_mobile_lib/xcode_build/lib -f /Users/antoniolig/Developer/c++/native_mobile_lib/xcode_build/lib/CMakeScripts/ALL_BUILD_cmakeRulesBuildPhase.make$CONFIGURATION OBJDIR=$(basename \"$OBJECT_FILE_DIR_normal\") all";
+			showEnvVarsInLog = 0;
+		};
+		E1A834814CF943458FEF974B = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BCF1E4C3D410477CB66A81AD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3263F8C97E524B6CB957241C /* /Users/antoniolig/Developer/c++/native_mobile_lib/lib/src/foo.cpp */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0A1A35BA0D4644F288BD3E3E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BE6C6BA323AF44F3B8646C88 /* lib */;
+			targetProxy = 466FCD2110044E55B2F5D8B1 /* PBXContainerItemProxy */;
+		};
+		18271CB685524B919AE5DD69 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2D14D44337CB4362AECDCC80 /* ZERO_CHECK */;
+			targetProxy = 835FF9D556EC4FD197D3E956 /* PBXContainerItemProxy */;
+		};
+		ED5DFD2130324F448277ECE4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2D14D44337CB4362AECDCC80 /* ZERO_CHECK */;
+			targetProxy = 59C3870A4E7C45909F011483 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		0309322EF5CE4770A07B719C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .a;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = ("/Users/antoniolig/Developer/c++/native_mobile_lib/lib/include");
+				INSTALL_PATH = "";
+				LIBRARY_STYLE = STATIC;
+				OTHER_CPLUSPLUSFLAGS = "    -DNDEBUG '-std=gnu++1z'  ";
+				OTHER_LIBTOOLFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = lib;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/antoniolig/Developer/c++/native_mobile_lib/xcode_build/lib";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = Release;
+		};
+		2282A64BFBC54357A55E1580 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk;
+				SYMROOT = "/Users/antoniolig/Developer/c++/native_mobile_lib/xcode_build/lib/build";
+			};
+			name = Debug;
+		};
+		24775B5BC5804DFD9328B433 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/antoniolig/Developer/c++/native_mobile_lib/xcode_build/lib";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = Release;
+		};
+		2F6AAEDEF11B486DB3D6EE4F /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .a;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = ("/Users/antoniolig/Developer/c++/native_mobile_lib/lib/include");
+				INSTALL_PATH = "";
+				LIBRARY_STYLE = STATIC;
+				OTHER_CPLUSPLUSFLAGS = "    -DNDEBUG '-std=gnu++1z'  ";
+				OTHER_LIBTOOLFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = lib;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/antoniolig/Developer/c++/native_mobile_lib/xcode_build/lib";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		316A85946D6841E4970802A5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .a;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = ("/Users/antoniolig/Developer/c++/native_mobile_lib/lib/include");
+				INSTALL_PATH = "";
+				LIBRARY_STYLE = STATIC;
+				OTHER_CPLUSPLUSFLAGS = "   '-std=gnu++1z'  ";
+				OTHER_LIBTOOLFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = lib;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/antoniolig/Developer/c++/native_mobile_lib/xcode_build/lib";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = Debug;
+		};
+		3973ACFF460A40E9BB476DC2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/antoniolig/Developer/c++/native_mobile_lib/xcode_build/lib";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = Debug;
+		};
+		4973B1A775704DFE95361831 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/antoniolig/Developer/c++/native_mobile_lib/xcode_build/lib";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = Debug;
+		};
+		5F2313C7138D4ADA90FEAAFE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/antoniolig/Developer/c++/native_mobile_lib/xcode_build/lib";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = Release;
+		};
+		60C2083286804B1B9CEF7C0B /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/antoniolig/Developer/c++/native_mobile_lib/xcode_build/lib";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		61A12230C70E4B4492A47479 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk;
+				SYMROOT = "/Users/antoniolig/Developer/c++/native_mobile_lib/xcode_build/lib/build";
+			};
+			name = MinSizeRel;
+		};
+		805A7EE3215F4F7090F3000C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk;
+				SYMROOT = "/Users/antoniolig/Developer/c++/native_mobile_lib/xcode_build/lib/build";
+			};
+			name = Release;
+		};
+		8A69D80BB1E447BCB1116FAF /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/antoniolig/Developer/c++/native_mobile_lib/xcode_build/lib";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		E2EE35CED4B34616AAEC9657 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .a;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = ("/Users/antoniolig/Developer/c++/native_mobile_lib/lib/include");
+				INSTALL_PATH = "";
+				LIBRARY_STYLE = STATIC;
+				OTHER_CPLUSPLUSFLAGS = "       -DNDEBUG '-std=gnu++1z'  ";
+				OTHER_LIBTOOLFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = lib;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/antoniolig/Developer/c++/native_mobile_lib/xcode_build/lib";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		EB31A900CA6C4B49887A241B /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk;
+				SYMROOT = "/Users/antoniolig/Developer/c++/native_mobile_lib/xcode_build/lib/build";
+			};
+			name = RelWithDebInfo;
+		};
+		ED0527CE269C46F7A47F35FA /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/antoniolig/Developer/c++/native_mobile_lib/xcode_build/lib";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		EEF71584E23445D6A3702DB4 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/antoniolig/Developer/c++/native_mobile_lib/xcode_build/lib";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		430FA915C9F04B16BD08E3EE /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3973ACFF460A40E9BB476DC2 /* Debug */,
+				24775B5BC5804DFD9328B433 /* Release */,
+				ED0527CE269C46F7A47F35FA /* MinSizeRel */,
+				8A69D80BB1E447BCB1116FAF /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		518C5A56C12B4AF2990052DC /* Build configuration list for PBXNativeTarget "lib" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				316A85946D6841E4970802A5 /* Debug */,
+				0309322EF5CE4770A07B719C /* Release */,
+				2F6AAEDEF11B486DB3D6EE4F /* MinSizeRel */,
+				E2EE35CED4B34616AAEC9657 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		7402D896B96B41F7BC448EC0 /* Build configuration list for PBXProject "lib" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2282A64BFBC54357A55E1580 /* Debug */,
+				805A7EE3215F4F7090F3000C /* Release */,
+				61A12230C70E4B4492A47479 /* MinSizeRel */,
+				EB31A900CA6C4B49887A241B /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		9256358D6954488BA5ECC62B /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4973B1A775704DFE95361831 /* Debug */,
+				5F2313C7138D4ADA90FEAAFE /* Release */,
+				EEF71584E23445D6A3702DB4 /* MinSizeRel */,
+				60C2083286804B1B9CEF7C0B /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 104ABC4EB8AD4DDA8E25E8AE /* Project object */;
+}

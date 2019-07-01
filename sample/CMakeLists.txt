@@ -1,8 +1,11 @@
 project(sample)
 
-# Create the executable
-add_executable(${PROJECT_NAME} main.cpp)
+set(SOURCE_FILES
+	main.cpp
+)
+
+add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
 target_link_libraries(${PROJECT_NAME}
-    sub::lib
+    lib
 )

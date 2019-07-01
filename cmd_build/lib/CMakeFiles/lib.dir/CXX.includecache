@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../lib/include/foo.hpp
+string
+-
+
+/Users/antoniolig/Developer/c++/native_mobile_lib/lib/src/foo.cpp
+foo.hpp
+/Users/antoniolig/Developer/c++/native_mobile_lib/lib/src/foo.hpp
+
