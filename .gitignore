@@ -72,5 +72,8 @@ projectFilesBackup
 *.out
 *.app
 
+/android_build
 /xcode_build
 /cmd_build
+/.vscode
+native_mobile.code-workspace

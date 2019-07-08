@@ -5,5 +5,5 @@ Foo::Foo(std::string value) {
 }
 
 std::string Foo::getValue() const {
-    return value;
+    return "pre_" + value + "_post";
 }
