@@ -6,5 +6,3 @@ project(native_mobile)
 
 add_subdirectory(lib)
 add_subdirectory(sample)
-
-#include_directories("/usr/local/opt/icu4c/include")

@@ -17,8 +17,7 @@ function cmd() {
 }
 
 function android() {
-    declare -a abis=(armeabi-v7a arm64-v8a x86 x86_64)
-    #declare -a abis=(x86)
+    local abis=(armeabi-v7a arm64-v8a x86 x86_64)
     for abi in "${abis[@]}"
     do
         build_android_abi $abi
@@ -33,16 +32,14 @@ function build_android_abi() {
     local abi=$1
     local abiBuildDir=$projectDir/android_build/$abi
     echo "Building Android shared lib for ABI $abi..."
-    cmake -B$abiBuildDir \
-        -DCMAKE_SYSTEM_NAME=Android \
-        -DCMAKE_SYSTEM_VERSION=28 \
-        -DCMAKE_ANDROID_ARCH_ABI=$abi \
-        -DCMAKE_ANDROID_NDK=$ANDROID_NDK \
-        -DCMAKE_TRY_COMPILE_TARGET_TYPE="STATIC_LIBRARY"  # Needed only for NDK r20.
+    cmake --target $projectDir/lib -B$abiBuildDir \
+        -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake \
+        -DANDROID_PLATFORM=android-28 \
+        -DANDROID_ABI=$abi
 
     (cd $abiBuildDir && make)
 
-    symlink_prebuilt_lib $abiBuildDir/lib android/$abi
+    symlink_prebuilt_lib $abiBuildDir android/$abi
 }
 
 function symlink_prebuilt_lib() {
@@ -64,7 +61,16 @@ function add_gradle_properties_prebuilt_libs_entry() {
 
 function xcode() {
     echo "Building XCode project..."
-    cmake -GXcode -B$projectDir/xcode_build
+    #cmake -GXcode -B$projectDir/xcode_build
+
+    cmake --target $projectDir/lib -B$projectDir/xcode_build -GXcode \
+        -DBUILD_FRAMEWORK:BOOLEAN=true \
+        -DCMAKE_SYSTEM_NAME=iOS \
+        -DCMAKE_OSX_ARCHITECTURES="armv7;armv7s;arm64;i386;x86_64" \
+        -DCMAKE_OSX_DEPLOYMENT_TARGET=9.3 \
+        -DCMAKE_INSTALL_PREFIX=`pwd`/_install \
+        -DCMAKE_XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH=NO \
+        -DCMAKE_IOS_INSTALL_COMBINED=YES
 }
 
 function symlink_include_dir() {
