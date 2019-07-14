@@ -3,7 +3,9 @@
 scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 projectDir=${scriptDir}
 libName="nativemobile"
-libFileName="lib$libName.so"
+iosFrameworkDir=$projectDir/xcode_build/framework
+iosFrameworkFileName=$libName.framework
+iosUniversalFrameworkDir=$iosFrameworkDir/universal
 
 function notify_uncorrect_usage() {
     printf "Supported args:\n--cmd\n--android\n--xcode\n"
@@ -39,15 +41,7 @@ function build_android_abi() {
 
     (cd $abiBuildDir && make)
 
-    symlink_prebuilt_lib $abiBuildDir android/$abi
-}
-
-function symlink_prebuilt_lib() {
-    local buildDir=$1
-    local linkRelativePath=$2
-    local linkDir=$PREBUILT_LIBS/$libName/$linkRelativePath
-    mkdir -p "$linkDir"
-    ln -sf $buildDir/$libFileName $linkDir/$libFileName
+    symlink_prebuilt_lib $abiBuildDir "lib$libName.so" android/$abi
 }
 
 function add_gradle_properties_prebuilt_libs_entry() {
@@ -60,17 +54,57 @@ function add_gradle_properties_prebuilt_libs_entry() {
 }
 
 function xcode() {
+    local buildDir=$projectDir/xcode_build
     echo "Building XCode project..."
-    #cmake -GXcode -B$projectDir/xcode_build
-
-    cmake --target $projectDir/lib -B$projectDir/xcode_build -GXcode \
+    cmake --target $projectDir/lib -B$buildDir -GXcode \
         -DBUILD_FRAMEWORK:BOOLEAN=true \
         -DCMAKE_SYSTEM_NAME=iOS \
         -DCMAKE_OSX_ARCHITECTURES="armv7;armv7s;arm64;i386;x86_64" \
         -DCMAKE_OSX_DEPLOYMENT_TARGET=9.3 \
-        -DCMAKE_INSTALL_PREFIX=`pwd`/_install \
         -DCMAKE_XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH=NO \
         -DCMAKE_IOS_INSTALL_COMBINED=YES
+
+    build_universal_framework
+    symlink_prebuilt_lib $iosUniversalFrameworkDir $iosFrameworkFileName ios
+}
+
+function build_universal_framework() {
+    local universalFramework=$iosUniversalFrameworkDir/$iosFrameworkFileName
+
+    build_framework_for_sdk iphoneos
+    build_framework_for_sdk iphonesimulator
+
+    local phoneFramework=$iosFrameworkDir/iphoneos/$iosFrameworkFileName
+    local simulatorFramework=$iosFrameworkDir/iphonesimulator/$iosFrameworkFileName
+
+    rm -rf $iosUniversalFrameworkDir
+    mkdir -p $iosUniversalFrameworkDir
+
+    # Copy the files from the iphoneos framework to the universal one.
+    cp -r $phoneFramework/. $universalFramework
+
+    # Create the universal framework using the simulator and the phone framework.
+    lipo $simulatorFramework/$libName $phoneFramework/$libName -create -output $universalFramework/$libName | echo
+}
+
+function build_framework_for_sdk() {
+    local sdk=$1
+
+    (cd $projectDir/xcode_build && xcodebuild -target lib-framework \
+        -configuration "Release" \
+        -sdk $sdk \
+        CONFIGURATION_BUILD_DIR=$iosFrameworkDir/$sdk \
+        clean \
+        build)
+}
+
+function symlink_prebuilt_lib() {
+    local buildDir=$1
+    local libFileName=$2
+    local linkRelativePath=$3
+    local linkDir=$PREBUILT_LIBS/$libName/$linkRelativePath
+    mkdir -p "$linkDir"
+    ln -sf $buildDir/$libFileName $linkDir/$libFileName
 }
 
 function symlink_include_dir() {

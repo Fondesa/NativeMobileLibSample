@@ -2,9 +2,17 @@
 
 scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 projectDir=${scriptDir}
+prebuiltLibDir=$PREBUILT_LIBS/nativemobile
 
-dirs=(android_build cmd_build xcode_build)
+dirs=(
+    $projectDir/android_build 
+    $projectDir/cmd_build 
+    $projectDir/xcode_build
+    $prebuiltLibDir/android
+    $prebuiltLibDir/ios
+)
+
 for dir in "${dirs[@]}"
 do
-    rm -rf $projectDir/$dir
+    rm -rf $dir
 done
