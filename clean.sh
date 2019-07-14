@@ -7,7 +7,7 @@ prebuiltLibDir=$PREBUILT_LIBS/nativemobile
 dirs=(
     $projectDir/android_build 
     $projectDir/cmd_build 
-    $projectDir/xcode_build
+    $projectDir/ios_build
     $prebuiltLibDir/android
     $prebuiltLibDir/ios
 )

@@ -3,12 +3,12 @@
 scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 projectDir=${scriptDir}
 libName="nativemobile"
-iosFrameworkDir=$projectDir/xcode_build/framework
+iosFrameworkDir=$projectDir/ios_build/framework
 iosFrameworkFileName=$libName.framework
 iosUniversalFrameworkDir=$iosFrameworkDir/universal
 
 function notify_uncorrect_usage() {
-    printf "Supported args:\n--cmd\n--android\n--xcode\n"
+    printf "Supported args:\n--cmd\n--android\n--ios\n--all\n"
     exit 1
 }
 
@@ -53,9 +53,9 @@ function add_gradle_properties_prebuilt_libs_entry() {
     echo "$propName=$PREBUILT_LIBS" >> $gradlePropertiesDir
 }
 
-function xcode() {
-    local buildDir=$projectDir/xcode_build
-    echo "Building XCode project..."
+function ios() {
+    local buildDir=$projectDir/ios_build
+    echo "Building iOS shared lib..."
     cmake --target $projectDir/lib -B$buildDir -GXcode \
         -DBUILD_FRAMEWORK:BOOLEAN=true \
         -DCMAKE_SYSTEM_NAME=iOS \
@@ -85,13 +85,17 @@ function build_universal_framework() {
 
     # Create the universal framework using the simulator and the phone framework.
     lipo $simulatorFramework/$libName $phoneFramework/$libName -create -output $universalFramework/$libName | echo
+
+    # Change the install name of the framework to avoid absolute paths.
+    install_name_tool -id "@rpath/${iosFrameworkFileName}/$libName" $universalFramework/$libName
 }
 
 function build_framework_for_sdk() {
     local sdk=$1
 
-    (cd $projectDir/xcode_build && xcodebuild -target lib-framework \
+    (cd $projectDir/ios_build && xcodebuild -target lib-framework \
         -configuration "Release" \
+        -UseModernBuildSystem=NO \
         -sdk $sdk \
         CONFIGURATION_BUILD_DIR=$iosFrameworkDir/$sdk \
         clean \
@@ -124,8 +128,14 @@ case $1 in
         android
         symlink_include_dir
         ;;
-    "--xcode")
-        xcode
+    "--ios")
+        ios
+        symlink_include_dir
+        ;;
+    "--all")
+        cmd
+        android
+        ios
         symlink_include_dir
         ;;
     *)

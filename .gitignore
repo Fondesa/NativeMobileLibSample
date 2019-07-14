@@ -73,7 +73,7 @@ projectFilesBackup
 *.app
 
 /android_build
-/xcode_build
+/ios_build
 /cmd_build
 /.vscode
 *.code-workspace
