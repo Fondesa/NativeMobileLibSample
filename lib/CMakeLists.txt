@@ -13,9 +13,10 @@ set(HEADER_FILES_FOR_XCODE
 	include/foo.hpp
 )
 
-subdirs(test)
-
-enable_testing()
+if(${BUILD_TESTS}) 
+	subdirs(test)
+	enable_testing()
+endif()
 
 if(${BUILD_FRAMEWORK}) 
 	set(LIB_FRAMEWORK_TARGET lib-framework)

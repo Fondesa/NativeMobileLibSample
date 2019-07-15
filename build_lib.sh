@@ -3,19 +3,27 @@
 scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 projectDir=${scriptDir}
 libName="nativemobile"
-iosFrameworkDir=$projectDir/ios_build/framework
+libTarget=$projectDir/lib
+libBuildDir=$projectDir/build/lib
+unixBuildDir=$libBuildDir/unix
+androidBuildDir=$libBuildDir/android
+iosBuildDir=$libBuildDir/ios
+iosFrameworkDir=$iosBuildDir/framework
 iosFrameworkFileName=$libName.framework
 iosUniversalFrameworkDir=$iosFrameworkDir/universal
 
 function notify_uncorrect_usage() {
-    printf "Supported args:\n--cmd\n--android\n--ios\n--all\n"
+    printf "Supported args:\n--unix\n--android\n--ios\n--all\n"
     exit 1
 }
 
-function cmd() {
-    echo "Building CMD lib and sample..."
-    cmake -B$projectDir/cmd_build
-    (cd $projectDir/cmd_build && make)
+function unix() {
+    echo "Building Unix lib and sample..."
+    cmake --target $libTarget -B$unixBuildDir \
+        -DBUILD_TESTS:BOOLEAN=false
+    (cd $unixBuildDir && make)
+
+    symlink_prebuilt_lib $unixBuildDir "lib$libName.dylib" unix
 }
 
 function android() {
@@ -24,17 +32,14 @@ function android() {
     do
         build_android_abi $abi
     done
-
-    # This is needed on macOS because Android Studio can't retrieve always
-    # environment variables.
-    add_gradle_properties_prebuilt_libs_entry
 }
 
 function build_android_abi() {
     local abi=$1
-    local abiBuildDir=$projectDir/android_build/$abi
+    local abiBuildDir=$androidBuildDir/$abi
     echo "Building Android shared lib for ABI $abi..."
-    cmake --target $projectDir/lib -B$abiBuildDir \
+    cmake --target $libTarget -B$abiBuildDir \
+        -DBUILD_TESTS:BOOLEAN=false \
         -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake \
         -DANDROID_PLATFORM=android-28 \
         -DANDROID_ABI=$abi
@@ -44,20 +49,11 @@ function build_android_abi() {
     symlink_prebuilt_lib $abiBuildDir "lib$libName.so" android/$abi
 }
 
-function add_gradle_properties_prebuilt_libs_entry() {
-    local gradlePropertiesDir="$HOME/.gradle/gradle.properties"
-    local propName="prebuilt_libs"
-    # Delete the line starting with "prebuilt_libs" if found.
-    sed -i '' "/^$propName/d" $gradlePropertiesDir
-    # Write a new line containing the property.
-    echo "$propName=$PREBUILT_LIBS" >> $gradlePropertiesDir
-}
-
 function ios() {
-    local buildDir=$projectDir/ios_build
     echo "Building iOS shared lib..."
-    cmake --target $projectDir/lib -B$buildDir -GXcode \
+    cmake --target $libTarget -B$iosBuildDir -GXcode \
         -DBUILD_FRAMEWORK:BOOLEAN=true \
+        -DBUILD_TESTS:BOOLEAN=false \
         -DCMAKE_SYSTEM_NAME=iOS \
         -DCMAKE_OSX_ARCHITECTURES="armv7;armv7s;arm64;i386;x86_64" \
         -DCMAKE_OSX_DEPLOYMENT_TARGET=9.3 \
@@ -93,7 +89,7 @@ function build_universal_framework() {
 function build_framework_for_sdk() {
     local sdk=$1
 
-    (cd $projectDir/ios_build && xcodebuild -target lib-framework \
+    (cd $iosBuildDir && xcodebuild -target lib-framework \
         -configuration "Release" \
         -UseModernBuildSystem=NO \
         -sdk $sdk \
@@ -103,12 +99,12 @@ function build_framework_for_sdk() {
 }
 
 function symlink_prebuilt_lib() {
-    local buildDir=$1
+    local libBuildDir=$1
     local libFileName=$2
     local linkRelativePath=$3
     local linkDir=$PREBUILT_LIBS/$libName/$linkRelativePath
     mkdir -p "$linkDir"
-    ln -sf $buildDir/$libFileName $linkDir/$libFileName
+    ln -sf $libBuildDir/$libFileName $linkDir/$libFileName
 }
 
 function symlink_include_dir() {
@@ -120,8 +116,8 @@ function symlink_include_dir() {
 [[ $# -eq 0 ]] && notify_uncorrect_usage
 
 case $1 in
-    "--cmd")
-        cmd
+    "--unix")
+        unix
         symlink_include_dir
         ;;
     "--android")
@@ -133,7 +129,7 @@ case $1 in
         symlink_include_dir
         ;;
     "--all")
-        cmd
+        unix
         android
         ios
         symlink_include_dir
