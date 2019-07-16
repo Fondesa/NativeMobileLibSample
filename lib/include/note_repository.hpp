@@ -11,5 +11,5 @@ class NoteRepository {
 
     virtual void update(int id, const DraftNote &note) = 0;
 
-    virtual std::vector<Note> getAll() = 0;
+    virtual std::vector<std::shared_ptr<Note>> getAll() = 0;
 };
