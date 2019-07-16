@@ -6,11 +6,18 @@ project(lib)
 
 set(SOURCE_FILES
 	src/foo.cpp
+	src/note.cpp
+	src/draft_note.cpp
+	src/in_memory_note_repository.cpp
 )
 
 # They are needed only for XCode, otherwise the header files don't show up in the project.
 set(HEADER_FILES_FOR_XCODE 
 	include/foo.hpp
+	include/note.hpp
+	include/draft_note.hpp
+	include/note_repository.hpp
+	include/in_memory_note_repository.hpp
 )
 
 if(${BUILD_TESTS}) 

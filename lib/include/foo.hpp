@@ -3,11 +3,11 @@
 #include <string>
 
 class Foo {
-private:
+   private:
     std::string value;
 
-public:
+   public:
     Foo(std::string value);
-    
+
     std::string getValue() const;
 };
