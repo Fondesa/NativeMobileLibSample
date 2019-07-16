@@ -8,6 +8,7 @@
 class InMemoryNoteRepository : public NoteRepository {
    private:
     std::vector<Note> notes;
+    int currentId = 0;
 
    public:
     void insert(const DraftNote &note) override;
