@@ -25,7 +25,10 @@ void printNotes(std::vector<std::shared_ptr<Note>> notes) {
               << std::endl;
     for (auto it = notes.begin(); it != notes.end(); ++it) {
         auto note = *it;
-        std::cout << "-\tTitle: "
+        std::cout << "-\tId: "
+                  << note->getId()
+                  << std::endl
+                  << "\tTitle: "
                   << note->getTitle()
                   << std::endl
                   << "\tDescription: "
