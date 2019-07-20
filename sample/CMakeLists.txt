@@ -4,12 +4,10 @@ set(CMAKE_CXX_STANDARD 17)
 
 project(sample)
 
-set(SOURCE_FILES
+set(SAMPLE_SOURCE_FILES
 	main.cpp
 )
 
-add_executable(${PROJECT_NAME} ${SOURCE_FILES})
+add_executable(${PROJECT_NAME} ${SAMPLE_SOURCE_FILES})
 
-target_link_libraries(${PROJECT_NAME}
-    lib
-)
+target_link_libraries(${PROJECT_NAME} lib)
