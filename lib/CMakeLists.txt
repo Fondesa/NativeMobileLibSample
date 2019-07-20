@@ -4,15 +4,14 @@ set(CMAKE_CXX_STANDARD 17)
 
 project(lib)
 
-set(SOURCE_FILES
+set(LIB_SOURCE_FILES
 	src/foo.cpp
 	src/note.cpp
 	src/draft_note.cpp
 	src/in_memory_note_repository.cpp
 )
 
-# They are needed only for XCode, otherwise the header files don't show up in the project.
-set(HEADER_FILES_FOR_XCODE 
+set(LIB_HEADER_FILES 
 	include/foo.hpp
 	include/note.hpp
 	include/draft_note.hpp
@@ -20,22 +19,33 @@ set(HEADER_FILES_FOR_XCODE
 	include/in_memory_note_repository.hpp
 )
 
+set(SQLITE3_SOURCE_FILES
+	sqlite3/sqlite3.c
+)
+
+set(SQLITE3_HEADER_FILES
+	sqlite3/sqlite3.h
+)
+
+set(MERGED_SOURCE_FILES ${LIB_SOURCE_FILES} ${SQLITE3_SOURCE_FILES})
+set(MERGED_HEADER_FILES ${LIB_HEADER_FILES} ${SQLITE3_HEADER_FILES})
+
 if(${BUILD_TESTS}) 
-	subdirs(test)
+	add_subdirectory(test)
 	enable_testing()
 endif()
 
 if(${BUILD_FRAMEWORK}) 
 	set(LIB_FRAMEWORK_TARGET lib-framework)
 
-	add_library(${LIB_FRAMEWORK_TARGET} SHARED ${SOURCE_FILES} ${HEADER_FILES_FOR_XCODE})
+	add_library(${LIB_FRAMEWORK_TARGET} SHARED ${MERGED_SOURCE_FILES} ${MERGED_HEADER_FILES})
 
 	set_target_properties(${LIB_FRAMEWORK_TARGET} PROPERTIES
 		OUTPUT_NAME "nativemobile"
 		FRAMEWORK TRUE
 		FRAMEWORK_VERSION C
 		MACOSX_FRAMEWORK_IDENTIFIER com.fondesa.nativemobilelib
-		PUBLIC_HEADER ${HEADER_FILES_FOR_XCODE}
+		PUBLIC_HEADER ${MERGED_HEADER_FILES}
 		XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
 	)
 
@@ -43,7 +53,7 @@ if(${BUILD_FRAMEWORK})
    		PUBLIC ${PROJECT_SOURCE_DIR}/include
 	)
 else()
-	add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES} ${HEADER_FILES_FOR_XCODE})
+	add_library(${PROJECT_NAME} SHARED ${MERGED_SOURCE_FILES} ${MERGED_HEADER_FILES})
 
 	set_target_properties(${PROJECT_NAME} PROPERTIES 
 		OUTPUT_NAME "nativemobile"
