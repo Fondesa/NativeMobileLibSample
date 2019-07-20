@@ -5,9 +5,8 @@ projectDir=${scriptDir}
 prebuiltLibDir=$PREBUILT_LIBS/nativemobile
 
 dirs=(
-    $projectDir/build 
-    $prebuiltLibDir/android
-    $prebuiltLibDir/ios
+    $projectDir/build
+    $prebuiltLibDir
 )
 
 for dir in "${dirs[@]}"
