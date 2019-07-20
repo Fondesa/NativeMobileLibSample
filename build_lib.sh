@@ -23,7 +23,7 @@ function unix() {
         -DBUILD_TESTS:BOOLEAN=false
     (cd $unixBuildDir && make)
 
-    symlink_prebuilt_lib $unixBuildDir "lib$libName.dylib" unix
+    symlink_prebuilt_lib $unixBuildDir/lib$libName.dylib unix
 }
 
 function android() {
@@ -46,7 +46,7 @@ function build_android_abi() {
 
     (cd $abiBuildDir && make)
 
-    symlink_prebuilt_lib $abiBuildDir "lib$libName.so" android/$abi
+    symlink_prebuilt_lib $abiBuildDir/lib$libName.so android/$abi
 }
 
 function ios() {
@@ -61,7 +61,7 @@ function ios() {
         -DCMAKE_IOS_INSTALL_COMBINED=YES
 
     build_universal_framework
-    symlink_prebuilt_lib $iosUniversalFrameworkDir $iosFrameworkFileName ios
+    symlink_prebuilt_lib $iosUniversalFrameworkDir/$iosFrameworkFileName ios
 }
 
 function build_universal_framework() {
@@ -99,12 +99,11 @@ function build_framework_for_sdk() {
 }
 
 function symlink_prebuilt_lib() {
-    local libBuildDir=$1
-    local libFileName=$2
-    local linkRelativePath=$3
+    local libFilePath=$1
+    local linkRelativePath=$2
     local linkDir=$PREBUILT_LIBS/$libName/$linkRelativePath
     mkdir -p "$linkDir"
-    ln -sf $libBuildDir/$libFileName $linkDir/$libFileName
+    ln -sf $libFilePath $linkDir
 }
 
 function symlink_include_dir() {
