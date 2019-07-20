@@ -36,6 +36,15 @@ if(${BUILD_TESTS})
 endif()
 
 if(${BUILD_FRAMEWORK}) 
+	# Collect all the header files inside the "include" directory and join them with semicolon.
+	foreach(header ${LIB_HEADER_FILES})
+		if(NOT DEFINED FRAMEWORK_PUBLIC_HEADERS)
+			set(FRAMEWORK_PUBLIC_HEADERS ${header})
+		else()
+			set(FRAMEWORK_PUBLIC_HEADERS "${FRAMEWORK_PUBLIC_HEADERS};${header}")
+		endif()
+	endforeach()
+
 	set(LIB_FRAMEWORK_TARGET lib-framework)
 
 	add_library(${LIB_FRAMEWORK_TARGET} SHARED ${MERGED_SOURCE_FILES} ${MERGED_HEADER_FILES})
@@ -45,7 +54,7 @@ if(${BUILD_FRAMEWORK})
 		FRAMEWORK TRUE
 		FRAMEWORK_VERSION C
 		MACOSX_FRAMEWORK_IDENTIFIER com.fondesa.nativemobilelib
-		PUBLIC_HEADER ${MERGED_HEADER_FILES}
+		PUBLIC_HEADER "${FRAMEWORK_PUBLIC_HEADERS}"
 		XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
 	)
 
