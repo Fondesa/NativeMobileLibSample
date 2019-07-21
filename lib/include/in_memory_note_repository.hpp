@@ -7,15 +7,15 @@
 
 class InMemoryNoteRepository : public NoteRepository {
    private:
-    std::vector<std::shared_ptr<Note>> notes;
+    std::vector<Note> notes;
     int currentId = 0;
 
    public:
-    void insert(const DraftNote &note) override;
+    void insert(DraftNote note) override;
 
     void remove(int id) override;
 
-    void update(int id, const DraftNote &note) override;
+    void update(int id, DraftNote note) override;
 
-    std::vector<std::shared_ptr<Note>> getAll() override;
+    std::vector<Note> getAll() override;
 };

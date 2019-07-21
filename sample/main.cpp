@@ -1,15 +1,15 @@
 #include <iostream>
 #include "in_memory_note_repository.hpp"
 
-void printNotes(std::vector<std::shared_ptr<Note>> notes);
+void printNotes(std::vector<Note> notes);
 
 int main() {
     auto repository = std::make_unique<InMemoryNoteRepository>();
 
-    auto first = std::make_unique<DraftNote>("First title", "First description");
-    repository->insert(*first);
-    auto second = std::make_unique<DraftNote>("Second title", "Second description");
-    repository->insert(*second);
+    auto first = DraftNote("First title", "First description");
+    repository->insert(first);
+    auto second = DraftNote("Second title", "Second description");
+    repository->insert(second);
 
     printNotes(repository->getAll());
 
@@ -20,19 +20,19 @@ int main() {
     return 0;
 }
 
-void printNotes(std::vector<std::shared_ptr<Note>> notes) {
+void printNotes(std::vector<Note> notes) {
     std::cout << "There are the following notes:\n"
               << std::endl;
     for (auto it = notes.begin(); it != notes.end(); ++it) {
         auto note = *it;
         std::cout << "-\tId: "
-                  << note->getId()
+                  << note.getId()
                   << std::endl
                   << "\tTitle: "
-                  << note->getTitle()
+                  << note.getTitle()
                   << std::endl
                   << "\tDescription: "
-                  << note->getDescription()
+                  << note.getDescription()
                   << std::endl;
         if (it != notes.end() - 1) {
             std::cout << std::endl;
