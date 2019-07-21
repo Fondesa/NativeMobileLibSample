@@ -1,10 +1,12 @@
 #include <iostream>
-#include "in_memory_note_repository.hpp"
+#include "sqlite_handler.hpp"
+#include "sqlite_note_repository.hpp"
 
 void printNotes(std::vector<Note> notes);
 
 int main() {
-    auto repository = std::make_unique<InMemoryNoteRepository>();
+    auto sqliteHandler = std::make_unique<SQLiteHandler>("build/sample/sample/notes.db");
+    auto repository = std::make_unique<SQLiteNoteRepository>(*sqliteHandler);
 
     auto first = DraftNote("First title", "First description");
     repository->insert(first);

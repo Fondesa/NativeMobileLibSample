@@ -9,6 +9,8 @@ set(LIB_SOURCE_FILES
 	src/note.cpp
 	src/draft_note.cpp
 	src/in_memory_note_repository.cpp
+	src/sqlite_note_repository.cpp
+	src/sqlite_handler.cpp
 )
 
 set(LIB_HEADER_FILES 
@@ -17,6 +19,8 @@ set(LIB_HEADER_FILES
 	include/draft_note.hpp
 	include/note_repository.hpp
 	include/in_memory_note_repository.hpp
+	include/sqlite_note_repository.hpp
+	include/sqlite_handler.hpp
 )
 
 set(SQLITE3_SOURCE_FILES
