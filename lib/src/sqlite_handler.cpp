@@ -15,10 +15,10 @@ SQLiteHandler::~SQLiteHandler() {
     std::cout << "Database closed" << std::endl;
 }
 
-SQLiteException::SQLiteException(sqlite3* db) {
+SQLiteException::SQLiteException(sqlite3 *db) {
     msg = sqlite3_errmsg(db);
 }
 
-const char* SQLiteException::what() const throw() {
+const char *SQLiteException::what() const throw() {
     return msg;
 }
