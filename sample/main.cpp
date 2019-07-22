@@ -1,5 +1,5 @@
 #include <iostream>
-#include "sqlite_handler.hpp"
+#include "sqlite_database.hpp"
 #include "sqlite_note_repository.hpp"
 
 void printNotes(std::vector<Note> notes);

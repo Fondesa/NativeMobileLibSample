@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 #include "note_repository.hpp"
-#include "sqlite_handler.hpp"
+#include "sqlite_database.hpp"
 
 class SQLiteNoteRepository : public NoteRepository {
    public:
