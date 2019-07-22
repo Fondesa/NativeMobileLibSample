@@ -16,6 +16,22 @@ SQLiteHandler::~SQLiteHandler() {
     std::cout << "Database closed" << std::endl;
 }
 
+void SQLiteHandler::executeTransaction(std::function<void()> transact) {
+    auto transaction = std::move(transact);
+    int rc = sqlite3_exec(db, "BEGIN TRANSACTION", nullptr, nullptr, nullptr);
+    if (rc != SQLITE_OK) {
+        throw SQLiteException(db);
+    }
+
+    // Execute the transaction.
+    transaction();
+
+    rc = sqlite3_exec(db, "END TRANSACTION", nullptr, nullptr, nullptr);
+    if (rc != SQLITE_OK) {
+        throw SQLiteException(db);
+    }
+}
+
 SQLiteException::SQLiteException(sqlite3 *db) {
     msg = sqlite3_errmsg(db);
 }
