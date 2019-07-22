@@ -9,6 +9,8 @@ class SQLiteHandler {
 
     ~SQLiteHandler();
 
+    void executeTransaction(std::function<void()> transact);
+
    private:
     sqlite3 *db{};
 };
