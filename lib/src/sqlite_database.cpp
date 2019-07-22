@@ -4,8 +4,8 @@
 #include <stdexcept>
 
 SQLiteDatabase::SQLiteDatabase(std::string dbPath) {
-    auto path = std::move(dbPath);
-    int canNotOpen = sqlite3_open(path.c_str(), &db);
+    auto movedPath = std::move(dbPath);
+    int canNotOpen = sqlite3_open(movedPath.c_str(), &db);
     if (canNotOpen) {
         throw SQLiteException(db);
     }
@@ -31,4 +31,9 @@ void SQLiteDatabase::executeTransaction(std::function<void()> transact) {
     if (rc != SQLITE_OK) {
         throw SQLiteException(db);
     }
+}
+
+SQLiteStatement SQLiteDatabase::createStatement(std::string sql) {
+    auto movedSql = std::move(sql);
+    return SQLiteStatement(db, movedSql);
 }

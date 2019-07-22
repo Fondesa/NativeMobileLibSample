@@ -5,8 +5,18 @@
 void printNotes(std::vector<Note> notes);
 
 int main() {
-    auto sqliteHandler = std::make_unique<SQLiteDatabase>("notes.db");
-    auto repository = std::make_unique<SQLiteNoteRepository>(*sqliteHandler);
+    auto db = std::make_unique<SQLiteDatabase>("notes.db");
+    auto createTableStmt = db->createStatement("CREATE TABLE IF NOT EXISTS notes ("
+                                               "TITLE TEXT NOT NULL, "
+                                               "DESCRIPTION TEXT NOT NULL"
+                                               ")");
+    createTableStmt.execute<void>();
+
+    auto insertStmt = db->createStatement("INSERT INTO notes (TITLE,DESCRIPTION) "
+                        "VALUES ('dummy-title', 'dummy-description')");
+    insertStmt.execute<void>();
+
+    auto repository = std::make_unique<SQLiteNoteRepository>(*db);
 
     auto first = DraftNote("First title", "First description");
     repository->insert(first);
