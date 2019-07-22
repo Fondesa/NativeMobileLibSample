@@ -5,19 +5,19 @@
 
 class SQLiteHandler {
    public:
-    SQLiteHandler(std::string dbPath);
+    explicit SQLiteHandler(std::string dbPath);
 
     ~SQLiteHandler();
 
    private:
-    sqlite3 *db;
+    sqlite3 *db{};
 };
 
 class SQLiteException : public std::exception {
    public:
-    SQLiteException(sqlite3 *db);
+    explicit SQLiteException(sqlite3 *db);
 
-    const char *what() const throw();
+    const char *what() const noexcept override;
 
    private:
     const char *msg;

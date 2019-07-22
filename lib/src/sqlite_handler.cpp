@@ -3,7 +3,8 @@
 #include <stdexcept>
 
 SQLiteHandler::SQLiteHandler(std::string dbPath) {
-    int canNotOpen = sqlite3_open(dbPath.c_str(), &db);
+    auto path = std::move(dbPath);
+    int canNotOpen = sqlite3_open(path.c_str(), &db);
     if (canNotOpen) {
         throw SQLiteException(db);
     }
@@ -19,6 +20,6 @@ SQLiteException::SQLiteException(sqlite3 *db) {
     msg = sqlite3_errmsg(db);
 }
 
-const char *SQLiteException::what() const throw() {
+const char *SQLiteException::what() const noexcept {
     return msg;
 }
