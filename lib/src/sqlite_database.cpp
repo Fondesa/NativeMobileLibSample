@@ -1,4 +1,4 @@
-#include "sqlite_handler.hpp"
+#include "sqlite_database.hpp"
 #include <iostream>
 #include <stdexcept>
 
@@ -35,6 +35,8 @@ void SQLiteHandler::executeTransaction(std::function<void()> transact) {
 SQLiteException::SQLiteException(sqlite3 *db) {
     msg = sqlite3_errmsg(db);
 }
+
+SQLiteException::SQLiteException(sqlite3_stmt *stmt) : SQLiteException(sqlite3_db_handle(stmt)) {}
 
 const char *SQLiteException::what() const noexcept {
     return msg;
