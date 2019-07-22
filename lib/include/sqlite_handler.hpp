@@ -10,15 +10,15 @@ class SQLiteHandler {
     ~SQLiteHandler();
 
    private:
-    sqlite3* db;
+    sqlite3 *db;
 };
 
 class SQLiteException : public std::exception {
    public:
-    SQLiteException(sqlite3* db);
+    SQLiteException(sqlite3 *db);
 
-    const char* what() const throw();
+    const char *what() const throw();
 
    private:
-    const char* msg;
+    const char *msg;
 };

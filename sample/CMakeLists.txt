@@ -5,8 +5,8 @@ set(CMAKE_CXX_STANDARD 17)
 project(sample)
 
 set(SAMPLE_SOURCE_FILES
-	main.cpp
-)
+    main.cpp
+    )
 
 add_executable(${PROJECT_NAME} ${SAMPLE_SOURCE_FILES})
 
