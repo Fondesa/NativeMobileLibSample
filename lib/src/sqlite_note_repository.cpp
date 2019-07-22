@@ -1,6 +1,6 @@
 #include "sqlite_note_repository.hpp"
 
-SQLiteNoteRepository::SQLiteNoteRepository(const SQLiteHandler &handler) : handler(handler) {}
+SQLiteNoteRepository::SQLiteNoteRepository(const SQLiteDatabase &handler) : handler(handler) {}
 
 void SQLiteNoteRepository::insert(DraftNote draftNote) {
     auto movedDraftNote = std::move(draftNote);

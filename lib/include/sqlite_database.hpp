@@ -3,11 +3,11 @@
 #include <string>
 #include "sqlite3.h"
 
-class SQLiteHandler {
+class SQLiteDatabase {
    public:
-    explicit SQLiteHandler(std::string dbPath);
+    explicit SQLiteDatabase(std::string dbPath);
 
-    ~SQLiteHandler();
+    ~SQLiteDatabase();
 
     void executeTransaction(std::function<void()> transact);
 

@@ -5,7 +5,7 @@
 void printNotes(std::vector<Note> notes);
 
 int main() {
-    auto sqliteHandler = std::make_unique<SQLiteHandler>("notes.db");
+    auto sqliteHandler = std::make_unique<SQLiteDatabase>("notes.db");
     auto repository = std::make_unique<SQLiteNoteRepository>(*sqliteHandler);
 
     auto first = DraftNote("First title", "First description");
