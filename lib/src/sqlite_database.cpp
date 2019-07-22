@@ -3,7 +3,7 @@
 #include <iostream>
 #include <stdexcept>
 
-SQLiteHandler::SQLiteHandler(std::string dbPath) {
+SQLiteDatabase::SQLiteDatabase(std::string dbPath) {
     auto path = std::move(dbPath);
     int canNotOpen = sqlite3_open(path.c_str(), &db);
     if (canNotOpen) {
@@ -12,12 +12,12 @@ SQLiteHandler::SQLiteHandler(std::string dbPath) {
     std::cout << "Opened database successfully" << std::endl;
 }
 
-SQLiteHandler::~SQLiteHandler() {
+SQLiteDatabase::~SQLiteDatabase() {
     sqlite3_close(db);
     std::cout << "Database closed" << std::endl;
 }
 
-void SQLiteHandler::executeTransaction(std::function<void()> transact) {
+void SQLiteDatabase::executeTransaction(std::function<void()> transact) {
     auto transaction = std::move(transact);
     int rc = sqlite3_exec(db, "BEGIN TRANSACTION", nullptr, nullptr, nullptr);
     if (rc != SQLITE_OK) {

@@ -12,6 +12,7 @@ set(LIB_SOURCE_FILES
     src/sqlite_note_repository.cpp
     src/sqlite_database.cpp
     src/sqlite_exception.cpp
+    src/sqlite_statement.cpp
     )
 
 set(LIB_HEADER_FILES
@@ -23,6 +24,7 @@ set(LIB_HEADER_FILES
     include/sqlite_note_repository.hpp
     include/sqlite_database.hpp
     include/sqlite_exception.hpp
+    include/sqlite_statement.hpp
     )
 
 set(SQLITE3_SOURCE_FILES
