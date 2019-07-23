@@ -1,5 +1,7 @@
+#include "sqlite_cursor.hpp"
 #include "sqlite_statement.hpp"
 #include "sqlite_exception.hpp"
+#include <vector>
 
 SQLiteStatement::SQLiteStatement(sqlite3 *db, std::string sql) {
     auto movedSql = std::move(sql);
@@ -38,4 +40,9 @@ void SQLiteStatement::execute() {
     if (reset() != SQLITE_OK) {
         throw SQLiteException(stmt);
     }
+}
+
+template<>
+SQLiteCursor SQLiteStatement::execute() {
+    return SQLiteCursor(stmt);
 }

@@ -1,4 +1,5 @@
 #include <iostream>
+#include "sqlite_cursor.hpp"
 #include "sqlite_database.hpp"
 #include "sqlite_note_repository.hpp"
 
@@ -7,14 +8,22 @@ void printNotes(std::vector<Note> notes);
 int main() {
     auto db = std::make_unique<SQLiteDatabase>("notes.db");
     auto createTableStmt = db->createStatement("CREATE TABLE IF NOT EXISTS notes ("
-                                               "TITLE TEXT NOT NULL, "
-                                               "DESCRIPTION TEXT NOT NULL"
+                                               "title TEXT NOT NULL, "
+                                               "description TEXT NOT NULL"
                                                ")");
     createTableStmt.execute<void>();
 
-    auto insertStmt = db->createStatement("INSERT INTO notes (TITLE,DESCRIPTION) "
-                        "VALUES ('dummy-title', 'dummy-description')");
+    auto insertStmt = db->createStatement("INSERT INTO notes (title, description) "
+                                          "VALUES ('dummy-title', 'dummy-description')");
     insertStmt.execute<void>();
+
+    auto selectStmt = db->createStatement("SELECT title, description FROM notes");
+    auto cursor = selectStmt.execute<SQLiteCursor>();
+    while(cursor.next()) {
+        auto title = cursor.getString(0);
+        auto description = cursor.getString(1);
+        std::cout << "Record with title: " + title + " and description: " + description << std::endl;
+    }
 
     auto repository = std::make_unique<SQLiteNoteRepository>(*db);
 
