@@ -14,6 +14,8 @@ set(LIB_SOURCE_FILES
     src/sqlite_exception.cpp
     src/sqlite_statement.cpp
     src/sqlite_cursor.cpp
+    src/cursor.cpp
+    src/statement.cpp
     )
 
 set(LIB_HEADER_FILES
@@ -27,6 +29,8 @@ set(LIB_HEADER_FILES
     include/sqlite_exception.hpp
     include/sqlite_statement.hpp
     include/sqlite_cursor.hpp
+    include/cursor.hpp
+    include/statement.hpp
     )
 
 set(SQLITE3_SOURCE_FILES
