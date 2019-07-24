@@ -15,7 +15,7 @@ int main() {
                                                ")");
     createTableStmt->execute<void>();
 
-    auto repository = std::make_shared<DatabaseNoteRepository>(*db);
+    auto repository = std::make_shared<DatabaseNoteRepository>(db);
 
     auto first = DraftNote("First title", "First description");
     repository->insert(first);
