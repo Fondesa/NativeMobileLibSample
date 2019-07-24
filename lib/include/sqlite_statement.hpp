@@ -2,26 +2,27 @@
 
 #include <string>
 #include "sqlite3.h"
+#include "statement.hpp"
 
-class SQLiteStatement {
+class SQLiteStatement : public Statement {
    public:
     SQLiteStatement(sqlite3 *db, std::string sql);
 
     ~SQLiteStatement();
 
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "NotImplementedFunctions"
-    template<typename T>
-    void bind(int colIndex, T value);
-#pragma clang diagnostic pop
+   protected:
+    void executeVoid() override;
 
-    template<typename T>
-    T execute();
+    std::shared_ptr<Cursor> executeCursor() override;
+
+    void bindInt(int colIndex, int value) override;
+
+    void bindDouble(int colIndex, double value) override;
+
+    void bindString(int colIndex, std::string value) override;
+
+    void bindBool(int colIndex, bool value) override;
 
    private:
     sqlite3_stmt *stmt{};
-
-    int step();
-    int clearBindings();
-    int reset();
 };

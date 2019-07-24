@@ -15,65 +15,47 @@ SQLiteStatement::~SQLiteStatement() {
     sqlite3_finalize(stmt);
 }
 
-int SQLiteStatement::step() {
-    return sqlite3_step(stmt);
-}
-
-int SQLiteStatement::clearBindings() {
-    return sqlite3_clear_bindings(stmt);
-}
-
-int SQLiteStatement::reset() {
-    return sqlite3_reset(stmt);
-}
-
-/* TEMPLATES */
-
-template<>
-void SQLiteStatement::execute() {
-    if (step() != SQLITE_DONE) {
+void SQLiteStatement::executeVoid() {
+    if (sqlite3_step(stmt) != SQLITE_DONE) {
         throw SQLiteException(stmt);
     }
-    if (clearBindings() != SQLITE_OK) {
+    if (sqlite3_clear_bindings(stmt) != SQLITE_OK) {
         throw SQLiteException(stmt);
     }
-    if (reset() != SQLITE_OK) {
+    if (sqlite3_reset(stmt) != SQLITE_OK) {
         throw SQLiteException(stmt);
     }
 }
 
-template<>
-SQLiteCursor SQLiteStatement::execute() {
-    return SQLiteCursor(stmt);
+std::shared_ptr<Cursor> SQLiteStatement::executeCursor() {
+    return std::make_shared<SQLiteCursor>(stmt);
 }
 
-template<>
-void SQLiteStatement::bind(int colIndex, int value) {
+void SQLiteStatement::bindInt(int colIndex, int value) {
     int rc = sqlite3_bind_int(stmt, colIndex, value);
     if (rc != SQLITE_OK) {
         throw SQLiteException(stmt);
     }
 }
 
-template<>
-void SQLiteStatement::bind(int colIndex, double value) {
+void SQLiteStatement::bindDouble(int colIndex, double value) {
     int rc = sqlite3_bind_double(stmt, colIndex, value);
     if (rc != SQLITE_OK) {
         throw SQLiteException(stmt);
     }
+
 }
 
-template<>
-void SQLiteStatement::bind(int colIndex, std::string value) {
+void SQLiteStatement::bindString(int colIndex, std::string value) {
     auto movedValue = std::move(value);
     int rc = sqlite3_bind_text(stmt, colIndex, movedValue.c_str(), -1, SQLITE_TRANSIENT);
     if (rc != SQLITE_OK) {
         throw SQLiteException(stmt);
     }
+
 }
 
-template<>
-void SQLiteStatement::bind(int colIndex, bool value) {
+void SQLiteStatement::bindBool(int colIndex, bool value) {
     int intValue = (value) ? 1 : 0;
-    bind(colIndex, intValue);
+    bindInt(colIndex, intValue);
 }
