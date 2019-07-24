@@ -10,27 +10,23 @@ void SQLiteNoteRepository::insert(DraftNote draftNote) {
     stmt.bind(1, movedDraftNote.getTitle());
     stmt.bind(2, movedDraftNote.getDescription());
     stmt.execute<void>();
-
-    int noteId = currentId++;
-    notes.emplace_back(noteId, movedDraftNote.getTitle(), movedDraftNote.getDescription());
 }
 
 void SQLiteNoteRepository::remove(int id) {
-    notes.erase(std::remove_if(notes.begin(), notes.end(), [id](Note note) {
-                    return note.getId() == id;
-                }),
-                notes.end());
+    auto stmt = db.createStatement("DELETE FROM notes "
+                                   "WHERE rowid = ?");
+    stmt.bind(1, id);
+    stmt.execute<void>();
 }
 
 void SQLiteNoteRepository::update(int id, DraftNote draftNote) {
-    auto movedDraftNote = std::move(draftNote);
-    auto idIterator = std::find_if(notes.begin(), notes.end(), [id](Note note) {
-        return note.getId() == id;
-    });
-    if (idIterator != notes.end()) {
-        int index = std::distance(notes.begin(), idIterator);
-        notes[index] = Note(id, movedDraftNote.getTitle(), movedDraftNote.getDescription());
-    }
+    auto stmt = db.createStatement("UPDATE notes "
+                                   "SET title = ?, description = ? "
+                                   "WHERE rowid = ?");
+    stmt.bind(1, draftNote.getTitle());
+    stmt.bind(2, draftNote.getDescription());
+    stmt.bind(3, id);
+    stmt.execute<void>();
 }
 
 std::vector<Note> SQLiteNoteRepository::getAll() {
