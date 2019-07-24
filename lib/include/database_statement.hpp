@@ -9,10 +9,10 @@ class DatabaseStatement {
 #pragma ide diagnostic ignored "NotImplementedFunctions"
     template<typename T>
     void bind(int colIndex, T value);
-#pragma clang diagnostic pop
 
     template<typename T>
     T execute();
+#pragma clang diagnostic pop
 
    protected:
     virtual void executeVoid() = 0;
