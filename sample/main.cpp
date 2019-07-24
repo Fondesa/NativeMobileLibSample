@@ -1,20 +1,21 @@
 #include <iostream>
-#include "sqlite_cursor.hpp"
-#include "sqlite_database.hpp"
-#include "sqlite_note_repository.hpp"
+#include "database_factory.hpp"
+#include "database/sqlite_cursor.hpp"
+#include "database/sqlite_database.hpp"
+#include "database_note_repository.hpp"
 
 void printNotes(std::vector<Note> notes);
 
 int main() {
-//    auto db = std::make_unique<SQLiteDatabase>("notes.db");
-    auto db = std::make_unique<SQLiteDatabase>(":memory:");
+//    std::shared_ptr<Database> db = std::make_shared<SQLiteDatabase>("notes.db");
+    std::shared_ptr<Database> db = DatabaseFactory::createDatabase(":memory:");
     auto createTableStmt = db->createStatement("CREATE TABLE IF NOT EXISTS notes ("
                                                "title TEXT NOT NULL, "
                                                "description TEXT NOT NULL"
                                                ")");
-    createTableStmt.execute<void>();
+    createTableStmt->execute<void>();
 
-    auto repository = std::make_unique<SQLiteNoteRepository>(*db);
+    auto repository = std::make_shared<DatabaseNoteRepository>(*db);
 
     auto first = DraftNote("First title", "First description");
     repository->insert(first);

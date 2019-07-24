@@ -1,10 +1,10 @@
 #pragma once
 
 #include <string>
-#include "sqlite3.h"
-#include "cursor.hpp"
+#include "sqlite3/sqlite3.h"
+#include "database_cursor.hpp"
 
-class SQLiteCursor : public Cursor {
+class SQLiteCursor : public DatabaseCursor {
    public:
     explicit SQLiteCursor(sqlite3_stmt *stmt);
 

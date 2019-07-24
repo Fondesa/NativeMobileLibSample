@@ -1,5 +1,6 @@
 #include "sqlite_database.hpp"
 #include "sqlite_exception.hpp"
+#include "sqlite_statement.hpp"
 #include <iostream>
 #include <stdexcept>
 
@@ -33,7 +34,7 @@ void SQLiteDatabase::executeTransaction(std::function<void()> transact) const {
     }
 }
 
-SQLiteStatement SQLiteDatabase::createStatement(std::string sql) const {
+std::shared_ptr<DatabaseStatement> SQLiteDatabase::createStatement(std::string sql) const {
     auto movedSql = std::move(sql);
-    return SQLiteStatement(db, movedSql);
+    return std::make_shared<SQLiteStatement>(db, movedSql);
 }

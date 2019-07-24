@@ -1,10 +1,10 @@
 #pragma once
 
 #include <string>
-#include "sqlite3.h"
-#include "statement.hpp"
+#include "sqlite3/sqlite3.h"
+#include "database_statement.hpp"
 
-class SQLiteStatement : public Statement {
+class SQLiteStatement : public DatabaseStatement {
    public:
     SQLiteStatement(sqlite3 *db, std::string sql);
 
@@ -13,7 +13,7 @@ class SQLiteStatement : public Statement {
    protected:
     void executeVoid() override;
 
-    std::shared_ptr<Cursor> executeCursor() override;
+    std::shared_ptr<DatabaseCursor> executeCursor() override;
 
     void bindInt(int colIndex, int value) override;
 

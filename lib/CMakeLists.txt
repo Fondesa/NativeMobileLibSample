@@ -6,43 +6,34 @@ project(lib)
 
 set(LIB_SOURCE_FILES
     src/foo.cpp
-    src/note.cpp
-    src/draft_note.cpp
-    src/in_memory_note_repository.cpp
-    src/sqlite_note_repository.cpp
-    src/sqlite_database.cpp
-    src/sqlite_exception.cpp
-    src/sqlite_statement.cpp
-    src/sqlite_cursor.cpp
-    src/cursor.cpp
-    src/statement.cpp
+    src/note/note.cpp
+    src/note/draft_note.cpp
+    src/note/in_memory_note_repository.cpp
+    src/note/database_note_repository.cpp
+    src/database/sqlite_database.cpp
+    src/database/sqlite_exception.cpp
+    src/database/sqlite_statement.cpp
+    src/database/sqlite_cursor.cpp
+    src/database/database_cursor.cpp
+    src/database/database_statement.cpp
+    src/database/database_factory.cpp
     )
 
-set(LIB_HEADER_FILES
+set(PUBLIC_HEADER_FILES
     include/foo.hpp
     include/note.hpp
     include/draft_note.hpp
     include/note_repository.hpp
     include/in_memory_note_repository.hpp
-    include/sqlite_note_repository.hpp
-    include/sqlite_database.hpp
-    include/sqlite_exception.hpp
-    include/sqlite_statement.hpp
-    include/sqlite_cursor.hpp
-    include/cursor.hpp
-    include/statement.hpp
+    include/database_note_repository.hpp
+    include/database_factory.hpp
     )
 
 set(SQLITE3_SOURCE_FILES
-    sqlite3/sqlite3.c
-    )
-
-set(SQLITE3_HEADER_FILES
-    sqlite3/sqlite3.h
+    libs/sqlite3/sqlite3.c
     )
 
 set(MERGED_SOURCE_FILES ${LIB_SOURCE_FILES} ${SQLITE3_SOURCE_FILES})
-set(MERGED_HEADER_FILES ${LIB_HEADER_FILES} ${SQLITE3_HEADER_FILES})
 
 if (${BUILD_TESTS})
     add_subdirectory(test)
@@ -51,7 +42,7 @@ endif ()
 
 if (${BUILD_FRAMEWORK})
     # Collect all the header files inside the "include" directory and join them with semicolon.
-    foreach (header ${LIB_HEADER_FILES})
+    foreach (header ${PUBLIC_HEADER_FILES})
         if (NOT DEFINED FRAMEWORK_PUBLIC_HEADERS)
             set(FRAMEWORK_PUBLIC_HEADERS ${header})
         else ()
@@ -61,7 +52,7 @@ if (${BUILD_FRAMEWORK})
 
     set(LIB_FRAMEWORK_TARGET lib-framework)
 
-    add_library(${LIB_FRAMEWORK_TARGET} SHARED ${MERGED_SOURCE_FILES} ${MERGED_HEADER_FILES})
+    add_library(${LIB_FRAMEWORK_TARGET} SHARED ${MERGED_SOURCE_FILES} ${PUBLIC_HEADER_FILES})
 
     set_target_properties(${LIB_FRAMEWORK_TARGET} PROPERTIES
         OUTPUT_NAME "nativemobile"
@@ -74,9 +65,11 @@ if (${BUILD_FRAMEWORK})
 
     target_include_directories(${LIB_FRAMEWORK_TARGET}
         PUBLIC ${PROJECT_SOURCE_DIR}/include
+        PUBLIC ${PROJECT_SOURCE_DIR}/libs
+        PUBLIC ${PROJECT_SOURCE_DIR}/src
         )
 else ()
-    add_library(${PROJECT_NAME} SHARED ${MERGED_SOURCE_FILES} ${MERGED_HEADER_FILES})
+    add_library(${PROJECT_NAME} SHARED ${MERGED_SOURCE_FILES})
 
     set_target_properties(${PROJECT_NAME} PROPERTIES
         OUTPUT_NAME "nativemobile"
@@ -84,5 +77,7 @@ else ()
 
     target_include_directories(${PROJECT_NAME}
         PUBLIC ${PROJECT_SOURCE_DIR}/include
+        PUBLIC ${PROJECT_SOURCE_DIR}/libs
+        PUBLIC ${PROJECT_SOURCE_DIR}/src
         )
 endif ()
