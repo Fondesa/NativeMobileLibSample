@@ -27,7 +27,7 @@ void SQLiteStatement::executeVoid() {
     }
 }
 
-std::shared_ptr<Cursor> SQLiteStatement::executeCursor() {
+std::shared_ptr<DatabaseCursor> SQLiteStatement::executeCursor() {
     return std::make_shared<SQLiteCursor>(stmt);
 }
 

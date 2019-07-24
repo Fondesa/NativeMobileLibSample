@@ -1,9 +1,9 @@
 #pragma once
 
 #include <string>
-#include "cursor.hpp"
+#include "database_cursor.hpp"
 
-class Statement {
+class DatabaseStatement {
    public:
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "NotImplementedFunctions"
@@ -17,7 +17,7 @@ class Statement {
    protected:
     virtual void executeVoid() = 0;
 
-    virtual std::shared_ptr<Cursor> executeCursor() = 0;
+    virtual std::shared_ptr<DatabaseCursor> executeCursor() = 0;
 
     virtual void bindInt(int colIndex, int value) = 0;
 

@@ -4,11 +4,11 @@
 #include <iostream>
 #include <vector>
 #include "note_repository.hpp"
-#include "sqlite_database.hpp"
+#include "database.hpp"
 
-class SQLiteNoteRepository : public NoteRepository {
+class DatabaseNoteRepository : public NoteRepository {
    public:
-    explicit SQLiteNoteRepository(const SQLiteDatabase &db);
+    explicit DatabaseNoteRepository(const Database &db);
 
     void insert(DraftNote note) override;
 
@@ -19,5 +19,5 @@ class SQLiteNoteRepository : public NoteRepository {
     std::vector<Note> getAll() override;
 
    private:
-    const SQLiteDatabase &db;
+    const Database &db;
 };

@@ -1,11 +1,8 @@
 #pragma once
 
-#pragma once
-
 #include <string>
-#include "sqlite3.h"
 
-class Cursor {
+class DatabaseCursor {
    public:
     virtual bool next() = 0;
 

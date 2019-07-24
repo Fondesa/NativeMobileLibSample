@@ -1,31 +1,31 @@
-#include "cursor.hpp"
+#include "database_cursor.hpp"
 #include "sqlite_exception.hpp"
 
 /* TEMPLATES */
 
 template<>
-int Cursor::get(int colIndex) {
+int DatabaseCursor::get(int colIndex) {
     ensureIndexInBounds(colIndex);
 
     return getInt(colIndex);
 }
 
 template<>
-double Cursor::get(int colIndex) {
+double DatabaseCursor::get(int colIndex) {
     ensureIndexInBounds(colIndex);
 
     return getDouble(colIndex);
 }
 
 template<>
-std::string Cursor::get(int colIndex) {
+std::string DatabaseCursor::get(int colIndex) {
     ensureIndexInBounds(colIndex);
 
     return getString(colIndex);
 }
 
 template<>
-bool Cursor::get(int colIndex) {
+bool DatabaseCursor::get(int colIndex) {
     ensureIndexInBounds(colIndex);
 
     return getBool(colIndex);
