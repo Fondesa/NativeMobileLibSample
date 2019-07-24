@@ -17,7 +17,7 @@ SQLiteDatabase::~SQLiteDatabase() {
     std::cout << "Database closed" << std::endl;
 }
 
-void SQLiteDatabase::executeTransaction(std::function<void()> transact) {
+void SQLiteDatabase::executeTransaction(std::function<void()> transact) const {
     auto transaction = std::move(transact);
     int rc = sqlite3_exec(db, "BEGIN TRANSACTION", nullptr, nullptr, nullptr);
     if (rc != SQLITE_OK) {
@@ -33,7 +33,7 @@ void SQLiteDatabase::executeTransaction(std::function<void()> transact) {
     }
 }
 
-SQLiteStatement SQLiteDatabase::createStatement(std::string sql) {
+SQLiteStatement SQLiteDatabase::createStatement(std::string sql) const {
     auto movedSql = std::move(sql);
     return SQLiteStatement(db, movedSql);
 }

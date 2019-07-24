@@ -10,9 +10,9 @@ class SQLiteDatabase {
 
     ~SQLiteDatabase();
 
-    void executeTransaction(std::function<void()> transact);
+    void executeTransaction(std::function<void()> transact) const;
 
-    SQLiteStatement createStatement(std::string sql);
+    SQLiteStatement createStatement(std::string sql) const;
 
    private:
     sqlite3 *db{};
