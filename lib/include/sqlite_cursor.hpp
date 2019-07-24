@@ -5,17 +5,14 @@
 
 class SQLiteCursor {
    public:
-    SQLiteCursor(sqlite3_stmt *stmt);
+    explicit SQLiteCursor(sqlite3_stmt *stmt);
 
     ~SQLiteCursor() noexcept(false);
 
     bool next();
 
-    int getInt(int colIndex);
-
-    double getDouble(int colIndex);
-
-    std::string getString(int colIndex);
+    template <typename T>
+    T get(int colIndex);
 
    private:
     sqlite3_stmt *stmt;

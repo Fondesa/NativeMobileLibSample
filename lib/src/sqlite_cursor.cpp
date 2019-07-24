@@ -25,25 +25,6 @@ bool SQLiteCursor::next() {
     return true;
 }
 
-int SQLiteCursor::getInt(int colIndex) {
-    ensureIndexInBounds(colIndex);
-
-    return sqlite3_column_int(stmt, colIndex);
-}
-
-double SQLiteCursor::getDouble(int colIndex) {
-    ensureIndexInBounds(colIndex);
-
-    return sqlite3_column_double(stmt, colIndex);
-}
-
-std::string SQLiteCursor::getString(int colIndex) {
-    ensureIndexInBounds(colIndex);
-
-    auto text = sqlite3_column_text(stmt, colIndex);
-    return std::string(reinterpret_cast<const char *>(text));
-}
-
 void SQLiteCursor::ensureIndexInBounds(int colIndex) {
     if (colIndex >= columnCount) {
         throw SQLiteException("The column index " +
@@ -53,3 +34,31 @@ void SQLiteCursor::ensureIndexInBounds(int colIndex) {
     }
 }
 
+/* TEMPLATES */
+
+template<>
+int SQLiteCursor::get(int colIndex) {
+    ensureIndexInBounds(colIndex);
+
+    return sqlite3_column_int(stmt, colIndex);
+}
+
+template<>
+double SQLiteCursor::get(int colIndex) {
+    ensureIndexInBounds(colIndex);
+
+    return sqlite3_column_double(stmt, colIndex);
+}
+
+template<>
+std::string SQLiteCursor::get(int colIndex) {
+    ensureIndexInBounds(colIndex);
+
+    auto text = sqlite3_column_text(stmt, colIndex);
+    return std::string(reinterpret_cast<const char *>(text));
+}
+
+template<>
+bool SQLiteCursor::get(int colIndex) {
+    return get<int>(colIndex) != 0;
+}

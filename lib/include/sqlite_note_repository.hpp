@@ -8,7 +8,7 @@
 
 class SQLiteNoteRepository : public NoteRepository {
    public:
-    SQLiteNoteRepository(const SQLiteDatabase &handler);
+    SQLiteNoteRepository(const SQLiteDatabase &db);
 
     void insert(DraftNote note) override;
 
@@ -19,7 +19,7 @@ class SQLiteNoteRepository : public NoteRepository {
     std::vector<Note> getAll() override;
 
    private:
-    const SQLiteDatabase &handler;
+    const SQLiteDatabase &db;
     std::vector<Note> notes;
     int currentId = 0;
 };

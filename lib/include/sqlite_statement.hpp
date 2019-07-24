@@ -9,6 +9,12 @@ class SQLiteStatement {
 
     ~SQLiteStatement();
 
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "NotImplementedFunctions"
+    template<typename T>
+    void bind(int colIndex, T value);
+#pragma clang diagnostic pop
+
     template<typename T>
     T execute();
 

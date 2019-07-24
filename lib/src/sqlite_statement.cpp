@@ -46,3 +46,34 @@ template<>
 SQLiteCursor SQLiteStatement::execute() {
     return SQLiteCursor(stmt);
 }
+
+template<>
+void SQLiteStatement::bind(int colIndex, int value) {
+    int rc = sqlite3_bind_int(stmt, colIndex, value);
+    if (rc != SQLITE_OK) {
+        throw SQLiteException(stmt);
+    }
+}
+
+template<>
+void SQLiteStatement::bind(int colIndex, double value) {
+    int rc = sqlite3_bind_double(stmt, colIndex, value);
+    if (rc != SQLITE_OK) {
+        throw SQLiteException(stmt);
+    }
+}
+
+template<>
+void SQLiteStatement::bind(int colIndex, std::string value) {
+    auto movedValue = std::move(value);
+    int rc = sqlite3_bind_text(stmt, colIndex, movedValue.c_str(), -1, SQLITE_TRANSIENT);
+    if (rc != SQLITE_OK) {
+        throw SQLiteException(stmt);
+    }
+}
+
+template<>
+void SQLiteStatement::bind(int colIndex, bool value) {
+    int intValue = (value) ? 1 : 0;
+    bind(colIndex, intValue);
+}
