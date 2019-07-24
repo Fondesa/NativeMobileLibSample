@@ -8,7 +8,7 @@
 
 class DatabaseNoteRepository : public NoteRepository {
    public:
-    explicit DatabaseNoteRepository(const Database &db);
+    explicit DatabaseNoteRepository(std::shared_ptr<Database> db);
 
     void insert(DraftNote note) override;
 
@@ -19,5 +19,5 @@ class DatabaseNoteRepository : public NoteRepository {
     std::vector<Note> getAll() override;
 
    private:
-    const Database &db;
+    std::shared_ptr<Database> db;
 };
