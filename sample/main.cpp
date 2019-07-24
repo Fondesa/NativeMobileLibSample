@@ -21,11 +21,18 @@ int main() {
     auto second = DraftNote("Second title", "Second description");
     repository->insert(second);
 
-    printNotes(repository->getAll());
+    auto notes = repository->getAll();
+    printNotes(notes);
 
-    repository->remove(0);
+    repository->remove(notes[0].getId());
 
-    printNotes(repository->getAll());
+    auto notesAfterRemove = repository->getAll();
+    printNotes(notesAfterRemove);
+
+    repository->update(notesAfterRemove[0].getId(), DraftNote("Updated title", "Updated description"));
+
+    auto notesAfterUpdate = repository->getAll();
+    printNotes(notesAfterUpdate);
 
     return 0;
 }
