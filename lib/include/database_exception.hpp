@@ -3,12 +3,12 @@
 #include <exception>
 #include <string>
 
-class IllegalStateException : public std::exception {
+class DatabaseException : public std::exception {
    public:
-    explicit IllegalStateException(std::string msg);
+    explicit DatabaseException(std::string msg);
 
     const char *what() const noexcept override;
 
    private:
-    const char *msg;
+    std::string msg;
 };

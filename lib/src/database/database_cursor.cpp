@@ -1,5 +1,5 @@
 #include "database_cursor.hpp"
-#include "sqlite_exception.hpp"
+#include "database_exception.hpp"
 
 /* TEMPLATES */
 

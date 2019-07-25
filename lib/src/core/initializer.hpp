@@ -5,6 +5,8 @@
 
 namespace initializers {
 
+const int dbVersion = 1;
+
 void initializeDatabase(std::string path);
 
 /* PRIVATE */ namespace {
