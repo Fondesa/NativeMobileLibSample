@@ -1,20 +1,16 @@
 #include <iostream>
-#include "database_factory.hpp"
+#include "database_client.hpp"
+#include "core/initializer.hpp"
 #include "database/sqlite_cursor.hpp"
 #include "database/sqlite_database.hpp"
 #include "database_note_repository.hpp"
 
-void printNotes(std::vector<Note> notes);
+void printNotes(const std::vector<Note> &notes);
 
 int main() {
-//    std::shared_ptr<Database> db = std::make_shared<SQLiteDatabase>("notes.db");
-    std::shared_ptr<Database> db = DatabaseFactory::createDatabase(":memory:");
-    auto createTableStmt = db->createStatement("CREATE TABLE IF NOT EXISTS notes ("
-                                               "title TEXT NOT NULL, "
-                                               "description TEXT NOT NULL"
-                                               ")");
-    createTableStmt->execute<void>();
+    initializers::initializeDatabase(":memory:");
 
+    auto db = DatabaseClient::get();
     auto repository = std::make_shared<DatabaseNoteRepository>(db);
 
     auto first = DraftNote("First title", "First description");
@@ -38,11 +34,10 @@ int main() {
     return 0;
 }
 
-void printNotes(std::vector<Note> notes) {
-    std::cout << "There are the following notes:\n"
+void printNotes(const std::vector<Note> &notes) {
+    std::cout << "There are the following notes:"
               << std::endl;
-    for (auto it = notes.begin(); it != notes.end(); ++it) {
-        auto note = *it;
+    for (const auto &note : notes) {
         std::cout << "-\tId: "
                   << note.getId()
                   << std::endl
@@ -52,8 +47,7 @@ void printNotes(std::vector<Note> notes) {
                   << "\tDescription: "
                   << note.getDescription()
                   << std::endl;
-        if (it != notes.end() - 1) {
-            std::cout << std::endl;
-        }
     }
+
+    std::cout << std::endl;
 }

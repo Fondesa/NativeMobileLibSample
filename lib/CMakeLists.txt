@@ -16,7 +16,9 @@ set(LIB_SOURCE_FILES
     src/database/sqlite_cursor.cpp
     src/database/database_cursor.cpp
     src/database/database_statement.cpp
-    src/database/database_factory.cpp
+    src/database/database_client.cpp
+    src/core/initializer.cpp
+    src/core/illegal_state_exception.cpp
     )
 
 set(PUBLIC_HEADER_FILES
@@ -26,7 +28,7 @@ set(PUBLIC_HEADER_FILES
     include/note_repository.hpp
     include/in_memory_note_repository.hpp
     include/database_note_repository.hpp
-    include/database_factory.hpp
+    include/database_client.hpp
     )
 
 set(SQLITE3_SOURCE_FILES
