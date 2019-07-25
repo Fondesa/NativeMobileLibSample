@@ -3,6 +3,8 @@
 #include <exception>
 #include <string>
 
+namespace Db {
+
 class DatabaseException : public std::exception {
    public:
     explicit DatabaseException(std::string msg);
@@ -12,3 +14,4 @@ class DatabaseException : public std::exception {
    private:
     std::string msg;
 };
+}

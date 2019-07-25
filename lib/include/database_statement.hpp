@@ -3,6 +3,8 @@
 #include <string>
 #include "database_cursor.hpp"
 
+namespace Db {
+
 class DatabaseStatement {
    public:
 #pragma clang diagnostic push
@@ -27,3 +29,4 @@ class DatabaseStatement {
 
     virtual void bindBool(int colIndex, bool value) = 0;
 };
+}

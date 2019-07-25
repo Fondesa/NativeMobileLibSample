@@ -1,6 +1,8 @@
 #include "sqlite_cursor.hpp"
 #include "sqlite_exception.hpp"
 
+namespace Db {
+
 SQLiteCursor::SQLiteCursor(sqlite3_stmt *stmt) : stmt(stmt) {
     columnCount = sqlite3_column_count(stmt);
 }
@@ -45,4 +47,5 @@ std::string SQLiteCursor::getString(int colIndex) {
 
 bool SQLiteCursor::getBool(int colIndex) {
     return getInt(colIndex) != 0;
+}
 }

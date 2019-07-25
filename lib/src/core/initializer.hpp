@@ -11,6 +11,6 @@ void initializeDatabase(std::string path);
 
 /* PRIVATE */ namespace {
 
-void createSchema(const std::shared_ptr<Database> &db);
+void createSchema(const std::shared_ptr<Db::Database> &db);
 }
 }

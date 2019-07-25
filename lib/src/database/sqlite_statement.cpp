@@ -3,6 +3,8 @@
 #include "sqlite_exception.hpp"
 #include <vector>
 
+namespace Db {
+
 SQLiteStatement::SQLiteStatement(sqlite3 *db, std::string sql) {
     auto movedSql = std::move(sql);
     int rc = sqlite3_prepare_v2(db, movedSql.c_str(), -1, &stmt, nullptr);
@@ -58,4 +60,5 @@ void SQLiteStatement::bindString(int colIndex, std::string value) {
 void SQLiteStatement::bindBool(int colIndex, bool value) {
     int intValue = (value) ? 1 : 0;
     bindInt(colIndex, intValue);
+}
 }

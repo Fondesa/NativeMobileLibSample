@@ -4,6 +4,8 @@
 #include "sqlite3/sqlite3.h"
 #include "database_cursor.hpp"
 
+namespace Db {
+
 class SQLiteCursor : public DatabaseCursor {
    public:
     explicit SQLiteCursor(sqlite3_stmt *stmt);
@@ -27,3 +29,4 @@ class SQLiteCursor : public DatabaseCursor {
     sqlite3_stmt *stmt;
     int columnCount;
 };
+}

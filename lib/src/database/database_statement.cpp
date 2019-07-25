@@ -1,5 +1,7 @@
 #include "database_statement.hpp"
 
+namespace Db {
+
 /* TEMPLATES */
 
 template<>
@@ -30,4 +32,5 @@ void DatabaseStatement::bind(int colIndex, std::string value) {
 template<>
 void DatabaseStatement::bind(int colIndex, bool value) {
     bindBool(colIndex, value);
+}
 }

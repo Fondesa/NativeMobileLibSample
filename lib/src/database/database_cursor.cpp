@@ -1,6 +1,8 @@
 #include "database_cursor.hpp"
 #include "database_exception.hpp"
 
+namespace Db {
+
 /* TEMPLATES */
 
 template<>
@@ -29,4 +31,5 @@ bool DatabaseCursor::get(int colIndex) {
     ensureIndexInBounds(colIndex);
 
     return getBool(colIndex);
+}
 }

@@ -11,7 +11,7 @@ int main() {
     initializers::initializeDatabase(":memory:");
 //    initializers::initializeDatabase("notes.db");
 
-    auto db = DatabaseClient::get();
+    auto db = Db::DatabaseClient::get();
     auto repository = std::make_shared<DatabaseNoteRepository>(db);
 
     auto first = DraftNote("First title", "First description");
