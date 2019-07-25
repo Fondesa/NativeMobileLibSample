@@ -4,6 +4,8 @@
 #include "database_statement.hpp"
 #include "sqlite3/sqlite3.h"
 
+namespace Db {
+
 class SQLiteDatabase : public Database {
    public:
     explicit SQLiteDatabase(std::string dbPath);
@@ -17,3 +19,4 @@ class SQLiteDatabase : public Database {
    private:
     sqlite3 *db{};
 };
+}

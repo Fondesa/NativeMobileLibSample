@@ -3,7 +3,7 @@
 #include "database_note_repository.hpp"
 #include "database_cursor.hpp"
 
-DatabaseNoteRepository::DatabaseNoteRepository(std::shared_ptr<Database> db) : db(std::move(db)) {}
+DatabaseNoteRepository::DatabaseNoteRepository(std::shared_ptr<Db::Database> db) : db(std::move(db)) {}
 
 void DatabaseNoteRepository::insert(DraftNote draftNote) {
     auto movedDraftNote = std::move(draftNote);
@@ -34,7 +34,7 @@ void DatabaseNoteRepository::update(int id, DraftNote draftNote) {
 std::vector<Note> DatabaseNoteRepository::getAll() {
     std::vector<Note> notes;
     auto selectStmt = db->createStatement("SELECT rowid, title, description FROM notes");
-    auto cursor = selectStmt->execute<std::shared_ptr<DatabaseCursor>>();
+    auto cursor = selectStmt->execute<std::shared_ptr<Db::DatabaseCursor>>();
     while (cursor->next()) {
         auto id = cursor->get<int>(0);
         auto title = cursor->get<std::string>(1);

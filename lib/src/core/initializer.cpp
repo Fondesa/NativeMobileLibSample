@@ -9,12 +9,12 @@ namespace initializers {
 
 void initializeDatabase(std::string path) {
     // Create the database.
-    DatabaseClient::create(std::move(path));
+    Db::DatabaseClient::create(std::move(path));
     // Obtain the database instance.
-    auto db = DatabaseClient::get();
+    auto db = Db::DatabaseClient::get();
 
     auto readVersionStmt = db->createStatement("PRAGMA user_version");
-    auto readVersionCursor = readVersionStmt->execute<std::shared_ptr<DatabaseCursor>>();
+    auto readVersionCursor = readVersionStmt->execute<std::shared_ptr<Db::DatabaseCursor>>();
 
     int currentVersion = 0;
     if (readVersionCursor->next()) {
@@ -27,7 +27,7 @@ void initializeDatabase(std::string path) {
     }
 
     if (dbVersion < currentVersion) {
-        throw DatabaseException(std::string("Can't downgrade database from version ") +
+        throw Db::DatabaseException(std::string("Can't downgrade database from version ") +
             std::to_string(currentVersion) +
             " to version " +
             std::to_string(dbVersion));
@@ -52,7 +52,7 @@ void initializeDatabase(std::string path) {
 
 /* PRIVATE */ namespace {
 
-void createSchema(const std::shared_ptr<Database> &db) {
+void createSchema(const std::shared_ptr<Db::Database> &db) {
     auto createTableStmt = db->createStatement("CREATE TABLE notes ("
                                                "title TEXT NOT NULL, "
                                                "description TEXT NOT NULL"

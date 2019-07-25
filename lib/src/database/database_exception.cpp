@@ -2,6 +2,8 @@
 
 #include "database_exception.hpp"
 
+namespace Db {
+
 DatabaseException::DatabaseException(std::string msg) {
     this->msg = std::move(msg);
 }
@@ -9,4 +11,4 @@ DatabaseException::DatabaseException(std::string msg) {
 const char *DatabaseException::what() const noexcept {
     return msg.c_str();
 }
-
+}

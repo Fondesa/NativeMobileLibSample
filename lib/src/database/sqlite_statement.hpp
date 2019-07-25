@@ -4,6 +4,8 @@
 #include "sqlite3/sqlite3.h"
 #include "database_statement.hpp"
 
+namespace Db {
+
 class SQLiteStatement : public DatabaseStatement {
    public:
     SQLiteStatement(sqlite3 *db, std::string sql);
@@ -26,3 +28,4 @@ class SQLiteStatement : public DatabaseStatement {
    private:
     sqlite3_stmt *stmt{};
 };
+}

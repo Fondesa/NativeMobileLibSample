@@ -4,6 +4,8 @@
 #include <iostream>
 #include <stdexcept>
 
+namespace Db {
+
 SQLiteDatabase::SQLiteDatabase(std::string dbPath) {
     auto movedPath = std::move(dbPath);
     int canNotOpen = sqlite3_open(movedPath.c_str(), &db);
@@ -37,4 +39,5 @@ void SQLiteDatabase::executeTransaction(std::function<void()> transact) const {
 std::shared_ptr<DatabaseStatement> SQLiteDatabase::createStatement(std::string sql) const {
     auto movedSql = std::move(sql);
     return std::make_shared<SQLiteStatement>(db, movedSql);
+}
 }

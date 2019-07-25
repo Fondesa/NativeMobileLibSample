@@ -3,6 +3,8 @@
 #include "database_exception.hpp"
 #include <iostream>
 
+namespace Db {
+
 void DatabaseClient::create(std::string dbPath) {
     if (databaseInstance != nullptr) {
         std::cout << "WARNING: the database is already created." << std::endl;
@@ -19,3 +21,4 @@ std::shared_ptr<Database> DatabaseClient::get() {
 }
 
 std::shared_ptr<Database> DatabaseClient::databaseInstance;
+}
