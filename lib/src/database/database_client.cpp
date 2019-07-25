@@ -1,7 +1,7 @@
 #include "database_client.hpp"
 #include "sqlite_database.hpp"
+#include "database_exception.hpp"
 #include <iostream>
-#include "core/illegal_state_exception.hpp"
 
 void DatabaseClient::create(std::string dbPath) {
     if (databaseInstance != nullptr) {
@@ -13,7 +13,7 @@ void DatabaseClient::create(std::string dbPath) {
 
 std::shared_ptr<Database> DatabaseClient::get() {
     if (databaseInstance == nullptr) {
-        throw IllegalStateException("The database should be created before.");
+        throw DatabaseException("The database should be created before.");
     }
     return databaseInstance;
 }

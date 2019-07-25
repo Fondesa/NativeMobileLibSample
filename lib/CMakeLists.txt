@@ -11,14 +11,14 @@ set(LIB_SOURCE_FILES
     src/note/in_memory_note_repository.cpp
     src/note/database_note_repository.cpp
     src/database/sqlite_database.cpp
-    src/database/sqlite_exception.cpp
+    src/database/database_exception.cpp
     src/database/sqlite_statement.cpp
     src/database/sqlite_cursor.cpp
     src/database/database_cursor.cpp
+    src/database/sqlite_exception.cpp
     src/database/database_statement.cpp
     src/database/database_client.cpp
     src/core/initializer.cpp
-    src/core/illegal_state_exception.cpp
     )
 
 set(PUBLIC_HEADER_FILES
@@ -29,6 +29,7 @@ set(PUBLIC_HEADER_FILES
     include/in_memory_note_repository.hpp
     include/database_note_repository.hpp
     include/database_client.hpp
+    include/database_exception.hpp
     )
 
 set(SQLITE3_SOURCE_FILES
