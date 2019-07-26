@@ -4,17 +4,17 @@
 #include "database_statement.hpp"
 #include "sqlite3/sqlite3.h"
 
-namespace Db {
+namespace Db::Sql {
 
-class SQLiteDatabase : public Database {
+class Database : public Db::Database {
    public:
-    explicit SQLiteDatabase(std::string dbPath);
+    explicit Database(std::string dbPath);
 
-    ~SQLiteDatabase();
+    ~Database();
 
     void executeTransaction(std::function<void()> transact) const override;
 
-    std::shared_ptr<DatabaseStatement> createStatement(std::string sql) const override;
+    std::shared_ptr<Db::Statement> createStatement(std::string sql) const override;
 
    private:
     sqlite3 *db{};

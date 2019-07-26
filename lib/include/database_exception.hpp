@@ -5,9 +5,9 @@
 
 namespace Db {
 
-class DatabaseException : public std::exception {
+class Exception : public std::exception {
    public:
-    explicit DatabaseException(std::string msg);
+    explicit Exception(std::string msg);
 
     const char *what() const noexcept override;
 

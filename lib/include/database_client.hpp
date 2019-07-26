@@ -5,14 +5,14 @@
 
 namespace Db {
 
-class DatabaseClient {
+class Client {
    public:
     static void create(std::string dbPath);
 
     static std::shared_ptr<Database> get();
 
    private:
-    DatabaseClient() = default;
+    Client() = default;
 
     static std::shared_ptr<Database> databaseInstance;
 };

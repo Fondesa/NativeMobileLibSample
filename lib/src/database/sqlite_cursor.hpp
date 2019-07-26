@@ -4,13 +4,13 @@
 #include "sqlite3/sqlite3.h"
 #include "database_cursor.hpp"
 
-namespace Db {
+namespace Db::Sql {
 
-class SQLiteCursor : public DatabaseCursor {
+class Cursor : public Db::Cursor {
    public:
-    explicit SQLiteCursor(sqlite3_stmt *stmt);
+    explicit Cursor(sqlite3_stmt *stmt);
 
-    ~SQLiteCursor();
+    ~Cursor();
 
     bool next() override;
 

@@ -1,51 +1,51 @@
 #include "sqlite_cursor.hpp"
 #include "sqlite_exception.hpp"
 
-namespace Db {
+namespace Db::Sql {
 
-SQLiteCursor::SQLiteCursor(sqlite3_stmt *stmt) : stmt(stmt) {
+Cursor::Cursor(sqlite3_stmt *stmt) : stmt(stmt) {
     columnCount = sqlite3_column_count(stmt);
 }
 
-SQLiteCursor::~SQLiteCursor() {
+Cursor::~Cursor() {
     sqlite3_clear_bindings(stmt);
     sqlite3_reset(stmt);
 }
 
-bool SQLiteCursor::next() {
+bool Cursor::next() {
     int rc = sqlite3_step(stmt);
     if (rc == SQLITE_DONE) {
         return false;
     }
     if (rc != SQLITE_ROW) {
-        throw SQLiteException(stmt);
+        throw Db::Sql::Exception(stmt);
     }
     return true;
 }
 
-void SQLiteCursor::ensureIndexInBounds(int colIndex) {
+void Cursor::ensureIndexInBounds(int colIndex) {
     if (colIndex >= columnCount) {
-        throw SQLiteException("The column index " +
+        throw Db::Sql::Exception("The column index " +
             std::to_string(colIndex) +
             " should be less than " +
             std::to_string(columnCount));
     }
 }
 
-int SQLiteCursor::getInt(int colIndex) {
+int Cursor::getInt(int colIndex) {
     return sqlite3_column_int(stmt, colIndex);
 }
 
-double SQLiteCursor::getDouble(int colIndex) {
+double Cursor::getDouble(int colIndex) {
     return sqlite3_column_double(stmt, colIndex);
 }
 
-std::string SQLiteCursor::getString(int colIndex) {
+std::string Cursor::getString(int colIndex) {
     auto text = sqlite3_column_text(stmt, colIndex);
     return std::string(reinterpret_cast<const char *>(text));
 }
 
-bool SQLiteCursor::getBool(int colIndex) {
+bool Cursor::getBool(int colIndex) {
     return getInt(colIndex) != 0;
 }
 }

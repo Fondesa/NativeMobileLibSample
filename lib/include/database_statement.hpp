@@ -5,7 +5,7 @@
 
 namespace Db {
 
-class DatabaseStatement {
+class Statement {
    public:
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "NotImplementedFunctions"
@@ -19,7 +19,7 @@ class DatabaseStatement {
    protected:
     virtual void executeVoid() = 0;
 
-    virtual std::shared_ptr<DatabaseCursor> executeCursor() = 0;
+    virtual std::shared_ptr<Cursor> executeCursor() = 0;
 
     virtual void bindInt(int colIndex, int value) = 0;
 
