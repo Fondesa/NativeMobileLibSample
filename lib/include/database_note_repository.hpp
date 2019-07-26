@@ -16,6 +16,8 @@ class DatabaseNoteRepository : public NoteRepository {
 
     void update(int id, DraftNote note) override;
 
+    void clear() override;
+
     std::vector<Note> getAll() override;
 
    private:
