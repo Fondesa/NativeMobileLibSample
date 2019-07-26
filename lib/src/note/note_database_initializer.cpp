@@ -37,7 +37,8 @@ void initialize(std::string path) {
                       << " to version "
                       << std::to_string(version)
                       << std::endl;
-            // TODO: update schema
+
+            // Nothing to update.
         }
 
         auto writeVersionStmt = db->createStatement("PRAGMA user_version = " + std::to_string(version));
