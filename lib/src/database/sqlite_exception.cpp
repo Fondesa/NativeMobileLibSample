@@ -2,11 +2,11 @@
 
 #include "sqlite_exception.hpp"
 
-namespace Db {
+namespace Db::Sql {
 
-SQLiteException::SQLiteException(std::string msg) : DatabaseException(std::move(msg)) {}
+Exception::Exception(std::string msg) : Db::Exception(std::move(msg)) {}
 
-SQLiteException::SQLiteException(sqlite3 *db) : DatabaseException(sqlite3_errmsg(db)) {}
+Exception::Exception(sqlite3 *db) : Db::Sql::Exception(sqlite3_errmsg(db)) {}
 
-SQLiteException::SQLiteException(sqlite3_stmt *stmt) : SQLiteException(sqlite3_db_handle(stmt)) {}
+Exception::Exception(sqlite3_stmt *stmt) : Db::Sql::Exception(sqlite3_db_handle(stmt)) {}
 }

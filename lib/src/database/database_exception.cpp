@@ -4,11 +4,11 @@
 
 namespace Db {
 
-DatabaseException::DatabaseException(std::string msg) {
+Exception::Exception(std::string msg) {
     this->msg = std::move(msg);
 }
 
-const char *DatabaseException::what() const noexcept {
+const char *Exception::what() const noexcept {
     return msg.c_str();
 }
 }

@@ -6,28 +6,28 @@ namespace Db {
 /* TEMPLATES */
 
 template<>
-int DatabaseCursor::get(int colIndex) {
+int Cursor::get(int colIndex) {
     ensureIndexInBounds(colIndex);
 
     return getInt(colIndex);
 }
 
 template<>
-double DatabaseCursor::get(int colIndex) {
+double Cursor::get(int colIndex) {
     ensureIndexInBounds(colIndex);
 
     return getDouble(colIndex);
 }
 
 template<>
-std::string DatabaseCursor::get(int colIndex) {
+std::string Cursor::get(int colIndex) {
     ensureIndexInBounds(colIndex);
 
     return getString(colIndex);
 }
 
 template<>
-bool DatabaseCursor::get(int colIndex) {
+bool Cursor::get(int colIndex) {
     ensureIndexInBounds(colIndex);
 
     return getBool(colIndex);

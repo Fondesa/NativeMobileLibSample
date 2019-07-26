@@ -5,12 +5,12 @@
 #include "sqlite3/sqlite3.h"
 #include "database_exception.hpp"
 
-namespace Db {
+namespace Db::Sql {
 
-class SQLiteException : public DatabaseException {
+class Exception : public Db::Exception {
    public:
-    explicit SQLiteException(std::string msg);
-    explicit SQLiteException(sqlite3 *db);
-    explicit SQLiteException(sqlite3_stmt *stmt);
+    explicit Exception(std::string msg);
+    explicit Exception(sqlite3 *db);
+    explicit Exception(sqlite3_stmt *stmt);
 };
 }

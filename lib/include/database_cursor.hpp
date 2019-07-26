@@ -4,7 +4,7 @@
 
 namespace Db {
 
-class DatabaseCursor {
+class Cursor {
    public:
     virtual bool next() = 0;
 

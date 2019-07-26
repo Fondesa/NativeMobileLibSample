@@ -18,7 +18,7 @@ set(LIB_SOURCE_FILES
     src/database/sqlite_exception.cpp
     src/database/database_statement.cpp
     src/database/database_client.cpp
-    src/core/initializer.cpp
+    src/note/note_database_initializer.cpp
     )
 
 set(PUBLIC_HEADER_FILES
@@ -30,6 +30,7 @@ set(PUBLIC_HEADER_FILES
     include/database_note_repository.hpp
     include/database_client.hpp
     include/database_exception.hpp
+    include/note_database_initializer.hpp
     )
 
 set(SQLITE3_SOURCE_FILES

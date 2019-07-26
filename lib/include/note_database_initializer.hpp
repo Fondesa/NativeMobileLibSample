@@ -3,11 +3,11 @@
 #include <string>
 #include "database.hpp"
 
-namespace initializers {
+namespace NoteDb {
 
-const int dbVersion = 1;
+const int version = 1;
 
-void initializeDatabase(std::string path);
+void initialize(std::string path);
 
 /* PRIVATE */ namespace {
 

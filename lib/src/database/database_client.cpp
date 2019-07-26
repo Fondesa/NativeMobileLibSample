@@ -5,20 +5,20 @@
 
 namespace Db {
 
-void DatabaseClient::create(std::string dbPath) {
+void Client::create(std::string dbPath) {
     if (databaseInstance != nullptr) {
         std::cout << "WARNING: the database is already created." << std::endl;
         return;
     }
-    databaseInstance = std::make_shared<SQLiteDatabase>(dbPath);
+    databaseInstance = std::make_shared<Sql::Database>(dbPath);
 }
 
-std::shared_ptr<Database> DatabaseClient::get() {
+std::shared_ptr<Database> Client::get() {
     if (databaseInstance == nullptr) {
-        throw DatabaseException("The database should be created before.");
+        throw Exception("The database should be created before.");
     }
     return databaseInstance;
 }
 
-std::shared_ptr<Database> DatabaseClient::databaseInstance;
+std::shared_ptr<Database> Client::databaseInstance;
 }

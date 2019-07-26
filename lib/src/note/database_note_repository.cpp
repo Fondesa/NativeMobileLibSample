@@ -8,7 +8,7 @@ DatabaseNoteRepository::DatabaseNoteRepository(std::shared_ptr<Db::Database> db)
 void DatabaseNoteRepository::insert(DraftNote draftNote) {
     auto movedDraftNote = std::move(draftNote);
     auto stmt = db->createStatement("INSERT INTO notes (title, description) "
-                                   "VALUES (?, ?)");
+                                    "VALUES (?, ?)");
     stmt->bind(1, movedDraftNote.getTitle());
     stmt->bind(2, movedDraftNote.getDescription());
     stmt->execute<void>();
@@ -16,15 +16,15 @@ void DatabaseNoteRepository::insert(DraftNote draftNote) {
 
 void DatabaseNoteRepository::remove(int id) {
     auto stmt = db->createStatement("DELETE FROM notes "
-                                   "WHERE rowid = ?");
+                                    "WHERE rowid = ?");
     stmt->bind(1, id);
     stmt->execute<void>();
 }
 
 void DatabaseNoteRepository::update(int id, DraftNote draftNote) {
     auto stmt = db->createStatement("UPDATE notes "
-                                   "SET title = ?, description = ? "
-                                   "WHERE rowid = ?");
+                                    "SET title = ?, description = ? "
+                                    "WHERE rowid = ?");
     stmt->bind(1, draftNote.getTitle());
     stmt->bind(2, draftNote.getDescription());
     stmt->bind(3, id);
@@ -34,7 +34,7 @@ void DatabaseNoteRepository::update(int id, DraftNote draftNote) {
 std::vector<Note> DatabaseNoteRepository::getAll() {
     std::vector<Note> notes;
     auto selectStmt = db->createStatement("SELECT rowid, title, description FROM notes");
-    auto cursor = selectStmt->execute<std::shared_ptr<Db::DatabaseCursor>>();
+    auto cursor = selectStmt->execute<std::shared_ptr<Db::Cursor>>();
     while (cursor->next()) {
         auto id = cursor->get<int>(0);
         auto title = cursor->get<std::string>(1);

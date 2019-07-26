@@ -4,27 +4,27 @@
 #include <iostream>
 #include <stdexcept>
 
-namespace Db {
+namespace Db::Sql {
 
-SQLiteDatabase::SQLiteDatabase(std::string dbPath) {
+Database::Database(std::string dbPath) {
     auto movedPath = std::move(dbPath);
     int canNotOpen = sqlite3_open(movedPath.c_str(), &db);
     if (canNotOpen) {
-        throw SQLiteException(db);
+        throw Db::Sql::Exception(db);
     }
     std::cout << "Opened database successfully" << std::endl;
 }
 
-SQLiteDatabase::~SQLiteDatabase() {
+Database::~Database() {
     sqlite3_close(db);
     std::cout << "Database closed" << std::endl;
 }
 
-void SQLiteDatabase::executeTransaction(std::function<void()> transact) const {
+void Database::executeTransaction(std::function<void()> transact) const {
     auto transaction = std::move(transact);
     int rc = sqlite3_exec(db, "BEGIN TRANSACTION", nullptr, nullptr, nullptr);
     if (rc != SQLITE_OK) {
-        throw SQLiteException(db);
+        throw Db::Sql::Exception(db);
     }
 
     // Execute the transaction.
@@ -32,12 +32,12 @@ void SQLiteDatabase::executeTransaction(std::function<void()> transact) const {
 
     rc = sqlite3_exec(db, "END TRANSACTION", nullptr, nullptr, nullptr);
     if (rc != SQLITE_OK) {
-        throw SQLiteException(db);
+        throw Db::Sql::Exception(db);
     }
 }
 
-std::shared_ptr<DatabaseStatement> SQLiteDatabase::createStatement(std::string sql) const {
+std::shared_ptr<Db::Statement> Database::createStatement(std::string sql) const {
     auto movedSql = std::move(sql);
-    return std::make_shared<SQLiteStatement>(db, movedSql);
+    return std::make_shared<Statement>(db, movedSql);
 }
 }

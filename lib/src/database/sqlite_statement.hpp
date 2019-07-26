@@ -4,18 +4,18 @@
 #include "sqlite3/sqlite3.h"
 #include "database_statement.hpp"
 
-namespace Db {
+namespace Db::Sql {
 
-class SQLiteStatement : public DatabaseStatement {
+class Statement : public Db::Statement {
    public:
-    SQLiteStatement(sqlite3 *db, std::string sql);
+    Statement(sqlite3 *db, std::string sql);
 
-    ~SQLiteStatement();
+    ~Statement();
 
    protected:
     void executeVoid() override;
 
-    std::shared_ptr<DatabaseCursor> executeCursor() override;
+    std::shared_ptr<Db::Cursor> executeCursor() override;
 
     void bindInt(int colIndex, int value) override;
 
