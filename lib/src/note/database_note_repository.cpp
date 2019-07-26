@@ -31,6 +31,11 @@ void DatabaseNoteRepository::update(int id, DraftNote draftNote) {
     stmt->execute<void>();
 }
 
+void DatabaseNoteRepository::clear() {
+    auto stmt = db->createStatement("DELETE FROM notes");
+    stmt->execute<void>();
+}
+
 std::vector<Note> DatabaseNoteRepository::getAll() {
     std::vector<Note> notes;
     auto selectStmt = db->createStatement("SELECT rowid, title, description FROM notes");
