@@ -10,6 +10,11 @@ void Statement::execute() {
 }
 
 template<>
+int Statement::execute() {
+    return executeInt();
+}
+
+template<>
 std::shared_ptr<Cursor> Statement::execute() {
     return executeCursor();
 }
