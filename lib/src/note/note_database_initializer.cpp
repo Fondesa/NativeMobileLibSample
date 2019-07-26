@@ -31,21 +31,23 @@ void initialize(std::string path) {
             std::to_string(version));
     }
 
-    if (currentVersion == 0) {
-        std::cout << "Creating the database schema" << std::endl;
-        // Create the database schema.
-        createSchema(db);
-    } else if (version > currentVersion) {
-        std::cout << "Updating the schema from version "
-                  << std::to_string(currentVersion)
-                  << " to version "
-                  << std::to_string(version)
-                  << std::endl;
-        // TODO: update schema
-    }
+    db->executeTransaction([&] {
+        if (currentVersion == 0) {
+            std::cout << "Creating the database schema" << std::endl;
+            // Create the database schema.
+            createSchema(db);
+        } else if (version > currentVersion) {
+            std::cout << "Updating the schema from version "
+                      << std::to_string(currentVersion)
+                      << " to version "
+                      << std::to_string(version)
+                      << std::endl;
+            // TODO: update schema
+        }
 
-    auto writeVersionStmt = db->createStatement("PRAGMA user_version = " + std::to_string(version));
-    writeVersionStmt->execute<void>();
+        auto writeVersionStmt = db->createStatement("PRAGMA user_version = " + std::to_string(version));
+        writeVersionStmt->execute<void>();
+    });
 }
 
 /* PRIVATE */ namespace {
