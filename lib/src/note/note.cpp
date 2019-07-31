@@ -1,7 +1,7 @@
 #include "note.hpp"
 
 Note::Note(int id, std::string title, std::string description) {
-    this->id = std::move(id);
+    this->id = id;
     this->title = std::move(title);
     this->description = std::move(description);
 }

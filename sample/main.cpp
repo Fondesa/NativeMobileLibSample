@@ -4,12 +4,13 @@
 #include "database/sqlite_cursor.hpp"
 #include "database/sqlite_database.hpp"
 #include "database_notes_repository.hpp"
+#include "in_mem_to_db_draft_notes_repository.hpp"
 
 void printNotes(const std::vector<Note> &notes);
 
 int main() {
-    NoteDb::initialize(":memory:");
-//    NoteDb::initialize("notes.db");
+//    NoteDb::initialize(":memory:");
+    NoteDb::initialize("notes.db");
 
     auto db = Db::Client::get();
     auto repository = std::make_shared<DatabaseNotesRepository>(db);
@@ -32,6 +33,16 @@ int main() {
     auto notesAfterUpdate = repository->getAll();
     printNotes(notesAfterUpdate);
 
+    auto draftRepository = std::make_shared<InMemToDbDraftNotesRepository>(db);
+    draftRepository->beginCreationSession();
+    draftRepository->updateTitle("draft-create-title");
+    draftRepository->updateDescription("draft-create-description");
+    draftRepository->endSession();
+
+    draftRepository->beginUpdateSession(notesAfterUpdate[0]);
+    draftRepository->updateTitle("draft-update-title");
+    draftRepository->updateDescription("draft-update-description");
+    draftRepository->endSession();
     return 0;
 }
 
@@ -41,11 +52,11 @@ void printNotes(const std::vector<Note> &notes) {
     for (const auto &note : notes) {
         std::cout << "-\tId: "
                   << note.getId()
-                  << std::endl
-                  << "\tTitle: "
+                  << ", "
+                  << "Title: "
                   << note.getTitle()
-                  << std::endl
-                  << "\tDescription: "
+                  << ", "
+                  << "Description: "
                   << note.getDescription()
                   << std::endl;
     }

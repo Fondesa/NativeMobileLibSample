@@ -19,6 +19,8 @@ set(LIB_SOURCE_FILES
     src/database/database_statement.cpp
     src/database/database_client.cpp
     src/note/note_database_initializer.cpp
+    src/note/in_mem_to_db_draft_notes_repository.cpp
+    src/note/invalid_draft_session_exception.cpp
     )
 
 set(PUBLIC_HEADER_FILES
@@ -31,6 +33,8 @@ set(PUBLIC_HEADER_FILES
     include/database_client.hpp
     include/database_exception.hpp
     include/note_database_initializer.hpp
+    include/in_mem_to_db_draft_notes_repository.hpp
+    include/invalid_draft_session_exception.hpp
     )
 
 set(SQLITE3_SOURCE_FILES
