@@ -3,12 +3,12 @@
 #include <algorithm>
 #include <iostream>
 #include <vector>
-#include "note_repository.hpp"
+#include "notes_repository.hpp"
 #include "database.hpp"
 
-class DatabaseNoteRepository : public NoteRepository {
+class DatabaseNotesRepository : public NotesRepository {
    public:
-    explicit DatabaseNoteRepository(std::shared_ptr<Db::Database> db);
+    explicit DatabaseNotesRepository(std::shared_ptr<Db::Database> db);
 
     void insert(DraftNote note) override;
 

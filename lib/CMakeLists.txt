@@ -9,7 +9,7 @@ set(LIB_SOURCE_FILES
     src/note/note.cpp
     src/note/draft_note.cpp
     src/note/in_memory_note_repository.cpp
-    src/note/database_note_repository.cpp
+    src/note/database_notes_repository.cpp
     src/database/sqlite_database.cpp
     src/database/database_exception.cpp
     src/database/sqlite_statement.cpp
@@ -25,9 +25,9 @@ set(PUBLIC_HEADER_FILES
     include/foo.hpp
     include/note.hpp
     include/draft_note.hpp
-    include/note_repository.hpp
+    include/notes_repository.hpp
     include/in_memory_note_repository.hpp
-    include/database_note_repository.hpp
+    include/database_notes_repository.hpp
     include/database_client.hpp
     include/database_exception.hpp
     include/note_database_initializer.hpp

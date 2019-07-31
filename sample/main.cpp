@@ -3,7 +3,7 @@
 #include "note_database_initializer.hpp"
 #include "database/sqlite_cursor.hpp"
 #include "database/sqlite_database.hpp"
-#include "database_note_repository.hpp"
+#include "database_notes_repository.hpp"
 
 void printNotes(const std::vector<Note> &notes);
 
@@ -12,7 +12,7 @@ int main() {
 //    NoteDb::initialize("notes.db");
 
     auto db = Db::Client::get();
-    auto repository = std::make_shared<DatabaseNoteRepository>(db);
+    auto repository = std::make_shared<DatabaseNotesRepository>(db);
 
     auto first = DraftNote("First title", "First description");
     repository->insert(first);
