@@ -1,5 +1,3 @@
-#include <utility>
-
 #include "database_exception.hpp"
 
 namespace Db {
