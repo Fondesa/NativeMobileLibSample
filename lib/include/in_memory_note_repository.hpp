@@ -3,9 +3,9 @@
 #include <algorithm>
 #include <iostream>
 #include <vector>
-#include "note_repository.hpp"
+#include "notes_repository.hpp"
 
-class InMemoryNoteRepository : public NoteRepository {
+class InMemoryNoteRepository : public NotesRepository {
    private:
     std::vector<Note> notes;
     int currentId = 0;

@@ -48,12 +48,34 @@ void initialize(std::string path) {
 
 /* PRIVATE */ namespace {
 
+/**
+ * Creates the database schema.
+ * This method runs in a database transaction.
+ *
+ * @param db the database instance used to create the statements.
+ */
 void createSchema(const std::shared_ptr<Db::Database> &db) {
-    auto createTableStmt = db->createStatement("CREATE TABLE notes ("
-                                               "title TEXT NOT NULL, "
-                                               "description TEXT NOT NULL"
-                                               ")");
-    createTableStmt->execute<void>();
+    db->createStatement(
+        "CREATE TABLE notes ("
+        "title TEXT NOT NULL, "
+        "description TEXT NOT NULL"
+        ")"
+    )->execute<void>();
+
+    db->createStatement(
+        "CREATE TABLE pending_draft_notes_update ("
+        "title TEXT NOT NULL, "
+        "description TEXT NOT NULL"
+        ")"
+    )->execute<void>();
+
+    db->createStatement(
+        "CREATE TABLE pending_draft_note_creation ("
+        "id INTEGER PRIMARY KEY CHECK (id = 0), "
+        "title TEXT NOT NULL, "
+        "description TEXT NOT NULL"
+        ")"
+    )->execute<void>();
 }
 }
 }

@@ -3,7 +3,7 @@
 #include "draft_note.hpp"
 #include "note.hpp"
 
-class NoteRepository {
+class NotesRepository {
    public:
     virtual void insert(DraftNote note) = 0;
 
