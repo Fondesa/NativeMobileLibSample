@@ -1,7 +1,5 @@
 #pragma once
 
-#include <algorithm>
-#include <iostream>
 #include <vector>
 #include "notes_repository.hpp"
 #include "database.hpp"
