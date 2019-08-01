@@ -1,5 +1,3 @@
-#include <utility>
-
 #include "database_notes_repository.hpp"
 #include "database_cursor.hpp"
 
