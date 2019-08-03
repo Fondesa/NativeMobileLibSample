@@ -2,6 +2,7 @@
 
 #include <string>
 #include "note.hpp"
+#include "draft_note.hpp"
 
 class DraftNotesRepository {
    public:
@@ -20,4 +21,8 @@ class DraftNotesRepository {
     virtual void removeDraftCreation() = 0;
 
     virtual void removeDraftUpdate(int id) = 0;
+
+    virtual std::optional<DraftNote> getDraftCreationNote() = 0;
+
+    virtual std::optional<DraftNote> getDraftUpdateNote(int id) = 0;
 };

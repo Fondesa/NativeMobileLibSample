@@ -108,3 +108,34 @@ void InMemToDbDraftNotesRepository::createNoteInDb() {
     stmt->bind(4, draftDescription);
     stmt->execute<void>();
 }
+
+std::optional<DraftNote> InMemToDbDraftNotesRepository::getDraftCreationNote() {
+    auto stmt = db->createStatement("SELECT title, description "
+                                    "FROM pending_draft_note_creation "
+                                    "LIMIT 1");
+    auto draftNote = std::optional<DraftNote>();
+    auto cursor = stmt->execute<std::shared_ptr<Db::Cursor>>();
+    while (cursor->next()) {
+        auto title = cursor->get<std::string>(0);
+        auto description = cursor->get<std::string>(1);
+        draftNote = DraftNote(title, description);
+    }
+    return draftNote;
+}
+
+std::optional<DraftNote> InMemToDbDraftNotesRepository::getDraftUpdateNote(int id) {
+    auto stmt = db->createStatement("SELECT title, description "
+                                    "FROM pending_draft_notes_update "
+                                    "WHERE rowid = ?"
+                                    "LIMIT 1");
+    stmt->bind(1, id);
+
+    auto draftNote = std::optional<DraftNote>();
+    auto cursor = stmt->execute<std::shared_ptr<Db::Cursor>>();
+    while (cursor->next()) {
+        auto title = cursor->get<std::string>(0);
+        auto description = cursor->get<std::string>(1);
+        draftNote = DraftNote(title, description);
+    }
+    return draftNote;
+}
