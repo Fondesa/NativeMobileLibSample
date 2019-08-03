@@ -25,6 +25,7 @@ class InMemToDbDraftNotesRepository : public DraftNotesRepository {
     void removeDraftUpdate(int id) override;
 
     std::optional<DraftNote> getDraftCreationNote() override;
+
     std::optional<DraftNote> getDraftUpdateNote(int id) override;
 
    private:
