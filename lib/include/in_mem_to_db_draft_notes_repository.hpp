@@ -1,6 +1,7 @@
 #pragma once
 
 #include <optional>
+#include <map>
 #include "draft_notes_repository.hpp"
 #include "database.hpp"
 
@@ -8,15 +9,13 @@ class InMemToDbDraftNotesRepository : public DraftNotesRepository {
    public:
     explicit InMemToDbDraftNotesRepository(std::shared_ptr<Db::Database> db);
 
-    void beginCreationSession() override;
+    void updateNewDraftTitle(std::string title) override;
 
-    void beginUpdateSession(Note note) override;
+    void updateNewDraftDescription(std::string description) override;
 
-    void endSession() override;
+    void updateExistingDraftTitle(int id, std::string title) override;
 
-    void updateTitle(std::string title) override;
-
-    void updateDescription(std::string description) override;
+    void updateExistingDraftDescription(int id, std::string description) override;
 
     void clearDrafts() override;
 
@@ -24,20 +23,18 @@ class InMemToDbDraftNotesRepository : public DraftNotesRepository {
 
     void removeDraftUpdate(int id) override;
 
+    void persistDraftNotes() override;
+
     std::optional<DraftNote> getDraftCreationNote() override;
 
     std::optional<DraftNote> getDraftUpdateNote(int id) override;
 
    private:
     std::shared_ptr<Db::Database> db;
-    std::string &draftTitle;
-    std::string &draftDescription;
-    std::string _title;
-    std::string _description;
-    std::optional<Note> noteInUpdate;
-    bool isInSession;
+    std::optional<DraftNote> pendingNewDraft;
+    std::map<int, DraftNote> pendingExistingDrafts;
 
-    void updateNoteInDb();
+    void persistNewDraftNote(const DraftNote &note);
 
-    void createNoteInDb();
+    void persistExistingDraftNotes(const std::map<int, DraftNote> &notes);
 };

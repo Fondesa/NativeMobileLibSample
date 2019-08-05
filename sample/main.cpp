@@ -34,15 +34,11 @@ int main() {
     printNotes(notesAfterUpdate);
 
     auto draftRepository = std::make_shared<InMemToDbDraftNotesRepository>(db);
-    draftRepository->beginCreationSession();
-    draftRepository->updateTitle("draft-create-title");
-    draftRepository->updateDescription("draft-create-description");
-    draftRepository->endSession();
+    draftRepository->updateNewDraftTitle("draft-create-title");
+    draftRepository->updateNewDraftDescription("draft-create-description");
 
-    draftRepository->beginUpdateSession(notesAfterUpdate[0]);
-    draftRepository->updateTitle("draft-update-title");
-    draftRepository->updateDescription("draft-update-description");
-    draftRepository->endSession();
+    draftRepository->updateNewDraftTitle("draft-update-title");
+    draftRepository->updateNewDraftDescription("draft-update-description");
     return 0;
 }
 
