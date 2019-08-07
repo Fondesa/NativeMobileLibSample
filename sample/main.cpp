@@ -4,7 +4,7 @@
 #include "database/sqlite_cursor.hpp"
 #include "database/sqlite_database.hpp"
 #include "notes_repository_impl.hpp"
-#include "draft_notes_repository_impl.hpp"
+#include "drafts_repository_impl.hpp"
 
 void printNotes(const std::vector<Note> &notes);
 
@@ -15,9 +15,9 @@ int main() {
     auto db = Db::Client::get();
     auto repository = std::make_shared<NotesRepositoryImpl>(db);
 
-    auto first = DraftNote("First title", "First description");
+    auto first = Draft("First title", "First description");
     repository->insert(first);
-    auto second = DraftNote("Second title", "Second description");
+    auto second = Draft("Second title", "Second description");
     repository->insert(second);
 
     auto notes = repository->getAll();
@@ -28,12 +28,12 @@ int main() {
     auto notesAfterRemove = repository->getAll();
     printNotes(notesAfterRemove);
 
-    repository->update(notesAfterRemove[0].getId(), DraftNote("Updated title", "Updated description"));
+    repository->update(notesAfterRemove[0].getId(), Draft("Updated title", "Updated description"));
 
     auto notesAfterUpdate = repository->getAll();
     printNotes(notesAfterUpdate);
 
-    auto draftRepository = std::make_shared<DraftNotesRepositoryImpl>(db);
+    auto draftRepository = std::make_shared<DraftsRepositoryImpl>(db);
     draftRepository->updateNewDraftTitle("draft-create-title");
     draftRepository->updateNewDraftDescription("draft-create-description");
 

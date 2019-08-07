@@ -3,7 +3,7 @@
 
 NotesRepositoryImpl::NotesRepositoryImpl(std::shared_ptr<Db::Database> db) : db(std::move(db)) {}
 
-void NotesRepositoryImpl::insert(DraftNote draftNote) {
+void NotesRepositoryImpl::insert(Draft draftNote) {
     auto movedDraftNote = std::move(draftNote);
     auto stmt = db->createStatement("INSERT INTO notes (title, description) "
                                     "VALUES (?, ?)");
@@ -19,7 +19,7 @@ void NotesRepositoryImpl::remove(int id) {
     stmt->execute<void>();
 }
 
-void NotesRepositoryImpl::update(int id, DraftNote draftNote) {
+void NotesRepositoryImpl::update(int id, Draft draftNote) {
     auto stmt = db->createStatement("UPDATE notes "
                                     "SET title = ?, description = ? "
                                     "WHERE rowid = ?");

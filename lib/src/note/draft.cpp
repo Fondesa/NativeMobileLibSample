@@ -1,28 +1,28 @@
 #include <utility>
 
-#include "draft_note.hpp"
+#include "draft.hpp"
 
-DraftNote::DraftNote(std::string title, std::string description) {
+Draft::Draft(std::string title, std::string description) {
     this->title = std::move(title);
     this->description = std::move(description);
 }
 
-std::string DraftNote::getTitle() const {
+std::string Draft::getTitle() const {
     return title;
 }
 
-std::string DraftNote::getDescription() const {
+std::string Draft::getDescription() const {
     return description;
 }
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wshadow"
 
-void DraftNote::setTitle(std::string title) {
+void Draft::setTitle(std::string title) {
     this->title = std::move(title);
 }
 
-void DraftNote::setDescription(std::string description) {
+void Draft::setDescription(std::string description) {
     this->description = std::move(description);
 }
 

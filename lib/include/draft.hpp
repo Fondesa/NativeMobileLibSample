@@ -2,13 +2,13 @@
 
 #include <string>
 
-class DraftNote {
+class Draft {
    private:
     std::string title;
     std::string description;
 
    public:
-    DraftNote(std::string title, std::string description);
+    Draft(std::string title, std::string description);
 
     std::string getTitle() const;
 
