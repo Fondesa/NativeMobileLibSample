@@ -28,7 +28,7 @@ void DraftsRepositoryImpl::updateExistingDescription(int id, std::string descrip
     }
 }
 
-void DraftsRepositoryImpl::clear() {
+void DraftsRepositoryImpl::deleteAll() {
     db->executeTransaction([this]() {
         deleteNew();
         db->createStatement("DELETE FROM pending_draft_notes_update")->execute<void>();

@@ -16,7 +16,7 @@ class DraftsRepository {
 
     virtual void persist() = 0;
 
-    virtual void clear() = 0;
+    virtual void deleteAll() = 0;
 
     virtual void deleteNew() = 0;
 
