@@ -26,4 +26,6 @@ class NotesInteractor {
     virtual std::optional<Draft> getNewDraft() = 0;
 
     virtual std::optional<Draft> getExistingDraft(int id) = 0;
+
+    virtual void persistChanges()=0;
 };

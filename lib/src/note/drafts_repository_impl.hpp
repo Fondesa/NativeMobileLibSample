@@ -33,7 +33,7 @@ class DraftsRepositoryImpl : public DraftsRepository {
     std::optional<Draft> pendingNew;
     std::map<int, Draft> pendingExisting;
 
-    void persistNew(const Draft &note);
+    void persistNew(const Draft &draft);
 
-    void persistExisting(const std::map<int, Draft> &notes);
+    void persistExisting(const std::map<int, Draft> &drafts);
 };
