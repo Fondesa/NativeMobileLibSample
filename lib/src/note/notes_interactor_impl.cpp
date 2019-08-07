@@ -1,5 +1,4 @@
 #include <utility>
-
 #include "notes_interactor_impl.hpp"
 
 NotesInteractorImpl::NotesInteractorImpl(std::shared_ptr<NotesRepository> notesRepository,
