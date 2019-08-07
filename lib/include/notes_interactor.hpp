@@ -23,7 +23,7 @@ class NotesInteractor {
 
     virtual std::vector<Note> getAllNotes() = 0;
 
-    virtual std::optional<Draft> getNewDraftNote() = 0;
+    virtual std::optional<Draft> getNewDraft() = 0;
 
-    virtual std::optional<Draft> getExistingDraftNote(int id) = 0;
+    virtual std::optional<Draft> getExistingDraft(int id) = 0;
 };

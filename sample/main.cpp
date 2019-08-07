@@ -34,11 +34,11 @@ int main() {
     printNotes(notesAfterUpdate);
 
     auto draftRepository = std::make_shared<DraftsRepositoryImpl>(db);
-    draftRepository->updateNewDraftTitle("draft-create-title");
-    draftRepository->updateNewDraftDescription("draft-create-description");
+    draftRepository->updateNewTitle("draft-create-title");
+    draftRepository->updateNewDescription("draft-create-description");
 
-    draftRepository->updateNewDraftTitle("draft-update-title");
-    draftRepository->updateNewDraftDescription("draft-update-description");
+    draftRepository->updateNewTitle("draft-update-title");
+    draftRepository->updateNewDescription("draft-update-description");
     return 0;
 }
 
