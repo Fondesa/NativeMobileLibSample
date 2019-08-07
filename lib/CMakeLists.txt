@@ -31,13 +31,9 @@ set(PUBLIC_HEADER_FILES
     include/foo.hpp
     include/note.hpp
     include/draft.hpp
-    include/notes_repository.hpp
-    include/in_memory_note_repository.hpp
-    include/notes_repository_impl.hpp
     include/database_client.hpp
     include/database_exception.hpp
     include/note_database_initializer.hpp
-    include/drafts_repository_impl.hpp
     include/invalid_draft_session_exception.hpp
     )
 

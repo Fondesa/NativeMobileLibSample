@@ -3,8 +3,8 @@
 #include "note_database_initializer.hpp"
 #include "database/sqlite_cursor.hpp"
 #include "database/sqlite_database.hpp"
-#include "notes_repository_impl.hpp"
-#include "drafts_repository_impl.hpp"
+#include "note/notes_repository_impl.hpp"
+#include "note/drafts_repository_impl.hpp"
 
 void printNotes(const std::vector<Note> &notes);
 
