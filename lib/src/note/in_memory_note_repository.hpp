@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <iostream>
 #include <vector>
-#include "notes_repository.hpp"
+#include "note/notes_repository.hpp"
 
 class InMemoryNoteRepository : public NotesRepository {
    private:
