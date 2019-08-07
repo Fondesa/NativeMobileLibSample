@@ -5,9 +5,9 @@
 #include "draft_notes_repository.hpp"
 #include "database.hpp"
 
-class InMemToDbDraftNotesRepository : public DraftNotesRepository {
+class DraftNotesRepositoryImpl : public DraftNotesRepository {
    public:
-    explicit InMemToDbDraftNotesRepository(std::shared_ptr<Db::Database> db);
+    explicit DraftNotesRepositoryImpl(std::shared_ptr<Db::Database> db);
 
     void updateNewDraftTitle(std::string title) override;
 
