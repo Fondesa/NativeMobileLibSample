@@ -3,8 +3,8 @@
 #include "note_database_initializer.hpp"
 #include "database/sqlite_cursor.hpp"
 #include "database/sqlite_database.hpp"
-#include "database_notes_repository.hpp"
-#include "in_mem_to_db_draft_notes_repository.hpp"
+#include "notes_repository_impl.hpp"
+#include "draft_notes_repository_impl.hpp"
 
 void printNotes(const std::vector<Note> &notes);
 
@@ -13,7 +13,7 @@ int main() {
     NoteDb::initialize("notes.db");
 
     auto db = Db::Client::get();
-    auto repository = std::make_shared<DatabaseNotesRepository>(db);
+    auto repository = std::make_shared<NotesRepositoryImpl>(db);
 
     auto first = DraftNote("First title", "First description");
     repository->insert(first);
@@ -33,7 +33,7 @@ int main() {
     auto notesAfterUpdate = repository->getAll();
     printNotes(notesAfterUpdate);
 
-    auto draftRepository = std::make_shared<InMemToDbDraftNotesRepository>(db);
+    auto draftRepository = std::make_shared<DraftNotesRepositoryImpl>(db);
     draftRepository->updateNewDraftTitle("draft-create-title");
     draftRepository->updateNewDraftDescription("draft-create-description");
 

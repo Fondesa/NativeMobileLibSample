@@ -1,18 +1,18 @@
-#include "in_mem_to_db_draft_notes_repository.hpp"
+#include "draft_notes_repository_impl.hpp"
 #include "invalid_draft_session_exception.hpp"
 
-InMemToDbDraftNotesRepository::InMemToDbDraftNotesRepository(std::shared_ptr<Db::Database> db) :
+DraftNotesRepositoryImpl::DraftNotesRepositoryImpl(std::shared_ptr<Db::Database> db) :
     db(std::move(db)) {}
 
-void InMemToDbDraftNotesRepository::updateNewDraftTitle(std::string title) {
+void DraftNotesRepositoryImpl::updateNewDraftTitle(std::string title) {
     pendingNewDraft->setTitle(title);
 }
 
-void InMemToDbDraftNotesRepository::updateNewDraftDescription(std::string description) {
+void DraftNotesRepositoryImpl::updateNewDraftDescription(std::string description) {
     pendingNewDraft->setDescription(description);
 }
 
-void InMemToDbDraftNotesRepository::updateExistingDraftTitle(int id, std::string title) {
+void DraftNotesRepositoryImpl::updateExistingDraftTitle(int id, std::string title) {
     auto existingEntry = pendingExistingDrafts.find(id);
     if (existingEntry != pendingExistingDrafts.end()) {
         auto note = existingEntry->second;
@@ -20,7 +20,7 @@ void InMemToDbDraftNotesRepository::updateExistingDraftTitle(int id, std::string
     }
 }
 
-void InMemToDbDraftNotesRepository::updateExistingDraftDescription(int id, std::string description) {
+void DraftNotesRepositoryImpl::updateExistingDraftDescription(int id, std::string description) {
     auto existingEntry = pendingExistingDrafts.find(id);
     if (existingEntry != pendingExistingDrafts.end()) {
         auto note = existingEntry->second;
@@ -28,24 +28,24 @@ void InMemToDbDraftNotesRepository::updateExistingDraftDescription(int id, std::
     }
 }
 
-void InMemToDbDraftNotesRepository::clearDrafts() {
+void DraftNotesRepositoryImpl::clearDrafts() {
     db->executeTransaction([this]() {
         removeDraftCreation();
         db->createStatement("DELETE FROM pending_draft_notes_update")->execute<void>();
     });
 }
 
-void InMemToDbDraftNotesRepository::removeDraftCreation() {
+void DraftNotesRepositoryImpl::removeDraftCreation() {
     db->createStatement("DELETE FROM pending_draft_note_creation")->execute<void>();
 }
 
-void InMemToDbDraftNotesRepository::removeDraftUpdate(int id) {
+void DraftNotesRepositoryImpl::removeDraftUpdate(int id) {
     auto stmt = db->createStatement("DELETE FROM pending_draft_notes_update WHERE rowid = ?");
     stmt->bind(1, id);
     stmt->execute<void>();
 }
 
-std::optional<DraftNote> InMemToDbDraftNotesRepository::getDraftCreationNote() {
+std::optional<DraftNote> DraftNotesRepositoryImpl::getDraftCreationNote() {
     if (pendingNewDraft) {
         return pendingNewDraft;
     }
@@ -62,7 +62,7 @@ std::optional<DraftNote> InMemToDbDraftNotesRepository::getDraftCreationNote() {
     return draftNote;
 }
 
-std::optional<DraftNote> InMemToDbDraftNotesRepository::getDraftUpdateNote(int id) {
+std::optional<DraftNote> DraftNotesRepositoryImpl::getDraftUpdateNote(int id) {
     auto existingEntry = pendingExistingDrafts.find(id);
     if (existingEntry != pendingExistingDrafts.end()) {
         return existingEntry->second;
@@ -84,7 +84,7 @@ std::optional<DraftNote> InMemToDbDraftNotesRepository::getDraftUpdateNote(int i
     return draftNote;
 }
 
-void InMemToDbDraftNotesRepository::persistDraftNotes() {
+void DraftNotesRepositoryImpl::persistDraftNotes() {
     auto dbTransaction = [&]() {
         if (pendingNewDraft) {
             // Persist in DB the new draft note.
@@ -103,7 +103,7 @@ void InMemToDbDraftNotesRepository::persistDraftNotes() {
     db->executeTransaction(dbTransaction);
 }
 
-void InMemToDbDraftNotesRepository::persistNewDraftNote(const DraftNote &note) {
+void DraftNotesRepositoryImpl::persistNewDraftNote(const DraftNote &note) {
     auto title = note.getTitle();
     auto description = note.getDescription();
     if (title.empty() && description.empty()) {
@@ -123,7 +123,7 @@ void InMemToDbDraftNotesRepository::persistNewDraftNote(const DraftNote &note) {
     stmt->execute<void>();
 }
 
-void InMemToDbDraftNotesRepository::persistExistingDraftNotes(const std::map<int, DraftNote> &notes) {
+void DraftNotesRepositoryImpl::persistExistingDraftNotes(const std::map<int, DraftNote> &notes) {
     auto stmt = db->createStatement("INSERT INTO pending_draft_notes_update (rowid, title, description) "
                                     "VALUES (?, ?, ?) "
                                     "ON CONFLICT(rowid) "

@@ -4,9 +4,9 @@
 #include "notes_repository.hpp"
 #include "database.hpp"
 
-class DatabaseNotesRepository : public NotesRepository {
+class NotesRepositoryImpl : public NotesRepository {
    public:
-    explicit DatabaseNotesRepository(std::shared_ptr<Db::Database> db);
+    explicit NotesRepositoryImpl(std::shared_ptr<Db::Database> db);
 
     void insert(DraftNote note) override;
 
