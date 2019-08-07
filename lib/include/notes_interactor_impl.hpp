@@ -4,7 +4,7 @@
 #include "notes_repository.hpp"
 #include "drafts_repository.hpp"
 
-class NotesInteractorImpl : NotesInteractor {
+class NotesInteractorImpl : public NotesInteractor {
    public:
     NotesInteractorImpl(std::shared_ptr<NotesRepository> notesRepository,
                         std::shared_ptr<DraftsRepository> draftsRepository);
