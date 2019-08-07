@@ -20,11 +20,12 @@ set(LIB_SOURCE_FILES
     src/database/database_client.cpp
     src/note/note_database_initializer.cpp
     src/note/drafts_repository_impl.cpp
-    src/note/invalid_draft_session_exception.cpp
+    src/note/incomplete_draft_exception.cpp
     src/note/notes_interactor_impl.cpp
     src/note/notes_interactor_factory.cpp
     src/note/drafts_repository_factory.cpp
     src/note/notes_repository_factory.cpp
+    src/note/mutable_draft.cpp
     )
 
 set(PUBLIC_HEADER_FILES
@@ -34,7 +35,6 @@ set(PUBLIC_HEADER_FILES
     include/database_client.hpp
     include/database_exception.hpp
     include/note_database_initializer.hpp
-    include/invalid_draft_session_exception.hpp
     )
 
 set(SQLITE3_SOURCE_FILES

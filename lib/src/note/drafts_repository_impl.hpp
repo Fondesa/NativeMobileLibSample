@@ -3,6 +3,7 @@
 #include <map>
 #include "drafts_repository.hpp"
 #include "database.hpp"
+#include "mutable_draft.hpp"
 
 class DraftsRepositoryImpl : public DraftsRepository {
    public:
@@ -30,10 +31,14 @@ class DraftsRepositoryImpl : public DraftsRepository {
 
    private:
     std::shared_ptr<Db::Database> db;
-    std::optional<Draft> pendingNew;
-    std::map<int, Draft> pendingExisting;
+    std::optional<MutableDraft> pendingNew;
+    std::map<int, MutableDraft> pendingExisting;
 
-    void persistNew(const Draft &draft);
+    void persistNew(const MutableDraft &draft);
 
-    void persistExisting(const std::map<int, Draft> &drafts);
+    void persistExisting(const std::map<int, MutableDraft> &drafts);
+
+    std::optional<Draft> getNewFromDb();
+
+    std::optional<Draft> getExistingFromDb(int id);
 };

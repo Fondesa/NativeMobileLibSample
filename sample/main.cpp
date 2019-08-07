@@ -31,6 +31,9 @@ int main() {
     interactor->updateNewDraftTitle("new-draft-title");
     interactor->updateNewDraftDescription("new-draft-description");
 
+    interactor->updateExistingDraftTitle(notesAfterUpdate[0].getId(), "existing-draft-title");
+    interactor->updateExistingDraftDescription(notesAfterUpdate[0].getId(), "existing-draft-description");
+
     interactor->persistChanges();
     return 0;
 }
