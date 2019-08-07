@@ -123,7 +123,7 @@ void DraftsRepositoryImpl::persistNew(const Draft &draft) {
     auto description = draft.getDescription();
     if (title.empty() && description.empty()) {
         // The draft shouldn't be persisted.
-        // TODO throw exc maybe? this condition shouldn't happen.
+        // To reach this state, the user updated the title and/or the description and then he emptied them.
         return;
     }
     auto stmt = db->createStatement("INSERT INTO pending_draft_creation (id, title, description) "
