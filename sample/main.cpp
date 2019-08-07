@@ -28,8 +28,10 @@ int main() {
     auto notesAfterUpdate = interactor->getAllNotes();
     printNotes(notesAfterUpdate);
 
-    interactor->updateNewDraftTitle("draft-update-title");
-    interactor->updateNewDraftDescription("draft-update-description");
+    interactor->updateNewDraftTitle("new-draft-title");
+    interactor->updateNewDraftDescription("new-draft-description");
+
+    interactor->persistChanges();
     return 0;
 }
 

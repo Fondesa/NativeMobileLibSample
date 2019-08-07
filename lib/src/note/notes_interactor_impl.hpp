@@ -29,6 +29,8 @@ class NotesInteractorImpl : public NotesInteractor {
 
     void deleteNote(int id) override;
 
+    void persistChanges() override;
+
    private:
     std::shared_ptr<NotesRepository> notesRepository;
     std::shared_ptr<DraftsRepository> draftsRepository;

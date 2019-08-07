@@ -51,3 +51,7 @@ void NotesInteractorImpl::deleteNote(int id) {
     // The draft should be deleted too since it can't be updated again.
     draftsRepository->deleteExisting(id);
 }
+
+void NotesInteractorImpl::persistChanges() {
+    draftsRepository->persist();
+}

@@ -63,14 +63,14 @@ void createSchema(const std::shared_ptr<Db::Database> &db) {
     )->execute<void>();
 
     db->createStatement(
-        "CREATE TABLE pending_draft_notes_update ("
+        "CREATE TABLE pending_drafts_update ("
         "title TEXT NOT NULL, "
         "description TEXT NOT NULL"
         ")"
     )->execute<void>();
 
     db->createStatement(
-        "CREATE TABLE pending_draft_note_creation ("
+        "CREATE TABLE pending_draft_creation ("
         "id INTEGER PRIMARY KEY CHECK (id = 0), "
         "title TEXT NOT NULL, "
         "description TEXT NOT NULL"
