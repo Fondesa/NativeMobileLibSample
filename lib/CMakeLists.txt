@@ -21,6 +21,7 @@ set(LIB_SOURCE_FILES
     src/note/note_database_initializer.cpp
     src/note/in_mem_to_db_draft_notes_repository.cpp
     src/note/invalid_draft_session_exception.cpp
+    src/note/notes_interactor_impl.cpp
     )
 
 set(PUBLIC_HEADER_FILES
