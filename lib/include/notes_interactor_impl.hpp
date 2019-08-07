@@ -1,14 +1,23 @@
 #pragma once
 
 #include "notes_interactor.hpp"
+#include "notes_repository.hpp"
+#include "drafts_repository.hpp"
 
 class NotesInteractorImpl : NotesInteractor {
    public:
+    NotesInteractorImpl(std::shared_ptr<NotesRepository> notesRepository,
+                        std::shared_ptr<DraftsRepository> draftsRepository);
+
     void insertNote(Draft note) override;
 
-    void removeNote(int id) override;
-
     void updateNote(int id, Draft note) override;
+
+    std::vector<Note> getAllNotes() override;
+
+    std::optional<Draft> getNewDraft() override;
+
+    std::optional<Draft> getExistingDraft(int id) override;
 
     void updateNewDraftTitle(std::string title) override;
 
@@ -18,9 +27,9 @@ class NotesInteractorImpl : NotesInteractor {
 
     void updateExistingDraftDescription(int id, std::string description) override;
 
-    std::vector<Note> getAllNotes() override;
+    void deleteNote(int id) override;
 
-    std::optional<Draft> getNewDraft() override;
-
-    std::optional<Draft> getExistingDraft(int id) override;
+   private:
+    std::shared_ptr<NotesRepository> notesRepository;
+    std::shared_ptr<DraftsRepository> draftsRepository;
 };

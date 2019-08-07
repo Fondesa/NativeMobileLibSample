@@ -23,7 +23,7 @@ int main() {
     auto notes = repository->getAll();
     printNotes(notes);
 
-    repository->remove(notes[0].getId());
+    repository->deleteWithId(notes[0].getId());
 
     auto notesAfterRemove = repository->getAll();
     printNotes(notesAfterRemove);

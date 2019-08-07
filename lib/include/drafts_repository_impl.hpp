@@ -25,9 +25,9 @@ class DraftsRepositoryImpl : public DraftsRepository {
 
     void deleteExisting(int id) override;
 
-    void persist() override;
+    void deleteAll() override;
 
-    void clear() override;
+    void persist() override;
 
    private:
     std::shared_ptr<Db::Database> db;

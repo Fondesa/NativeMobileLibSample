@@ -6,7 +6,7 @@ void InMemoryNoteRepository::insert(Draft draftNote) {
     notes.emplace_back(noteId, movedDraftNote.getTitle(), movedDraftNote.getDescription());
 }
 
-void InMemoryNoteRepository::remove(int id) {
+void InMemoryNoteRepository::deleteWithId(int id) {
     notes.erase(std::remove_if(notes.begin(), notes.end(), [id](Note note) {
                     return note.getId() == id;
                 }),

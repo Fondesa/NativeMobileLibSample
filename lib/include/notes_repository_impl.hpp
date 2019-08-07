@@ -10,11 +10,11 @@ class NotesRepositoryImpl : public NotesRepository {
 
     void insert(Draft note) override;
 
-    void remove(int id) override;
+    void deleteWithId(int id) override;
 
     void update(int id, Draft note) override;
 
-    void clear() override;
+    void deleteAll() override;
 
     std::vector<Note> getAll() override;
 

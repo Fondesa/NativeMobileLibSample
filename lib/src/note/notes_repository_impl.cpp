@@ -12,7 +12,7 @@ void NotesRepositoryImpl::insert(Draft draftNote) {
     stmt->execute<void>();
 }
 
-void NotesRepositoryImpl::remove(int id) {
+void NotesRepositoryImpl::deleteWithId(int id) {
     auto stmt = db->createStatement("DELETE FROM notes "
                                     "WHERE rowid = ?");
     stmt->bind(1, id);
@@ -29,7 +29,7 @@ void NotesRepositoryImpl::update(int id, Draft draftNote) {
     stmt->execute<void>();
 }
 
-void NotesRepositoryImpl::clear() {
+void NotesRepositoryImpl::deleteAll() {
     auto stmt = db->createStatement("DELETE FROM notes");
     stmt->execute<void>();
 }

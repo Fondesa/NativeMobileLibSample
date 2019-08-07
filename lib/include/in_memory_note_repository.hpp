@@ -13,7 +13,7 @@ class InMemoryNoteRepository : public NotesRepository {
    public:
     void insert(Draft note) override;
 
-    void remove(int id) override;
+    void deleteWithId(int id) override;
 
     void update(int id, Draft note) override;
 

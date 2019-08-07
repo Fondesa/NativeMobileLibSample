@@ -9,7 +9,7 @@ class NotesInteractor {
    public:
     virtual void insertNote(Draft note) = 0;
 
-    virtual void removeNote(int id) = 0;
+    virtual void deleteNote(int id) = 0;
 
     virtual void updateNote(int id, Draft note) = 0;
 
