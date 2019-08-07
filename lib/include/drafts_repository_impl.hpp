@@ -1,6 +1,5 @@
 #pragma once
 
-#include <optional>
 #include <map>
 #include "drafts_repository.hpp"
 #include "database.hpp"
