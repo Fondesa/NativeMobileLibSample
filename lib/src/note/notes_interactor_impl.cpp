@@ -1,6 +1,6 @@
 #include "notes_interactor_impl.hpp"
 
-void NotesInteractorImpl::insertNote(DraftNote note) {
+void NotesInteractorImpl::insertNote(Draft note) {
 
 }
 
@@ -8,7 +8,7 @@ void NotesInteractorImpl::removeNote(int id) {
 
 }
 
-void NotesInteractorImpl::updateNote(int id, DraftNote note) {
+void NotesInteractorImpl::updateNote(int id, Draft note) {
 
 }
 
@@ -32,11 +32,11 @@ std::vector<Note> NotesInteractorImpl::getAllNotes() {
     return std::vector<Note>();
 }
 
-std::optional<DraftNote> NotesInteractorImpl::getNewDraftNote() {
-    return std::optional<DraftNote>();
+std::optional<Draft> NotesInteractorImpl::getNewDraftNote() {
+    return std::optional<Draft>();
 }
 
-std::optional<DraftNote> NotesInteractorImpl::getExistingDraftNote(int id) {
-    return std::optional<DraftNote>();
+std::optional<Draft> NotesInteractorImpl::getExistingDraftNote(int id) {
+    return std::optional<Draft>();
 }
 

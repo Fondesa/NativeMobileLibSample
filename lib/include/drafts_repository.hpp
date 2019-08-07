@@ -2,9 +2,9 @@
 
 #include <string>
 #include "note.hpp"
-#include "draft_note.hpp"
+#include "draft.hpp"
 
-class DraftNotesRepository {
+class DraftsRepository {
    public:
     virtual void updateNewDraftTitle(std::string title) = 0;
 
@@ -14,15 +14,15 @@ class DraftNotesRepository {
 
     virtual void updateExistingDraftDescription(int id, std::string description) = 0;
 
-    virtual void persistDraftNotes() = 0;
+    virtual void persist() = 0;
 
-    virtual void clearDrafts() = 0;
+    virtual void clear() = 0;
 
-    virtual void removeDraftCreation() = 0;
+    virtual void deleteNewDraft() = 0;
 
-    virtual void removeDraftUpdate(int id) = 0;
+    virtual void deleteExistingDraft(int id) = 0;
 
-    virtual std::optional<DraftNote> getDraftCreationNote() = 0;
+    virtual std::optional<Draft> getDraftCreationNote() = 0;
 
-    virtual std::optional<DraftNote> getDraftUpdateNote(int id) = 0;
+    virtual std::optional<Draft> getDraftUpdateNote(int id) = 0;
 };

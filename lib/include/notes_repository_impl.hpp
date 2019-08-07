@@ -8,11 +8,11 @@ class NotesRepositoryImpl : public NotesRepository {
    public:
     explicit NotesRepositoryImpl(std::shared_ptr<Db::Database> db);
 
-    void insert(DraftNote note) override;
+    void insert(Draft note) override;
 
     void remove(int id) override;
 
-    void update(int id, DraftNote note) override;
+    void update(int id, Draft note) override;
 
     void clear() override;
 

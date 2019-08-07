@@ -7,7 +7,7 @@ project(lib)
 set(LIB_SOURCE_FILES
     src/foo.cpp
     src/note/note.cpp
-    src/note/draft_note.cpp
+    src/note/draft.cpp
     src/note/in_memory_note_repository.cpp
     src/note/notes_repository_impl.cpp
     src/database/sqlite_database.cpp
@@ -19,7 +19,7 @@ set(LIB_SOURCE_FILES
     src/database/database_statement.cpp
     src/database/database_client.cpp
     src/note/note_database_initializer.cpp
-    src/note/draft_notes_repository_impl.cpp
+    src/note/drafts_repository_impl.cpp
     src/note/invalid_draft_session_exception.cpp
     src/note/notes_interactor_impl.cpp
     )
@@ -27,14 +27,14 @@ set(LIB_SOURCE_FILES
 set(PUBLIC_HEADER_FILES
     include/foo.hpp
     include/note.hpp
-    include/draft_note.hpp
+    include/draft.hpp
     include/notes_repository.hpp
     include/in_memory_note_repository.hpp
     include/notes_repository_impl.hpp
     include/database_client.hpp
     include/database_exception.hpp
     include/note_database_initializer.hpp
-    include/draft_notes_repository_impl.hpp
+    include/drafts_repository_impl.hpp
     include/invalid_draft_session_exception.hpp
     )
 

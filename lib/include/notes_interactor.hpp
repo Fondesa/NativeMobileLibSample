@@ -3,15 +3,15 @@
 #include <optional>
 #include <vector>
 #include "note.hpp"
-#include "draft_note.hpp"
+#include "draft.hpp"
 
 class NotesInteractor {
    public:
-    virtual void insertNote(DraftNote note) = 0;
+    virtual void insertNote(Draft note) = 0;
 
     virtual void removeNote(int id) = 0;
 
-    virtual void updateNote(int id, DraftNote note) = 0;
+    virtual void updateNote(int id, Draft note) = 0;
 
     virtual void updateNewDraftTitle(std::string title) = 0;
 
@@ -23,7 +23,7 @@ class NotesInteractor {
 
     virtual std::vector<Note> getAllNotes() = 0;
 
-    virtual std::optional<DraftNote> getNewDraftNote() = 0;
+    virtual std::optional<Draft> getNewDraftNote() = 0;
 
-    virtual std::optional<DraftNote> getExistingDraftNote(int id) = 0;
+    virtual std::optional<Draft> getExistingDraftNote(int id) = 0;
 };

@@ -1,15 +1,15 @@
 #pragma once
 
-#include "draft_note.hpp"
+#include "draft.hpp"
 #include "note.hpp"
 
 class NotesRepository {
    public:
-    virtual void insert(DraftNote note) = 0;
+    virtual void insert(Draft note) = 0;
 
     virtual void remove(int id) = 0;
 
-    virtual void update(int id, DraftNote note) = 0;
+    virtual void update(int id, Draft note) = 0;
 
     virtual void clear() = 0;
 

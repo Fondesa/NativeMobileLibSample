@@ -4,11 +4,11 @@
 
 class NotesInteractorImpl : NotesInteractor {
    public:
-    void insertNote(DraftNote note) override;
+    void insertNote(Draft note) override;
 
     void removeNote(int id) override;
 
-    void updateNote(int id, DraftNote note) override;
+    void updateNote(int id, Draft note) override;
 
     void updateNewDraftTitle(std::string title) override;
 
@@ -20,7 +20,7 @@ class NotesInteractorImpl : NotesInteractor {
 
     std::vector<Note> getAllNotes() override;
 
-    std::optional<DraftNote> getNewDraftNote() override;
+    std::optional<Draft> getNewDraftNote() override;
 
-    std::optional<DraftNote> getExistingDraftNote(int id) override;
+    std::optional<Draft> getExistingDraftNote(int id) override;
 };
