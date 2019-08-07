@@ -96,6 +96,7 @@ void InMemToDbDraftNotesRepository::persistDraftNotes() {
             // Persist in DB the draft notes which should be updated.
             persistExistingDraftNotes(pendingExistingDrafts);
             // The old draft notes are not needed anymore in memory.
+            // TODO: make it thread safe
             pendingExistingDrafts.clear();
         }
     };
