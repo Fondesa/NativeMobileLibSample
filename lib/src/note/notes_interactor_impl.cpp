@@ -32,11 +32,11 @@ std::vector<Note> NotesInteractorImpl::getAllNotes() {
     return std::vector<Note>();
 }
 
-std::optional<Draft> NotesInteractorImpl::getNewDraftNote() {
+std::optional<Draft> NotesInteractorImpl::getNewDraft() {
     return std::optional<Draft>();
 }
 
-std::optional<Draft> NotesInteractorImpl::getExistingDraftNote(int id) {
+std::optional<Draft> NotesInteractorImpl::getExistingDraft(int id) {
     return std::optional<Draft>();
 }
 

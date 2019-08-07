@@ -4,25 +4,25 @@
 DraftsRepositoryImpl::DraftsRepositoryImpl(std::shared_ptr<Db::Database> db) :
     db(std::move(db)) {}
 
-void DraftsRepositoryImpl::updateNewDraftTitle(std::string title) {
-    pendingNewDraft->setTitle(title);
+void DraftsRepositoryImpl::updateNewTitle(std::string title) {
+    pendingNew->setTitle(title);
 }
 
-void DraftsRepositoryImpl::updateNewDraftDescription(std::string description) {
-    pendingNewDraft->setDescription(description);
+void DraftsRepositoryImpl::updateNewDescription(std::string description) {
+    pendingNew->setDescription(description);
 }
 
-void DraftsRepositoryImpl::updateExistingDraftTitle(int id, std::string title) {
-    auto existingEntry = pendingExistingDrafts.find(id);
-    if (existingEntry != pendingExistingDrafts.end()) {
+void DraftsRepositoryImpl::updateExistingTitle(int id, std::string title) {
+    auto existingEntry = pendingExisting.find(id);
+    if (existingEntry != pendingExisting.end()) {
         auto note = existingEntry->second;
         note.setTitle(title);
     }
 }
 
-void DraftsRepositoryImpl::updateExistingDraftDescription(int id, std::string description) {
-    auto existingEntry = pendingExistingDrafts.find(id);
-    if (existingEntry != pendingExistingDrafts.end()) {
+void DraftsRepositoryImpl::updateExistingDescription(int id, std::string description) {
+    auto existingEntry = pendingExisting.find(id);
+    if (existingEntry != pendingExisting.end()) {
         auto note = existingEntry->second;
         note.setDescription(description);
     }
@@ -30,24 +30,24 @@ void DraftsRepositoryImpl::updateExistingDraftDescription(int id, std::string de
 
 void DraftsRepositoryImpl::clear() {
     db->executeTransaction([this]() {
-        deleteNewDraft();
+        deleteNew();
         db->createStatement("DELETE FROM pending_draft_notes_update")->execute<void>();
     });
 }
 
-void DraftsRepositoryImpl::deleteNewDraft() {
+void DraftsRepositoryImpl::deleteNew() {
     db->createStatement("DELETE FROM pending_draft_note_creation")->execute<void>();
 }
 
-void DraftsRepositoryImpl::deleteExistingDraft(int id) {
+void DraftsRepositoryImpl::deleteExisting(int id) {
     auto stmt = db->createStatement("DELETE FROM pending_draft_notes_update WHERE rowid = ?");
     stmt->bind(1, id);
     stmt->execute<void>();
 }
 
-std::optional<Draft> DraftsRepositoryImpl::getDraftCreationNote() {
-    if (pendingNewDraft) {
-        return pendingNewDraft;
+std::optional<Draft> DraftsRepositoryImpl::getNew() {
+    if (pendingNew) {
+        return pendingNew;
     }
     auto stmt = db->createStatement("SELECT title, description "
                                     "FROM pending_draft_note_creation "
@@ -62,9 +62,9 @@ std::optional<Draft> DraftsRepositoryImpl::getDraftCreationNote() {
     return draftNote;
 }
 
-std::optional<Draft> DraftsRepositoryImpl::getDraftUpdateNote(int id) {
-    auto existingEntry = pendingExistingDrafts.find(id);
-    if (existingEntry != pendingExistingDrafts.end()) {
+std::optional<Draft> DraftsRepositoryImpl::getExisting(int id) {
+    auto existingEntry = pendingExisting.find(id);
+    if (existingEntry != pendingExisting.end()) {
         return existingEntry->second;
     }
 
@@ -86,24 +86,24 @@ std::optional<Draft> DraftsRepositoryImpl::getDraftUpdateNote(int id) {
 
 void DraftsRepositoryImpl::persist() {
     auto dbTransaction = [&]() {
-        if (pendingNewDraft) {
+        if (pendingNew) {
             // Persist in DB the new draft note.
-            persistNewDraftNote(pendingNewDraft.value());
+            persistNew(pendingNew.value());
             // The new draft note is not needed anymore in memory.
-            pendingNewDraft.reset();
+            pendingNew.reset();
         }
-        if (!pendingExistingDrafts.empty()) {
+        if (!pendingExisting.empty()) {
             // Persist in DB the draft notes which should be updated.
-            persistExistingDraftNotes(pendingExistingDrafts);
+            persistExisting(pendingExisting);
             // The old draft notes are not needed anymore in memory.
             // TODO: make it thread safe
-            pendingExistingDrafts.clear();
+            pendingExisting.clear();
         }
     };
     db->executeTransaction(dbTransaction);
 }
 
-void DraftsRepositoryImpl::persistNewDraftNote(const Draft &note) {
+void DraftsRepositoryImpl::persistNew(const Draft &note) {
     auto title = note.getTitle();
     auto description = note.getDescription();
     if (title.empty() && description.empty()) {
@@ -123,7 +123,7 @@ void DraftsRepositoryImpl::persistNewDraftNote(const Draft &note) {
     stmt->execute<void>();
 }
 
-void DraftsRepositoryImpl::persistExistingDraftNotes(const std::map<int, Draft> &notes) {
+void DraftsRepositoryImpl::persistExisting(const std::map<int, Draft> &notes) {
     auto stmt = db->createStatement("INSERT INTO pending_draft_notes_update (rowid, title, description) "
                                     "VALUES (?, ?, ?) "
                                     "ON CONFLICT(rowid) "

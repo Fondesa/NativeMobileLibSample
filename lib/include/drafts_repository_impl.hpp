@@ -9,32 +9,32 @@ class DraftsRepositoryImpl : public DraftsRepository {
    public:
     explicit DraftsRepositoryImpl(std::shared_ptr<Db::Database> db);
 
-    void updateNewDraftTitle(std::string title) override;
+    std::optional<Draft> getNew() override;
 
-    void updateNewDraftDescription(std::string description) override;
+    std::optional<Draft> getExisting(int id) override;
 
-    void updateExistingDraftTitle(int id, std::string title) override;
+    void updateNewTitle(std::string title) override;
 
-    void updateExistingDraftDescription(int id, std::string description) override;
+    void updateNewDescription(std::string description) override;
 
-    void clear() override;
+    void updateExistingTitle(int id, std::string title) override;
 
-    void deleteNewDraft() override;
+    void updateExistingDescription(int id, std::string description) override;
 
-    void deleteExistingDraft(int id) override;
+    void deleteNew() override;
+
+    void deleteExisting(int id) override;
 
     void persist() override;
 
-    std::optional<Draft> getDraftCreationNote() override;
-
-    std::optional<Draft> getDraftUpdateNote(int id) override;
+    void clear() override;
 
    private:
     std::shared_ptr<Db::Database> db;
-    std::optional<Draft> pendingNewDraft;
-    std::map<int, Draft> pendingExistingDrafts;
+    std::optional<Draft> pendingNew;
+    std::map<int, Draft> pendingExisting;
 
-    void persistNewDraftNote(const Draft &note);
+    void persistNew(const Draft &note);
 
-    void persistExistingDraftNotes(const std::map<int, Draft> &notes);
+    void persistExisting(const std::map<int, Draft> &notes);
 };
