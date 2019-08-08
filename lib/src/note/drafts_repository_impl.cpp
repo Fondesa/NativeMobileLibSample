@@ -9,7 +9,7 @@ void DraftsRepositoryImpl::updateNewTitle(std::string title) {
     if (!pendingNew) {
         pendingNew = MutableDraft();
         std::string description;
-        // Read the description from the DB or put it empty.
+        // Read the title from the DB, if any, or put it empty.
         auto descriptionResult = getNewDescriptionFromDb();
         if (descriptionResult) {
             description = descriptionResult.value();
@@ -24,7 +24,7 @@ void DraftsRepositoryImpl::updateNewDescription(std::string description) {
     if (!pendingNew) {
         pendingNew = MutableDraft();
         std::string title;
-        // Read the title from the DB or put it empty.
+        // Read the title from the DB, if any, or put it empty.
         auto titleResult = getNewTitleFromDb();
         if (titleResult) {
             title = titleResult.value();
@@ -42,8 +42,11 @@ void DraftsRepositoryImpl::updateExistingTitle(int id, std::string title) {
         draft.updateTitle(title);
     } else {
         auto draft = MutableDraft();
-        // TODO read desc from DB if any
-
+        // Read the description from the DB, if any.
+        auto descriptionResult = getExistingDescriptionFromDb(id);
+        if (descriptionResult) {
+            draft.updateDescription(descriptionResult.value());
+        }
         draft.updateTitle(title);
         pendingExisting[id] = draft;
     }
@@ -57,8 +60,11 @@ void DraftsRepositoryImpl::updateExistingDescription(int id, std::string descrip
         draft.updateDescription(description);
     } else {
         auto draft = MutableDraft();
-        // TODO read title from DB if any
-
+        // Read the title from the DB, if any.
+        auto titleResult = getExistingTitleFromDb(id);
+        if (titleResult) {
+            draft.updateTitle(titleResult.value());
+        }
         draft.updateDescription(description);
         pendingExisting[id] = draft;
     }
@@ -184,7 +190,7 @@ std::optional<Draft> DraftsRepositoryImpl::getNewFromDb() {
 std::optional<Draft> DraftsRepositoryImpl::getExistingFromDb(int id) {
     auto stmt = db->createStatement("SELECT title, description "
                                     "FROM pending_drafts_update "
-                                    "WHERE rowid = ?"
+                                    "WHERE rowid = ? "
                                     "LIMIT 1");
     stmt->bind(1, id);
 
@@ -210,6 +216,24 @@ std::optional<std::string> DraftsRepositoryImpl::getNewDescriptionFromDb() {
     return db->createStatement(
         "SELECT description "
         "FROM pending_draft_creation "
+        "LIMIT 1"
+    )->execute<std::optional<std::string>>();
+}
+
+std::optional<std::string> DraftsRepositoryImpl::getExistingTitleFromDb(int id) {
+    return db->createStatement(
+        "SELECT title "
+        "FROM pending_drafts_update "
+        "WHERE rowid = ? "
+        "LIMIT 1"
+    )->execute<std::optional<std::string>>();
+}
+
+std::optional<std::string> DraftsRepositoryImpl::getExistingDescriptionFromDb(int id) {
+    return db->createStatement(
+        "SELECT description "
+        "FROM pending_drafts_update "
+        "WHERE rowid = ? "
         "LIMIT 1"
     )->execute<std::optional<std::string>>();
 }
