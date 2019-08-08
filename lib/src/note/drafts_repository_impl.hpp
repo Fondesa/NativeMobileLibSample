@@ -43,4 +43,6 @@ class DraftsRepositoryImpl : public DraftsRepository {
     std::optional<Draft> getExistingFromDb(int id);
 
     std::optional<std::string> getNewTitleFromDb();
+
+    std::optional<std::string> getNewDescriptionFromDb();
 };

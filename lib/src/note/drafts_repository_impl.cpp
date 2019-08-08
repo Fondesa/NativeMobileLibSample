@@ -8,7 +8,13 @@ DraftsRepositoryImpl::DraftsRepositoryImpl(std::shared_ptr<Db::Database> db) :
 void DraftsRepositoryImpl::updateNewTitle(std::string title) {
     if (!pendingNew) {
         pendingNew = MutableDraft();
-        // TODO READ DESC FROM DB or put empty.
+        std::string description;
+        // Read the description from the DB or put it empty.
+        auto descriptionResult = getNewDescriptionFromDb();
+        if (descriptionResult) {
+            description = descriptionResult.value();
+        }
+        pendingNew->updateDescription(description);
 
     }
     pendingNew->updateTitle(title);
@@ -17,7 +23,13 @@ void DraftsRepositoryImpl::updateNewTitle(std::string title) {
 void DraftsRepositoryImpl::updateNewDescription(std::string description) {
     if (!pendingNew) {
         pendingNew = MutableDraft();
-        // TODO READ TITLE FROM DB or put empty.
+        std::string title;
+        // Read the title from the DB or put it empty.
+        auto titleResult = getNewTitleFromDb();
+        if (titleResult) {
+            title = titleResult.value();
+        }
+        pendingNew->updateTitle(title);
     }
     pendingNew->updateDescription(description);
 }
@@ -187,8 +199,17 @@ std::optional<Draft> DraftsRepositoryImpl::getExistingFromDb(int id) {
 }
 
 std::optional<std::string> DraftsRepositoryImpl::getNewTitleFromDb() {
-    auto stmt = db->createStatement("SELECT title "
-                                    "FROM pending_draft_creation "
-                                    "LIMIT 1");
-    return std::optional<std::string>();
+    return db->createStatement(
+        "SELECT title "
+        "FROM pending_draft_creation "
+        "LIMIT 1"
+    )->execute<std::optional<std::string>>();
+}
+
+std::optional<std::string> DraftsRepositoryImpl::getNewDescriptionFromDb() {
+    return db->createStatement(
+        "SELECT description "
+        "FROM pending_draft_creation "
+        "LIMIT 1"
+    )->execute<std::optional<std::string>>();
 }
