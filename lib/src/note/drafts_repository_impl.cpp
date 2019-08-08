@@ -137,10 +137,12 @@ void DraftsRepositoryImpl::persistNew(const MutableDraft &draft) {
         return;
     }
 
-    auto stmt = db->createStatement("INSERT INTO pending_draft_creation (id, title, description) "
-                                    "VALUES (0, ?, ?) "
-                                    "ON CONFLICT(id) "
-                                    "DO UPDATE SET title = ?, description = ?");
+    auto stmt = db->createStatement(
+        "INSERT INTO pending_draft_creation (id, title, description) "
+        "VALUES (0, ?, ?) "
+        "ON CONFLICT(id) "
+        "DO UPDATE SET title = ?, description = ?"
+    );
 
     stmt->bind(1, title);
     stmt->bind(2, description);
@@ -150,10 +152,12 @@ void DraftsRepositoryImpl::persistNew(const MutableDraft &draft) {
 }
 
 void DraftsRepositoryImpl::persistExisting(const std::map<int, MutableDraft> &drafts) {
-    auto stmt = db->createStatement("INSERT INTO pending_drafts_update (rowid, title, description) "
-                                    "VALUES (?, ?, ?) "
-                                    "ON CONFLICT(rowid) "
-                                    "DO UPDATE SET title = ?, description = ?");
+    auto stmt = db->createStatement(
+        "INSERT INTO pending_drafts_update (rowid, title, description) "
+        "VALUES (?, ?, ?) "
+        "ON CONFLICT(rowid) "
+        "DO UPDATE SET title = ?, description = ?"
+    );
 
     for (auto const&[id, draft] : drafts) {
         if (draft.isIncomplete()) {
@@ -174,9 +178,11 @@ void DraftsRepositoryImpl::persistExisting(const std::map<int, MutableDraft> &dr
 }
 
 std::optional<Draft> DraftsRepositoryImpl::getNewFromDb() {
-    auto stmt = db->createStatement("SELECT title, description "
-                                    "FROM pending_draft_creation "
-                                    "LIMIT 1");
+    auto stmt = db->createStatement(
+        "SELECT title, description "
+        "FROM pending_draft_creation "
+        "LIMIT 1"
+    );
     auto draft = std::optional<Draft>();
     auto cursor = stmt->execute<std::shared_ptr<Db::Cursor>>();
     while (cursor->next()) {
@@ -188,10 +194,12 @@ std::optional<Draft> DraftsRepositoryImpl::getNewFromDb() {
 }
 
 std::optional<Draft> DraftsRepositoryImpl::getExistingFromDb(int id) {
-    auto stmt = db->createStatement("SELECT title, description "
-                                    "FROM pending_drafts_update "
-                                    "WHERE rowid = ? "
-                                    "LIMIT 1");
+    auto stmt = db->createStatement(
+        "SELECT title, description "
+        "FROM pending_drafts_update "
+        "WHERE rowid = ? "
+        "LIMIT 1"
+    );
     stmt->bind(1, id);
 
     auto draft = std::optional<Draft>();
