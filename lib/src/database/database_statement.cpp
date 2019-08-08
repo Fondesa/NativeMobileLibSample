@@ -10,12 +10,12 @@ void Statement::execute() {
 }
 
 template<>
-int Statement::execute() {
+std::optional<int> Statement::execute() {
     return executeInt();
 }
 
 template<>
-std::string Statement::execute() {
+std::optional<std::string> Statement::execute() {
     return executeString();
 }
 

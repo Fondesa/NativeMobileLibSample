@@ -12,8 +12,11 @@ void initialize(std::string path) {
     auto db = Db::Client::get();
 
     auto readVersionStmt = db->createStatement("PRAGMA user_version");
-    int currentVersion = readVersionStmt->execute<int>();
-
+    auto currentVersionResult = readVersionStmt->execute<std::optional<int>>();
+    auto currentVersion = 0;
+    if (currentVersionResult) {
+        currentVersion = currentVersionResult.value();
+    }
     if (version == currentVersion) {
         // The database didn't change its version.
         return;

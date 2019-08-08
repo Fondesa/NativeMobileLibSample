@@ -185,3 +185,10 @@ std::optional<Draft> DraftsRepositoryImpl::getExistingFromDb(int id) {
     }
     return draft;
 }
+
+std::optional<std::string> DraftsRepositoryImpl::getNewTitleFromDb() {
+    auto stmt = db->createStatement("SELECT title "
+                                    "FROM pending_draft_creation "
+                                    "LIMIT 1");
+    return std::optional<std::string>();
+}
