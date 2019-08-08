@@ -35,6 +35,11 @@ int main() {
     interactor->updateExistingDraftDescription(notesAfterUpdate[0].getId(), "existing-draft-description");
 
     interactor->persistChanges();
+
+    interactor->updateExistingDraftTitle(notesAfterUpdate[0].getId(), "existing-draft-title2");
+
+    interactor->persistChanges();
+
     return 0;
 }
 
