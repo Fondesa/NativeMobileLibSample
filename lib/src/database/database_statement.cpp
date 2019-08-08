@@ -15,6 +15,11 @@ int Statement::execute() {
 }
 
 template<>
+std::string Statement::execute() {
+    return executeString();
+}
+
+template<>
 std::shared_ptr<Cursor> Statement::execute() {
     return executeCursor();
 }

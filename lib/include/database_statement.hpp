@@ -21,6 +21,8 @@ class Statement {
 
     virtual int executeInt() = 0;
 
+    virtual std::string executeString() = 0;
+
     virtual std::shared_ptr<Cursor> executeCursor() = 0;
 
     virtual void bindInt(int colIndex, int value) = 0;
