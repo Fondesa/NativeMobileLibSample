@@ -46,6 +46,24 @@ int Statement::executeInt() {
     return result;
 }
 
+std::string Statement::executeString() {
+    if (sqlite3_step(stmt) != SQLITE_ROW) {
+        throw Db::Sql::Exception(stmt);
+    }
+    auto text = sqlite3_column_text(stmt, 0);
+    auto result = std::string(reinterpret_cast<const char *>(text));
+    if (sqlite3_step(stmt) != SQLITE_DONE) {
+        throw Db::Sql::Exception(stmt);
+    }
+    if (sqlite3_clear_bindings(stmt) != SQLITE_OK) {
+        throw Db::Sql::Exception(stmt);
+    }
+    if (sqlite3_reset(stmt) != SQLITE_OK) {
+        throw Db::Sql::Exception(stmt);
+    }
+    return result;
+}
+
 std::shared_ptr<Db::Cursor> Statement::executeCursor() {
     return std::make_shared<Cursor>(stmt);
 }

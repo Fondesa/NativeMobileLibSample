@@ -17,6 +17,8 @@ class Statement : public Db::Statement {
 
     int executeInt() override;
 
+    std::string executeString() override;
+
     std::shared_ptr<Db::Cursor> executeCursor() override;
 
     void bindInt(int colIndex, int value) override;
