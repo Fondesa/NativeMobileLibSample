@@ -221,19 +221,23 @@ std::optional<std::string> DraftsRepositoryImpl::getNewDescriptionFromDb() {
 }
 
 std::optional<std::string> DraftsRepositoryImpl::getExistingTitleFromDb(int id) {
-    return db->createStatement(
+    auto stmt = db->createStatement(
         "SELECT title "
         "FROM pending_drafts_update "
         "WHERE rowid = ? "
         "LIMIT 1"
-    )->execute<std::optional<std::string>>();
+    );
+    stmt->bind(1, id);
+    return stmt->execute<std::optional<std::string>>();
 }
 
 std::optional<std::string> DraftsRepositoryImpl::getExistingDescriptionFromDb(int id) {
-    return db->createStatement(
+    auto stmt = db->createStatement(
         "SELECT description "
         "FROM pending_drafts_update "
         "WHERE rowid = ? "
         "LIMIT 1"
-    )->execute<std::optional<std::string>>();
+    );
+    stmt->bind(1, id);
+    return stmt->execute<std::optional<std::string>>();
 }
