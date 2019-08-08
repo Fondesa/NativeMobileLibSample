@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <optional>
 #include "database_cursor.hpp"
 
 namespace Db {
@@ -19,9 +20,9 @@ class Statement {
    protected:
     virtual void executeVoid() = 0;
 
-    virtual int executeInt() = 0;
+    virtual std::optional<int> executeInt() = 0;
 
-    virtual std::string executeString() = 0;
+    virtual std::optional<std::string> executeString() = 0;
 
     virtual std::shared_ptr<Cursor> executeCursor() = 0;
 

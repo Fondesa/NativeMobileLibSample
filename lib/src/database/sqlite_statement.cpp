@@ -29,11 +29,17 @@ void Statement::executeVoid() {
     }
 }
 
-int Statement::executeInt() {
-    if (sqlite3_step(stmt) != SQLITE_ROW) {
+std::optional<int> Statement::executeInt() {
+    int status = sqlite3_step(stmt);
+    auto result = std::optional<int>();
+    if (status == SQLITE_DONE) {
+        // If there are no rows to read, the value is absent.
+        return result;
+    }
+    if (status != SQLITE_ROW) {
         throw Db::Sql::Exception(stmt);
     }
-    int result = sqlite3_column_int(stmt, 0);
+    result = sqlite3_column_int(stmt, 0);
     if (sqlite3_step(stmt) != SQLITE_DONE) {
         throw Db::Sql::Exception(stmt);
     }
@@ -46,12 +52,18 @@ int Statement::executeInt() {
     return result;
 }
 
-std::string Statement::executeString() {
-    if (sqlite3_step(stmt) != SQLITE_ROW) {
+std::optional<std::string> Statement::executeString() {
+    int status = sqlite3_step(stmt);
+    auto result = std::optional<std::string>();
+    if (status == SQLITE_DONE) {
+        // If there are no rows to read, the value is absent.
+        return result;
+    }
+    if (status != SQLITE_ROW) {
         throw Db::Sql::Exception(stmt);
     }
     auto text = sqlite3_column_text(stmt, 0);
-    auto result = std::string(reinterpret_cast<const char *>(text));
+    result = std::string(reinterpret_cast<const char *>(text));
     if (sqlite3_step(stmt) != SQLITE_DONE) {
         throw Db::Sql::Exception(stmt);
     }
