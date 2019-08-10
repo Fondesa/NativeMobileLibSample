@@ -9,7 +9,7 @@ NotesInteractorImpl::NotesInteractorImpl(std::shared_ptr<NotesRepository> notesR
 void NotesInteractorImpl::insertNote(Draft note) {
     notesRepository->insert(note);
     // The draft isn't needed anymore if the note is saved.
-    draftsRepository->deleteNew();
+    deleteNewDraft();
 }
 
 void NotesInteractorImpl::updateNote(int id, Draft note) {
