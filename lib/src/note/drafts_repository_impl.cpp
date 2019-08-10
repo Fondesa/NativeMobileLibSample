@@ -77,10 +77,19 @@ void DraftsRepositoryImpl::deleteAll() {
 }
 
 void DraftsRepositoryImpl::deleteNew() {
+    // Remove it from in-memory storage.
+    pendingNew.reset();
+    // Remove it from database.
     db->createStatement("DELETE FROM pending_draft_creation")->execute<void>();
 }
 
 void DraftsRepositoryImpl::deleteExisting(int id) {
+    auto existingEntry = pendingExisting.find(id);
+    if (existingEntry != pendingExisting.end()) {
+        // Remote it from in-memory storage.
+        pendingExisting.erase(existingEntry);
+    }
+    // Remove it from database.
     auto stmt = db->createStatement("DELETE FROM pending_drafts_update WHERE rowid = ?");
     stmt->bind(1, id);
     stmt->execute<void>();
