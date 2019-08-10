@@ -49,6 +49,14 @@ void NotesInteractorImpl::updateExistingDraftDescription(int id, std::string des
 void NotesInteractorImpl::deleteNote(int id) {
     notesRepository->deleteWithId(id);
     // The draft should be deleted too since it can't be updated again.
+    deleteExistingDraft(id);
+}
+
+void NotesInteractorImpl::deleteNewDraft() {
+    draftsRepository->deleteNew();
+}
+
+void NotesInteractorImpl::deleteExistingDraft(int id) {
     draftsRepository->deleteExisting(id);
 }
 

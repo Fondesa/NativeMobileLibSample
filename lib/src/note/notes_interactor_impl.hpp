@@ -29,6 +29,10 @@ class NotesInteractorImpl : public NotesInteractor {
 
     void deleteNote(int id) override;
 
+    void deleteNewDraft() override;
+
+    void deleteExistingDraft(int id) override;
+
     void persistChanges() override;
 
    private:
