@@ -2,8 +2,7 @@
 #include "incomplete_draft_exception.hpp"
 
 DraftsRepositoryImpl::DraftsRepositoryImpl(std::shared_ptr<Db::Database> db) :
-    db(std::move(db)),
-    pendingNew(MutableDraft()) {}
+    db(std::move(db)) {}
 
 void DraftsRepositoryImpl::updateNewTitle(std::string title) {
     if (!pendingNew) {
