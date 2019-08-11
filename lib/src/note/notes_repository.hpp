@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include "draft.hpp"
 #include "note.hpp"
 
@@ -14,4 +15,6 @@ class NotesRepository {
     virtual void deleteAll() = 0;
 
     virtual std::vector<Note> getAll() = 0;
+
+    virtual std::vector<Note> getByText(std::string text) = 0;
 };

@@ -15,6 +15,8 @@ class NotesInteractorImpl : public NotesInteractor {
 
     std::vector<Note> getAllNotes() override;
 
+    std::vector<Note> getNotesByText(std::string text) override;
+
     std::optional<Draft> getNewDraft() override;
 
     std::optional<Draft> getExistingDraft(int id) override;

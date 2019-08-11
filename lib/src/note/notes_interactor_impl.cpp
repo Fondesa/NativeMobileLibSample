@@ -22,6 +22,10 @@ std::vector<Note> NotesInteractorImpl::getAllNotes() {
     return notesRepository->getAll();
 }
 
+std::vector<Note> NotesInteractorImpl::getNotesByText(std::string text) {
+    return notesRepository->getByText(text);
+}
+
 std::optional<Draft> NotesInteractorImpl::getNewDraft() {
     return draftsRepository->getNew();
 }
