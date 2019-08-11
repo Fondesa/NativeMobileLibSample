@@ -89,3 +89,10 @@ else ()
         PUBLIC ${PROJECT_SOURCE_DIR}/src
         )
 endif ()
+
+# For some builds it's necessary to support both hash styles (e.g. for Android old APIs).
+if(${BUILD_WITH_PORTABLE_HASH_STYLE})
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--hash-style=both")
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--hash-style=both")
+    set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,--hash-style=both")
+endif()

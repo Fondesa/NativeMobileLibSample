@@ -40,8 +40,9 @@ function build_android_abi() {
     echo "Building Android shared lib for ABI $abi..."
     cmake --target ${libTarget} -B${abiBuildDir} \
         -DBUILD_TESTS:BOOLEAN=false \
+        -DBUILD_WITH_PORTABLE_HASH_STYLE=true \
         -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
-        -DANDROID_PLATFORM=android-28 \
+        -DANDROID_PLATFORM=android-16 \
         -DANDROID_ABI=${abi}
 
     (cd ${abiBuildDir} && make)
