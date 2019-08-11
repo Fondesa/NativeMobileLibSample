@@ -36,8 +36,30 @@ void NotesRepositoryImpl::deleteAll() {
 
 std::vector<Note> NotesRepositoryImpl::getAll() {
     std::vector<Note> notes;
-    auto selectStmt = db->createStatement("SELECT rowid, title, description FROM notes");
-    auto cursor = selectStmt->execute<std::shared_ptr<Db::Cursor>>();
+    auto stmt = db->createStatement("SELECT rowid, title, description FROM notes");
+    auto cursor = stmt->execute<std::shared_ptr<Db::Cursor>>();
+    while (cursor->next()) {
+        auto id = cursor->get<int>(0);
+        auto title = cursor->get<std::string>(1);
+        auto description = cursor->get<std::string>(2);
+        notes.emplace_back(id, title, description);
+    }
+    return notes;
+}
+
+std::vector<Note> NotesRepositoryImpl::getByText(std::string text) {
+    std::vector<Note> notes;
+    auto stmt = db->createStatement(
+        "SELECT rowid, title, description "
+        "FROM notes "
+        "WHERE title LIKE ?"
+        "OR description LIKE ?"
+    );
+    // In this way all the notes which contain the given text in the title or the description will be retrieved.
+    auto likeText = "%" + text + "%";
+    stmt->bind(1, likeText);
+    stmt->bind(2, likeText);
+    auto cursor = stmt->execute<std::shared_ptr<Db::Cursor>>();
     while (cursor->next()) {
         auto id = cursor->get<int>(0);
         auto title = cursor->get<std::string>(1);

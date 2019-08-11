@@ -18,6 +18,8 @@ class NotesRepositoryImpl : public NotesRepository {
 
     std::vector<Note> getAll() override;
 
+    std::vector<Note> getByText(std::string text) override;
+
    private:
     std::shared_ptr<Db::Database> db;
 };
