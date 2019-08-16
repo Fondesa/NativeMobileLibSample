@@ -54,7 +54,6 @@ if (BUILD_TESTS)
 endif ()
 
 if (BUILD_FRAMEWORK)
-    message(CIAOOOOO)
     # Collect all the header files inside the "include" directory and join them with semicolon.
     foreach (header ${PUBLIC_HEADER_FILES})
         if (NOT DEFINED FRAMEWORK_PUBLIC_HEADERS)
