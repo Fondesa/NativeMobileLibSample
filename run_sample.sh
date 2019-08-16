@@ -6,7 +6,7 @@ sampleBuildDir=${projectDir}/build/sample
 
 echo "Building the sample and its dependencies..."
 cmake -B${sampleBuildDir} \
-    -DBUILD_TESTS:BOOLEAN=false
+    -DBUILD_TESTS=OFF
 (cd ${sampleBuildDir} && make)
 echo "Executing the sample..."
 ${sampleBuildDir}/sample/sample
