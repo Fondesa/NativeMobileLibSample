@@ -20,5 +20,11 @@ std::shared_ptr<Database> Client::get() {
     return databaseInstance;
 }
 
+void Client::release() {
+    if (databaseInstance != nullptr) {
+        databaseInstance.reset();
+    }
+}
+
 std::shared_ptr<Database> Client::databaseInstance;
 }

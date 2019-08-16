@@ -11,6 +11,8 @@ class Client {
 
     static std::shared_ptr<Database> get();
 
+    static void release();
+
    private:
     Client() = default;
 

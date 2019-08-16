@@ -4,6 +4,10 @@ set(CMAKE_CXX_STANDARD 17)
 
 project(lib)
 
+option(BUILD_TESTS "Build test files" ON)
+option(BUILD_FRAMEWORK "Build iOS framework" OFF)
+option(BUILD_WITH_PORTABLE_HASH_STYLE "Support both hash styles" OFF)
+
 set(LIB_SOURCE_FILES
     src/foo.cpp
     src/note/note.cpp
@@ -43,12 +47,13 @@ set(SQLITE3_SOURCE_FILES
 
 set(MERGED_SOURCE_FILES ${LIB_SOURCE_FILES} ${SQLITE3_SOURCE_FILES})
 
-if (${BUILD_TESTS})
+if (BUILD_TESTS)
     add_subdirectory(test)
     enable_testing()
 endif ()
 
-if (${BUILD_FRAMEWORK})
+if (BUILD_FRAMEWORK)
+    message(CIAOOOOO)
     # Collect all the header files inside the "include" directory and join them with semicolon.
     foreach (header ${PUBLIC_HEADER_FILES})
         if (NOT DEFINED FRAMEWORK_PUBLIC_HEADERS)
@@ -91,8 +96,8 @@ else ()
 endif ()
 
 # For some builds it's necessary to support both hash styles (e.g. for Android old APIs).
-if(${BUILD_WITH_PORTABLE_HASH_STYLE})
+if (BUILD_WITH_PORTABLE_HASH_STYLE)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--hash-style=both")
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--hash-style=both")
     set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,--hash-style=both")
-endif()
+endif ()

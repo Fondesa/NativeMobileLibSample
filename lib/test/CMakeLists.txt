@@ -34,6 +34,7 @@ add_subdirectory(
 set(TEST_FILES
     main.cpp
     foo_test.cpp
+    database/database_client_test.cpp
     )
 
 # Now simply link against gtest or gtest_main as needed.
@@ -41,4 +42,5 @@ add_executable(${PROJECT_NAME} ${TEST_FILES})
 target_link_libraries(${PROJECT_NAME}
     gtest
     gmock_main
+    lib
     )
