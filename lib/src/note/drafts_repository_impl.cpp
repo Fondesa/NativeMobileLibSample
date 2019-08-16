@@ -11,7 +11,7 @@ void DraftsRepositoryImpl::updateNewTitle(std::string title) {
         // Read the title from the DB, if any, or put it empty.
         auto descriptionResult = getNewDescriptionFromDb();
         if (descriptionResult) {
-            description = descriptionResult.value();
+            description = *descriptionResult;
         }
         pendingNew->updateDescription(description);
 
@@ -26,7 +26,7 @@ void DraftsRepositoryImpl::updateNewDescription(std::string description) {
         // Read the title from the DB, if any, or put it empty.
         auto titleResult = getNewTitleFromDb();
         if (titleResult) {
-            title = titleResult.value();
+            title = *titleResult;
         }
         pendingNew->updateTitle(title);
     }
@@ -44,7 +44,7 @@ void DraftsRepositoryImpl::updateExistingTitle(int id, std::string title) {
         // Read the description from the DB, if any.
         auto descriptionResult = getExistingDescriptionFromDb(id);
         if (descriptionResult) {
-            draft.updateDescription(descriptionResult.value());
+            draft.updateDescription(*descriptionResult);
         }
         draft.updateTitle(title);
         pendingExisting[id] = draft;
@@ -62,7 +62,7 @@ void DraftsRepositoryImpl::updateExistingDescription(int id, std::string descrip
         // Read the title from the DB, if any.
         auto titleResult = getExistingTitleFromDb(id);
         if (titleResult) {
-            draft.updateTitle(titleResult.value());
+            draft.updateTitle(*titleResult);
         }
         draft.updateDescription(description);
         pendingExisting[id] = draft;
@@ -121,7 +121,7 @@ void DraftsRepositoryImpl::persist() {
     auto dbTransaction = [&]() {
         if (tempPendingNew) {
             // Persist in DB the new draft note.
-            persistNew(tempPendingNew.value());
+            persistNew(*tempPendingNew);
         }
         if (!tempPendingExisting.empty()) {
             // Persist in DB the draft notes which should be updated.

@@ -1,15 +1,20 @@
 #include <utility>
+#include "core/compatible_bad_optional_access_exception.hpp"
 #include "mutable_draft.hpp"
 #include "incomplete_draft_exception.hpp"
 
 std::string MutableDraft::requireTitle() const {
-    // It will throw a std::bad_optional_access if the value isn't set yet.
-    return title.value();
+    if (!title) {
+        throw CompatibleBadOptionalAccessException();
+    }
+    return *title;
 }
 
 std::string MutableDraft::requireDescription() const {
-    // It will throw a std::bad_optional_access if the value isn't set yet.
-    return description.value();
+    if (!description) {
+        throw CompatibleBadOptionalAccessException();
+    }
+    return *description;
 }
 
 #pragma clang diagnostic push

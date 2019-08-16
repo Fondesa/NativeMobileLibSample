@@ -15,7 +15,7 @@ void initialize(std::string path) {
     auto currentVersionResult = readVersionStmt->execute<std::optional<int>>();
     auto currentVersion = 0;
     if (currentVersionResult) {
-        currentVersion = currentVersionResult.value();
+        currentVersion = *currentVersionResult;
     }
     if (version == currentVersion) {
         // The database didn't change its version.
