@@ -6,6 +6,7 @@ prebuiltLibDir=${PREBUILT_LIBS}/nativemobile
 
 dirs=(
     ${projectDir}/build
+    ${projectDir}/cmake-build-debug
     ${prebuiltLibDir}
 )
 
