@@ -20,7 +20,7 @@ function notify_uncorrect_usage() {
 function unix() {
     echo "Building Unix lib and sample..."
     cmake --target ${libTarget} -B${unixBuildDir} \
-        -DBUILD_TESTS:BOOLEAN=false
+        -DBUILD_TESTS=OFF
     (cd ${unixBuildDir} && make)
 
     symlink_prebuilt_lib ${unixBuildDir}/lib${libName}.dylib unix
@@ -39,8 +39,8 @@ function build_android_abi() {
     local abiBuildDir=${androidBuildDir}/${abi}
     echo "Building Android shared lib for ABI $abi..."
     cmake --target ${libTarget} -B${abiBuildDir} \
-        -DBUILD_TESTS:BOOLEAN=false \
-        -DBUILD_WITH_PORTABLE_HASH_STYLE=true \
+        -DBUILD_TESTS=OFF \
+        -DBUILD_WITH_PORTABLE_HASH_STYLE=ON \
         -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
         -DANDROID_PLATFORM=android-16 \
         -DANDROID_ABI=${abi}
@@ -53,8 +53,8 @@ function build_android_abi() {
 function ios() {
     echo "Building iOS shared lib..."
     cmake --target ${libTarget} -B${iosBuildDir} -GXcode \
-        -DBUILD_FRAMEWORK:BOOLEAN=true \
-        -DBUILD_TESTS:BOOLEAN=false \
+        -DBUILD_FRAMEWORK=ON \
+        -DBUILD_TESTS=OFF \
         -DCMAKE_SYSTEM_NAME=iOS \
         -DCMAKE_OSX_ARCHITECTURES="armv7;armv7s;arm64;i386;x86_64" \
         -DCMAKE_OSX_DEPLOYMENT_TARGET=9.3 \
