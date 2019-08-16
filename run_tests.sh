@@ -6,7 +6,7 @@ testsBuildDir=${projectDir}/build/tests
 
 echo "Building all the tests and their dependencies..."
 cmake -B${testsBuildDir} \
-    -DBUILD_TESTS:BOOLEAN=true
+    -DBUILD_TESTS=ON
 (cd ${testsBuildDir} && make)
 echo "Executing the lib tests..."
 ${testsBuildDir}/lib/test/lib_tests
