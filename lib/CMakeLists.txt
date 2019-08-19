@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
+include("${CMAKE_CURRENT_LIST_DIR}/lib-macro.cmake")
+
 set(CMAKE_CXX_STANDARD 17)
 
 project(lib)
@@ -65,34 +67,17 @@ if (BUILD_FRAMEWORK)
 
     set(LIB_FRAMEWORK_TARGET lib-framework)
 
-    add_library(${LIB_FRAMEWORK_TARGET} SHARED ${MERGED_SOURCE_FILES} ${PUBLIC_HEADER_FILES})
+    generate_lib_target(${LIB_FRAMEWORK_TARGET} "${MERGED_SOURCE_FILES}")
 
     set_target_properties(${LIB_FRAMEWORK_TARGET} PROPERTIES
-        OUTPUT_NAME "nativemobile"
         FRAMEWORK TRUE
         FRAMEWORK_VERSION C
         MACOSX_FRAMEWORK_IDENTIFIER com.fondesa.nativemobilelib
         PUBLIC_HEADER "${FRAMEWORK_PUBLIC_HEADERS}"
         XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
         )
-
-    target_include_directories(${LIB_FRAMEWORK_TARGET}
-        PUBLIC ${PROJECT_SOURCE_DIR}/include
-        PUBLIC ${PROJECT_SOURCE_DIR}/libs
-        PUBLIC ${PROJECT_SOURCE_DIR}/src
-        )
 else ()
-    add_library(${PROJECT_NAME} SHARED ${MERGED_SOURCE_FILES})
-
-    set_target_properties(${PROJECT_NAME} PROPERTIES
-        OUTPUT_NAME "nativemobile"
-        )
-
-    target_include_directories(${PROJECT_NAME}
-        PUBLIC ${PROJECT_SOURCE_DIR}/include
-        PUBLIC ${PROJECT_SOURCE_DIR}/libs
-        PUBLIC ${PROJECT_SOURCE_DIR}/src
-        )
+    generate_lib_target(${PROJECT_NAME} "${MERGED_SOURCE_FILES}")
 endif ()
 
 # For some builds it's necessary to support both hash styles (e.g. for Android old APIs).
