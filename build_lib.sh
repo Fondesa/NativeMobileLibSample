@@ -20,6 +20,7 @@ function notify_uncorrect_usage() {
 function unix() {
     echo "Building Unix lib and sample..."
     cmake --target ${libTarget} -B${unixBuildDir} \
+        -DPLATFORM=Unix \
         -DBUILD_TESTS=OFF
     (cd ${unixBuildDir} && make)
 
@@ -39,8 +40,8 @@ function build_android_abi() {
     local abiBuildDir=${androidBuildDir}/${abi}
     echo "Building Android shared lib for ABI $abi..."
     cmake --target ${libTarget} -B${abiBuildDir} \
+        -DPLATFORM=Android \
         -DBUILD_TESTS=OFF \
-        -DBUILD_WITH_PORTABLE_HASH_STYLE=ON \
         -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
         -DANDROID_PLATFORM=android-16 \
         -DANDROID_ABI=${abi}
@@ -53,7 +54,7 @@ function build_android_abi() {
 function ios() {
     echo "Building iOS shared lib..."
     cmake --target ${libTarget} -B${iosBuildDir} -GXcode \
-        -DBUILD_FRAMEWORK=ON \
+        -DPLATFORM=iOS \
         -DBUILD_TESTS=OFF \
         -DCMAKE_SYSTEM_NAME=iOS \
         -DCMAKE_OSX_DEPLOYMENT_TARGET=9.3
