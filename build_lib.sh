@@ -88,7 +88,7 @@ function build_universal_framework() {
 function build_framework_for_sdk() {
     local sdk=$1
 
-    (cd ${iosBuildDir} && xcodebuild -target lib-framework \
+    (cd ${iosBuildDir} && xcodebuild -target lib-ios \
         -configuration "Release" \
         -UseModernBuildSystem=NO \
         -sdk ${sdk} \

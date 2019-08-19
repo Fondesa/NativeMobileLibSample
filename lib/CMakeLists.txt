@@ -63,7 +63,18 @@ if (BUILD_TESTS)
     enable_testing()
 endif ()
 
-if (${PLATFORM} STREQUAL ${IOS_PLATFORM})
+if (${PLATFORM} STREQUAL ${ANDROID_PLATFORM})
+    # Create the Android target for this library.
+    generate_lib_target(lib-android "${MERGED_SOURCE_FILES}")
+    # For Android old APIs it's necessary to support both hash styles.
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--hash-style=both")
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--hash-style=both")
+    set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,--hash-style=both")
+elseif (${PLATFORM} STREQUAL ${IOS_PLATFORM})
+    set(TARGET_NAME lib-ios)
+    # Create the iOS target for this library.
+    generate_lib_target(${TARGET_NAME} "${MERGED_SOURCE_FILES}")
+
     # Collect all the header files inside the "include" directory and join them with semicolon.
     foreach (header ${PUBLIC_HEADER_FILES})
         if (NOT DEFINED FRAMEWORK_PUBLIC_HEADERS)
@@ -73,11 +84,7 @@ if (${PLATFORM} STREQUAL ${IOS_PLATFORM})
         endif ()
     endforeach ()
 
-    set(LIB_FRAMEWORK_TARGET lib-framework)
-
-    generate_lib_target(${LIB_FRAMEWORK_TARGET} "${MERGED_SOURCE_FILES}")
-
-    set_target_properties(${LIB_FRAMEWORK_TARGET} PROPERTIES
+    set_target_properties(${TARGET_NAME} PROPERTIES
         FRAMEWORK TRUE
         FRAMEWORK_VERSION C
         MACOSX_FRAMEWORK_IDENTIFIER com.fondesa.nativemobilelib
@@ -87,13 +94,7 @@ if (${PLATFORM} STREQUAL ${IOS_PLATFORM})
         XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
         XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH NO
         )
-else ()
-    generate_lib_target(${PROJECT_NAME} "${MERGED_SOURCE_FILES}")
-endif ()
-
-# For Android old APIs it's necessary to support both hash styles.
-if (${PLATFORM} STREQUAL ${ANDROID_PLATFORM})
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--hash-style=both")
-    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--hash-style=both")
-    set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,--hash-style=both")
+else (/* UNIX_PLATFORM */)
+    # Create the Unix target for this library.
+    generate_lib_target(lib-unix "${MERGED_SOURCE_FILES}")
 endif ()
