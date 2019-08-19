@@ -6,6 +6,7 @@ sampleBuildDir=${projectDir}/build/sample
 
 echo "Building the sample and its dependencies..."
 cmake -B${sampleBuildDir} \
+    -DPLATFORM=Unix \
     -DBUILD_TESTS=OFF
 (cd ${sampleBuildDir} && make)
 echo "Executing the sample..."

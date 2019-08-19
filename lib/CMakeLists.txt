@@ -6,9 +6,17 @@ set(CMAKE_CXX_STANDARD 17)
 
 project(lib)
 
+set(ANDROID_PLATFORM Android)
+set(IOS_PLATFORM iOS)
+set(UNIX_PLATFORM Unix)
+set(PLATFORMS ${ANDROID_PLATFORM} ${IOS_PLATFORM} ${UNIX_PLATFORM})
+set(PLATFORM ${UNIX_PLATFORM} CACHE STRING "The platform which will use the lib")
+set_property(CACHE PLATFORM PROPERTY STRINGS ${PLATFORMS})
+if (NOT ${PLATFORM} IN_LIST PLATFORMS)
+    message(FATAL_ERROR "${PLATFORM} must be one of ${PLATFORMS}")
+endif ()
+
 option(BUILD_TESTS "Build test files" ON)
-option(BUILD_FRAMEWORK "Build iOS framework" OFF)
-option(BUILD_WITH_PORTABLE_HASH_STYLE "Support both hash styles" OFF)
 
 set(LIB_SOURCE_FILES
     src/foo.cpp
@@ -55,7 +63,7 @@ if (BUILD_TESTS)
     enable_testing()
 endif ()
 
-if (BUILD_FRAMEWORK)
+if (${PLATFORM} STREQUAL ${IOS_PLATFORM})
     # Collect all the header files inside the "include" directory and join them with semicolon.
     foreach (header ${PUBLIC_HEADER_FILES})
         if (NOT DEFINED FRAMEWORK_PUBLIC_HEADERS)
@@ -83,8 +91,8 @@ else ()
     generate_lib_target(${PROJECT_NAME} "${MERGED_SOURCE_FILES}")
 endif ()
 
-# For some builds it's necessary to support both hash styles (e.g. for Android old APIs).
-if (BUILD_WITH_PORTABLE_HASH_STYLE)
+# For Android old APIs it's necessary to support both hash styles.
+if (${PLATFORM} STREQUAL ${ANDROID_PLATFORM})
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--hash-style=both")
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--hash-style=both")
     set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,--hash-style=both")
