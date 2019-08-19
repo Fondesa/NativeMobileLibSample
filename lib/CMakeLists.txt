@@ -74,7 +74,10 @@ if (BUILD_FRAMEWORK)
         FRAMEWORK_VERSION C
         MACOSX_FRAMEWORK_IDENTIFIER com.fondesa.nativemobilelib
         PUBLIC_HEADER "${FRAMEWORK_PUBLIC_HEADERS}"
+        IOS_INSTALL_COMBINED YES
+        OSX_ARCHITECTURES "armv7;armv7s;arm64;i386;x86_64"
         XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
+        XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH NO
         )
 else ()
     generate_lib_target(${PROJECT_NAME} "${MERGED_SOURCE_FILES}")

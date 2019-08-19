@@ -56,10 +56,7 @@ function ios() {
         -DBUILD_FRAMEWORK=ON \
         -DBUILD_TESTS=OFF \
         -DCMAKE_SYSTEM_NAME=iOS \
-        -DCMAKE_OSX_ARCHITECTURES="armv7;armv7s;arm64;i386;x86_64" \
-        -DCMAKE_OSX_DEPLOYMENT_TARGET=9.3 \
-        -DCMAKE_XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH=NO \
-        -DCMAKE_IOS_INSTALL_COMBINED=YES
+        -DCMAKE_OSX_DEPLOYMENT_TARGET=9.3
 
     build_universal_framework
     symlink_prebuilt_lib ${iosUniversalFrameworkDir}/${iosFrameworkFileName} ios
