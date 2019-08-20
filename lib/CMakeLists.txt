@@ -53,13 +53,7 @@ if (BUILD_TESTS)
     enable_testing()
 endif ()
 
-string(APPEND TARGET_NAME "lib")
-if (${CMAKE_SYSTEM_NAME} STREQUAL ${CMAKE_HOST_SYSTEM_NAME})
-    # Since the host system name can't change, generate a dedicated target.
-    string(APPEND TARGET_NAME "-host")
-else ()
-    string(APPEND TARGET_NAME "-${CMAKE_SYSTEM_NAME}")
-endif ()
+set(TARGET_NAME "lib-${CMAKE_SYSTEM_NAME}")
 string(TOLOWER ${TARGET_NAME} TARGET_NAME)
 
 # Generate the target with the name "lib-{system}".
@@ -101,6 +95,7 @@ elseif (${CMAKE_SYSTEM_NAME} STREQUAL iOS)
         XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
         XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH NO
         )
-elseif (NOT ${CMAKE_SYSTEM_NAME} STREQUAL ${CMAKE_HOST_SYSTEM_NAME})
+elseif (${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
+else ()
     message(FATAL_ERROR "The system ${CMAKE_SYSTEM_NAME} is not supported")
 endif ()
