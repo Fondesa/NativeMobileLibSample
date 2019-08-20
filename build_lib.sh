@@ -5,20 +5,25 @@ projectDir=${scriptDir}
 libName="nativemobile"
 libTarget=${projectDir}/lib
 libBuildDir=${projectDir}/build/lib
-hostBuildDir=${libBuildDir}/host
+darwinBuildDir=${libBuildDir}/darwin
 androidBuildDir=${libBuildDir}/android
 iosBuildDir=${libBuildDir}/ios
 iosFrameworkDir=${iosBuildDir}/framework
 iosFrameworkFileName=${libName}.framework
 iosUniversalFrameworkDir=${iosFrameworkDir}/universal
 
-function host() {
-    echo "Building lib for this system..."
-    cmake --target ${libTarget} -B${hostBuildDir} \
-        -DBUILD_TESTS=OFF
-    (cd ${hostBuildDir} && make)
+function notify_uncorrect_usage() {
+    printf "Supported args:\n--darwin\n--android\n--ios\n--all\n"
+    exit 1
+}
 
-    symlink_prebuilt_lib ${hostBuildDir}/lib${libName}.dylib host
+function darwin() {
+    echo "Building lib for this system..."
+    cmake --target ${libTarget} -B${darwinBuildDir} \
+        -DBUILD_TESTS=OFF
+    (cd ${darwinBuildDir} && make)
+
+    symlink_prebuilt_lib ${darwinBuildDir}/lib${libName}.dylib darwin
 }
 
 function android() {
@@ -105,14 +110,11 @@ function symlink_include_dir() {
 }
 
 system=$1
-if [ -z "$system" ]; then
-    # By default build for the host system.
-    system="--host"
-fi
+[[ -z "$system" ]] && notify_uncorrect_usage
 
 case $system in
-"--host")
-    host
+"--darwin")
+    darwin
     symlink_include_dir
     ;;
 "--android")
@@ -124,12 +126,11 @@ case $system in
     symlink_include_dir
     ;;
 "--all")
-    host
+    darwin
     android
     ios
     symlink_include_dir
     ;;
 *)
-    printf "Supported args:\n--host\n--android\n--ios\n--all\n"
-    ;;
+    notify_uncorrect_usage
 esac
