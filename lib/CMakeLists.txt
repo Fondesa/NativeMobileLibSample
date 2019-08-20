@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.10)
 project(lib)
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/out)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/out)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/out)
 
 option(BUILD_TESTS "Build test files" ON)
 
@@ -53,8 +56,8 @@ if (BUILD_TESTS)
     enable_testing()
 endif ()
 
-set(TARGET_NAME "lib-${CMAKE_SYSTEM_NAME}")
-string(TOLOWER ${TARGET_NAME} TARGET_NAME)
+string(TOLOWER ${CMAKE_SYSTEM_NAME} SYSTEM_QUALIFIER)
+set(TARGET_NAME "lib-${SYSTEM_QUALIFIER}")
 
 # Generate the target with the name "lib-{system}".
 add_library(${TARGET_NAME} SHARED ${MERGED_SOURCE_FILES} ${PUBLIC_HEADER_FILES})
@@ -70,7 +73,12 @@ target_include_directories(${TARGET_NAME}
     PUBLIC ${PROJECT_SOURCE_DIR}/src
     )
 
+# Defines where the destination of tis library when it will be exported.
+set(EXPORTED_LIB_PATH $ENV{PREBUILT_LIBS}/nativemobile/${SYSTEM_QUALIFIER})
+
 if (${CMAKE_SYSTEM_NAME} STREQUAL Android)
+    set(LIB_FILE_PATH ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/libnativemobile.so)
+    set(LIB_SYM_PATH ${EXPORTED_LIB_PATH}/${ANDROID_ABI}/libnativemobile.so)
     # For Android old APIs it's necessary to support both hash styles.
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--hash-style=both")
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--hash-style=both")
@@ -96,6 +104,24 @@ elseif (${CMAKE_SYSTEM_NAME} STREQUAL iOS)
         XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH NO
         )
 elseif (${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
+    set(LIB_FILE_PATH ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/libnativemobile.dylib)
+    set(LIB_SYM_PATH ${EXPORTED_LIB_PATH}/libnativemobile.dylib)
 else ()
     message(FATAL_ERROR "The system ${CMAKE_SYSTEM_NAME} is not supported")
+endif ()
+
+if (DEFINED LIB_FILE_PATH AND DEFINED LIB_SYM_PATH)
+    add_custom_target(export-lib
+        COMMAND make
+        COMMENT "Building and exporting the library")
+
+    # Get the directory containing the symlink.
+    get_filename_component(LIB_SYM_PATH_DIR ${LIB_SYM_PATH} DIRECTORY)
+    add_custom_command(
+        TARGET export-lib POST_BUILD
+        # Create the directory containing the symlink.
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${LIB_SYM_PATH_DIR}
+        COMMAND ${CMAKE_COMMAND} -E create_symlink ${LIB_FILE_PATH} ${LIB_SYM_PATH};
+        COMMENT "Symlinking the ${CMAKE_SYSTEM_NAME} library from \"${LIB_FILE_PATH}\" to \"${LIB_SYM_PATH}\""
+    )
 endif ()

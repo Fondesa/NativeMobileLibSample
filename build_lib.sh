@@ -21,9 +21,7 @@ function darwin() {
     echo "Building lib for this system..."
     cmake --target ${libTarget} -B${darwinBuildDir} \
         -DBUILD_TESTS=OFF
-    (cd ${darwinBuildDir} && make)
-
-    symlink_prebuilt_lib ${darwinBuildDir}/lib${libName}.dylib darwin
+    (cd ${darwinBuildDir} && make export-lib)
 }
 
 function android() {
@@ -44,9 +42,7 @@ function build_android_abi() {
         -DANDROID_PLATFORM=android-16 \
         -DANDROID_ABI=${abi}
 
-    (cd ${abiBuildDir} && make)
-
-    symlink_prebuilt_lib ${abiBuildDir}/lib${libName}.so android/${abi}
+    (cd ${abiBuildDir} && make export-lib)
 }
 
 function ios() {
