@@ -1,20 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
-
-include("${CMAKE_CURRENT_LIST_DIR}/lib-macro.cmake")
-
-set(CMAKE_CXX_STANDARD 17)
-
 project(lib)
-
-set(ANDROID_PLATFORM Android)
-set(IOS_PLATFORM iOS)
-set(UNIX_PLATFORM Unix)
-set(PLATFORMS ${ANDROID_PLATFORM} ${IOS_PLATFORM} ${UNIX_PLATFORM})
-set(PLATFORM ${UNIX_PLATFORM} CACHE STRING "The platform which will use the lib")
-set_property(CACHE PLATFORM PROPERTY STRINGS ${PLATFORMS})
-if (NOT ${PLATFORM} IN_LIST PLATFORMS)
-    message(FATAL_ERROR "${PLATFORM} must be one of ${PLATFORMS}")
-endif ()
+set(CMAKE_CXX_STANDARD 17)
 
 option(BUILD_TESTS "Build test files" ON)
 
@@ -44,12 +30,16 @@ set(LIB_SOURCE_FILES
     )
 
 set(PUBLIC_HEADER_FILES
+    include/database.hpp
+    include/database_client.hpp
+    include/database_cursor.hpp
+    include/database_exception.hpp
+    include/draft.hpp
     include/foo.hpp
     include/note.hpp
-    include/draft.hpp
-    include/database_client.hpp
-    include/database_exception.hpp
     include/note_database_initializer.hpp
+    include/notes_interactor.hpp
+    include/notes_interactor_factory.hpp
     )
 
 set(SQLITE3_SOURCE_FILES
@@ -63,18 +53,35 @@ if (BUILD_TESTS)
     enable_testing()
 endif ()
 
-if (${PLATFORM} STREQUAL ${ANDROID_PLATFORM})
-    # Create the Android target for this library.
-    generate_lib_target(lib-android "${MERGED_SOURCE_FILES}")
+string(APPEND TARGET_NAME "lib")
+if (${CMAKE_SYSTEM_NAME} STREQUAL ${CMAKE_HOST_SYSTEM_NAME})
+    # Since the host system name can't change, generate a dedicated target.
+    string(APPEND TARGET_NAME "-host")
+else ()
+    string(APPEND TARGET_NAME "-${CMAKE_SYSTEM_NAME}")
+endif ()
+string(TOLOWER ${TARGET_NAME} TARGET_NAME)
+
+# Generate the target with the name "lib-{system}".
+add_library(${TARGET_NAME} SHARED ${MERGED_SOURCE_FILES} ${PUBLIC_HEADER_FILES})
+
+# Change the output name for the generated target.
+set_target_properties(${TARGET_NAME} PROPERTIES
+    OUTPUT_NAME "nativemobile"
+    )
+
+target_include_directories(${TARGET_NAME}
+    PUBLIC ${PROJECT_SOURCE_DIR}/include
+    PUBLIC ${PROJECT_SOURCE_DIR}/libs
+    PUBLIC ${PROJECT_SOURCE_DIR}/src
+    )
+
+if (${CMAKE_SYSTEM_NAME} STREQUAL Android)
     # For Android old APIs it's necessary to support both hash styles.
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--hash-style=both")
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--hash-style=both")
     set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,--hash-style=both")
-elseif (${PLATFORM} STREQUAL ${IOS_PLATFORM})
-    set(TARGET_NAME lib-ios)
-    # Create the iOS target for this library.
-    generate_lib_target(${TARGET_NAME} "${MERGED_SOURCE_FILES}")
-
+elseif (${CMAKE_SYSTEM_NAME} STREQUAL iOS)
     # Collect all the header files inside the "include" directory and join them with semicolon.
     foreach (header ${PUBLIC_HEADER_FILES})
         if (NOT DEFINED FRAMEWORK_PUBLIC_HEADERS)
@@ -94,7 +101,6 @@ elseif (${PLATFORM} STREQUAL ${IOS_PLATFORM})
         XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
         XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH NO
         )
-else (/* UNIX_PLATFORM */)
-    # Create the Unix target for this library.
-    generate_lib_target(lib-unix "${MERGED_SOURCE_FILES}")
+elseif (NOT ${CMAKE_SYSTEM_NAME} STREQUAL ${CMAKE_HOST_SYSTEM_NAME})
+    message(FATAL_ERROR "The system ${CMAKE_SYSTEM_NAME} is not supported")
 endif ()

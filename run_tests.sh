@@ -6,7 +6,6 @@ testsBuildDir=${projectDir}/build/tests
 
 echo "Building all the tests and their dependencies..."
 cmake -B${testsBuildDir} \
-    -DPLATFORM=Unix \
     -DBUILD_TESTS=ON
 (cd ${testsBuildDir} && make)
 echo "Executing the lib tests..."
