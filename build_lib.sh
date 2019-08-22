@@ -53,7 +53,11 @@ function ios() {
         -DCMAKE_OSX_DEPLOYMENT_TARGET=9.3
 
     build_universal_framework
-    symlink_prebuilt_lib ${iosUniversalFrameworkDir}/${iosFrameworkFileName} ios
+
+    local libFilePath=${iosUniversalFrameworkDir}/${iosFrameworkFileName}
+    local libSymPath=${PREBUILT_LIBS}/${libName}/ios
+    mkdir -p "$libSymPath"
+    ln -sf ${libFilePath} ${libSymPath}
 }
 
 function build_universal_framework() {
@@ -91,42 +95,25 @@ function build_framework_for_sdk() {
         build)
 }
 
-function symlink_prebuilt_lib() {
-    local libFilePath=$1
-    local linkRelativePath=$2
-    local linkDir=${PREBUILT_LIBS}/${libName}/${linkRelativePath}
-    mkdir -p "$linkDir"
-    ln -sf ${libFilePath} ${linkDir}
-}
-
-function symlink_include_dir() {
-    local headersSymLink=${PREBUILT_LIBS}/${libName}
-    mkdir -p ${headersSymLink}
-    ln -sf ${projectDir}/lib/include ${headersSymLink}
-}
-
 system=$1
 [[ -z "$system" ]] && notify_uncorrect_usage
 
 case $system in
 "--darwin")
     darwin
-    symlink_include_dir
     ;;
 "--android")
     android
-    symlink_include_dir
     ;;
 "--ios")
     ios
-    symlink_include_dir
     ;;
 "--all")
     darwin
     android
     ios
-    symlink_include_dir
     ;;
 *)
     notify_uncorrect_usage
+    ;;
 esac
