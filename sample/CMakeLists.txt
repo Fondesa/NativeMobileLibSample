@@ -10,4 +10,4 @@ set(SAMPLE_SOURCE_FILES
 
 add_executable(${PROJECT_NAME} ${SAMPLE_SOURCE_FILES})
 
-target_link_libraries(${PROJECT_NAME} lib)
+target_link_libraries(${PROJECT_NAME} lib-darwin)

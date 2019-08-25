@@ -9,4 +9,4 @@ cmake -B${testsBuildDir} \
     -DBUILD_TESTS=ON
 (cd ${testsBuildDir} && make)
 echo "Executing the lib tests..."
-${testsBuildDir}/lib/test/lib_tests
+${testsBuildDir}/out/lib_tests

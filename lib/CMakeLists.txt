@@ -51,11 +51,6 @@ set(SQLITE3_SOURCE_FILES
 
 set(MERGED_SOURCE_FILES ${LIB_SOURCE_FILES} ${SQLITE3_SOURCE_FILES})
 
-if (BUILD_TESTS)
-    add_subdirectory(test)
-    enable_testing()
-endif ()
-
 string(TOLOWER ${CMAKE_SYSTEM_NAME} SYSTEM_QUALIFIER)
 set(TARGET_NAME "lib-${SYSTEM_QUALIFIER}")
 
@@ -76,6 +71,8 @@ target_include_directories(${TARGET_NAME}
 # Defines where the destination of tis library when it will be exported.
 set(EXPORTED_LIB_PATH $ENV{PREBUILT_LIBS}/nativemobile)
 set(QUALIFIED_EXPORTED_LIB_PATH ${EXPORTED_LIB_PATH}/${SYSTEM_QUALIFIER})
+
+set(CMAKE_CXX_FLAGS "-g -O0 -Wall -fprofile-arcs -ftest-coverage")
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL Android)
     set(LIB_FILE_PATH ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/libnativemobile.so)
@@ -136,4 +133,9 @@ if (DEFINED LIB_FILE_PATH AND DEFINED LIB_SYM_PATH)
 
     # The library must be built before the library is symlinked because the library file must be generated.
     add_dependencies(export-lib ${TARGET_NAME})
+endif ()
+
+if (BUILD_TESTS)
+    add_subdirectory(test)
+    enable_testing()
 endif ()

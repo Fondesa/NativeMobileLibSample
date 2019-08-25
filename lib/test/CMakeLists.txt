@@ -42,5 +42,5 @@ add_executable(${PROJECT_NAME} ${TEST_FILES})
 target_link_libraries(${PROJECT_NAME}
     gtest
     gmock_main
-    lib
+    lib-darwin
     )
