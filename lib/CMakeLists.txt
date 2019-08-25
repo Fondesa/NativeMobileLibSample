@@ -180,7 +180,6 @@ if (BUILD_TESTS)
     set(COVERAGE_OUTPUT_RAW_FILE_PATH ${COVERAGE_OUTPUT_DIR}/raw.info)
     set(COVERAGE_OUTPUT_FILTERED_FILE_PATH ${COVERAGE_OUTPUT_DIR}/filtered.info)
     set(COVERAGE_OUTPUT_HTML_DIR ${COVERAGE_OUTPUT_DIR}/html)
-    set(OBJECT_DIR ${CMAKE_BINARY_DIR}/${PROJECT_NAME}/CMakeFiles/${TARGET_NAME}.dir)
 
     add_custom_target(coverage-clean
         COMMAND ${LCOV_PATH}
@@ -195,25 +194,25 @@ if (BUILD_TESTS)
     add_custom_target(coverage-report
         # Create the output dir of the coverage reports.
         COMMAND ${CMAKE_COMMAND} -E make_directory ${COVERAGE_OUTPUT_DIR}
-        # Generate the raw coverage report.
+        # Generate the raw coverage report containing all the files.
         COMMAND ${LCOV_PATH}
         --directory ${CMAKE_BINARY_DIR}
         --gcov-tool ${CMAKE_SOURCE_DIR}/llvm-gcov.sh
         --capture
         -o ${COVERAGE_OUTPUT_RAW_FILE_PATH}
-        #
+        # Exclude the unwanted files from the generated report.
         COMMAND ${LCOV_PATH}
         --remove ${COVERAGE_OUTPUT_RAW_FILE_PATH}
         -o ${COVERAGE_OUTPUT_FILTERED_FILE_PATH}
-        # Exclude the default /usr/include dir of Xcode.
+        # The default /usr/include dir of Xcode shouldn't be included since we are not testing those files.
         '*/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/*'
         # The build files shouldn't be included.
         '${CMAKE_BINARY_DIR}/*'
         # All the files in the libs folder are external so they shoudn't be tested.
         '${CMAKE_CURRENT_SOURCE_DIR}/libs/*'
-        # ALl the test files are hit during the tests so it's pointless to include them.
+        # All the test files are hit during the tests so it's pointless to include them.
         '${CMAKE_CURRENT_SOURCE_DIR}/test/*'
-    # Use genhtml to generate the HTML report from the raw one.
+        # Use genhtml to generate the HTML report from the raw one.
         COMMAND ${GENHTML_PATH}
         ${COVERAGE_OUTPUT_FILTERED_FILE_PATH}
         -o ${COVERAGE_OUTPUT_HTML_DIR}
