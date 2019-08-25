@@ -72,8 +72,6 @@ target_include_directories(${TARGET_NAME}
 set(EXPORTED_LIB_PATH $ENV{PREBUILT_LIBS}/nativemobile)
 set(QUALIFIED_EXPORTED_LIB_PATH ${EXPORTED_LIB_PATH}/${SYSTEM_QUALIFIER})
 
-set(CMAKE_CXX_FLAGS "-g -O0 -Wall -fprofile-arcs -ftest-coverage")
-
 if (${CMAKE_SYSTEM_NAME} STREQUAL Android)
     set(LIB_FILE_PATH ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/libnativemobile.so)
     set(LIB_SYM_PATH ${QUALIFIED_EXPORTED_LIB_PATH}/${ANDROID_ABI}/libnativemobile.so)
@@ -121,7 +119,7 @@ if (DEFINED LIB_FILE_PATH AND DEFINED LIB_SYM_PATH)
         COMMAND ${CMAKE_COMMAND} -E make_directory ${EXPORTED_LIB_PATH}
         COMMAND ${CMAKE_COMMAND} -E create_symlink ${INCLUDE_DIR_PATH} ${INCLUDE_SYM_PATH};
         COMMENT "Symlinking the public headers from \"${INCLUDE_DIR_PATH}\" to \"${INCLUDE_SYM_PATH}\""
-    )
+        )
 
     # It symlinks the public headers before.
     add_custom_target(export-lib
@@ -136,6 +134,34 @@ if (DEFINED LIB_FILE_PATH AND DEFINED LIB_SYM_PATH)
 endif ()
 
 if (BUILD_TESTS)
-    add_subdirectory(test)
     enable_testing()
+    add_subdirectory(test)
+
+    add_library(coverage-config INTERFACE)
+
+    # Add the required coverage flags.
+    target_compile_options(${TARGET_NAME} PUBLIC
+        # Skip the optimization.
+        -O0
+        # Generate the debug info.
+        -g
+        -fprofile-arcs
+        -ftest-coverage
+        )
+
+    if (CMAKE_VERSION VERSION_GREATER_EQUAL 3.13)
+        target_link_options(coverage-config INTERFACE --coverage)
+    else ()
+        target_link_libraries(coverage-config INTERFACE --coverage)
+    endif ()
+
+    target_link_libraries(${TARGET_NAME} PUBLIC coverage-config)
+
+    add_custom_target(code-coverage
+        # Run lib-tests.
+        COMMAND lib_tests
+        COMMENT "Running all the tests to calculate the coverage"
+        )
+
+    add_dependencies(code-coverage lib_tests)
 endif ()
