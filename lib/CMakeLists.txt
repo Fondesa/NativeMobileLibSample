@@ -1,9 +1,10 @@
 cmake_minimum_required(VERSION 3.10)
 project(lib)
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/out)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/out)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/out)
+set(OUTPUT_DIR ${CMAKE_BINARY_DIR}/out)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_DIR})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR})
 
 option(BUILD_TESTS "Build test files" ON)
 
@@ -139,6 +140,24 @@ if (BUILD_TESTS)
 
     add_library(coverage-config INTERFACE)
 
+    add_custom_target(run-tests
+        # Run lib-tests.
+        COMMAND lib_tests
+        COMMENT "Running all the tests..."
+        )
+
+    add_dependencies(run-tests lib_tests)
+
+    find_program(LCOV_PATH lcov)
+    if (NOT LCOV_PATH)
+        message(FATAL_ERROR "lcov not found! Aborting...")
+    endif ()
+
+    find_program(GENHTML_PATH genhtml)
+    if (NOT GENHTML_PATH)
+        message(FATAL_ERROR "genhtml not found! Aborting...")
+    endif ()
+
     # Add the required coverage flags.
     target_compile_options(${TARGET_NAME} PUBLIC
         # Skip the optimization.
@@ -157,11 +176,52 @@ if (BUILD_TESTS)
 
     target_link_libraries(${TARGET_NAME} PUBLIC coverage-config)
 
-    add_custom_target(code-coverage
-        # Run lib-tests.
-        COMMAND lib_tests
-        COMMENT "Running all the tests to calculate the coverage"
-        )
+    set(COVERAGE_OUTPUT_DIR ${OUTPUT_DIR}/coverage)
+    set(COVERAGE_OUTPUT_RAW_FILE_PATH ${COVERAGE_OUTPUT_DIR}/raw.info)
+    set(COVERAGE_OUTPUT_FILTERED_FILE_PATH ${COVERAGE_OUTPUT_DIR}/filtered.info)
+    set(COVERAGE_OUTPUT_HTML_DIR ${COVERAGE_OUTPUT_DIR}/html)
+    set(OBJECT_DIR ${CMAKE_BINARY_DIR}/${PROJECT_NAME}/CMakeFiles/${TARGET_NAME}.dir)
 
-    add_dependencies(code-coverage lib_tests)
+    add_custom_target(coverage-clean
+        COMMAND ${LCOV_PATH}
+        --directory ${CMAKE_BINARY_DIR}
+        --zerocounters
+        COMMENT "Removing the coverage tracefiles from the previous run...")
+
+    # Clean the coverage tracefiles from the previous files, if any, before running all the tests.
+    # In this way, we can be sure the new report will use only the tracefiles from the latest run.
+    add_dependencies(run-tests coverage-clean)
+
+    add_custom_target(coverage-report
+        # Create the output dir of the coverage reports.
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${COVERAGE_OUTPUT_DIR}
+        # Generate the raw coverage report.
+        COMMAND ${LCOV_PATH}
+        --directory ${CMAKE_BINARY_DIR}
+        --gcov-tool ${CMAKE_SOURCE_DIR}/llvm-gcov.sh
+        --capture
+        -o ${COVERAGE_OUTPUT_RAW_FILE_PATH}
+        #
+        COMMAND ${LCOV_PATH}
+        --remove ${COVERAGE_OUTPUT_RAW_FILE_PATH}
+        -o ${COVERAGE_OUTPUT_FILTERED_FILE_PATH}
+        # Exclude the default /usr/include dir of Xcode.
+        '*/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/*'
+        # The build files shouldn't be included.
+        '${CMAKE_BINARY_DIR}/*'
+        # All the files in the libs folder are external so they shoudn't be tested.
+        '${CMAKE_CURRENT_SOURCE_DIR}/libs/*'
+        # ALl the test files are hit during the tests so it's pointless to include them.
+        '${CMAKE_CURRENT_SOURCE_DIR}/test/*'
+    # Use genhtml to generate the HTML report from the raw one.
+        COMMAND ${GENHTML_PATH}
+        ${COVERAGE_OUTPUT_FILTERED_FILE_PATH}
+        -o ${COVERAGE_OUTPUT_HTML_DIR}
+        COMMENT "Generating the code coverage report...")
+
+    # Run all the tests before generating the report.
+    add_dependencies(coverage-report run-tests)
+
+    add_custom_command(TARGET coverage-report POST_BUILD
+        COMMENT "The coverage report is available at ${COVERAGE_OUTPUT_HTML_DIR}/index.html")
 endif ()
