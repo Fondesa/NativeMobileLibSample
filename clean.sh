@@ -1,6 +1,6 @@
 #!/bin/bash
 
-scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+scriptDir="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 projectDir=${scriptDir}
 prebuiltLibDir=${PREBUILT_LIBS}/nativemobile
 
@@ -10,7 +10,6 @@ dirs=(
     ${prebuiltLibDir}
 )
 
-for dir in "${dirs[@]}"
-do
+for dir in "${dirs[@]}"; do
     rm -rf ${dir}
 done

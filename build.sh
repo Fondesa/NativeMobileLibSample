@@ -13,14 +13,20 @@ iosFrameworkFileName=${libName}.framework
 iosUniversalFrameworkDir=${iosFrameworkDir}/universal
 
 function notify_uncorrect_usage() {
-    printf "Supported args:\n--darwin\n--android\n--ios\n--all\n"
+    cat <<EOF
+Supported args:
+--darwin
+--android
+--ios
+--all
+EOF
     exit 1
 }
 
 function darwin() {
     echo "Building lib for this system..."
     cmake -B${darwinBuildDir} \
-        -DBUILD_TESTS=OFF
+        -DENABLE_TESTS=OFF
     (cd ${darwinBuildDir} && make export-lib)
 }
 
@@ -36,7 +42,7 @@ function build_android_abi() {
     local abiBuildDir=${androidBuildDir}/${abi}
     echo "Building Android shared lib for ABI $abi..."
     cmake -B${abiBuildDir} \
-        -DBUILD_TESTS=OFF \
+        -DENABLE_TESTS=OFF \
         -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
         -DCMAKE_SYSTEM_NAME=Android \
         -DANDROID_PLATFORM=android-16 \
@@ -48,7 +54,7 @@ function build_android_abi() {
 function ios() {
     echo "Building iOS shared lib..."
     cmake -B${iosBuildDir} -GXcode \
-        -DBUILD_TESTS=OFF \
+        -DENABLE_TESTS=OFF \
         -DCMAKE_SYSTEM_NAME=iOS \
         -DCMAKE_OSX_DEPLOYMENT_TARGET=9.3
 
