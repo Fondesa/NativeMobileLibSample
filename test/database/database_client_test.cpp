@@ -2,7 +2,6 @@
 #include "database/sqlite_database.hpp"
 #include "database_client_test.hpp"
 #include "database_client.hpp"
-#include "note/drafts_repository.hpp"
 
 void DatabaseClientTest::TearDown() {
     Db::Client::release();
