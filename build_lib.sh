@@ -19,7 +19,7 @@ function notify_uncorrect_usage() {
 
 function darwin() {
     echo "Building lib for this system..."
-    cmake --target ${libTarget} -B${darwinBuildDir} \
+    cmake -B${darwinBuildDir} \
         -DBUILD_TESTS=OFF
     (cd ${darwinBuildDir} && make export-lib)
 }
@@ -35,7 +35,7 @@ function build_android_abi() {
     local abi=$1
     local abiBuildDir=${androidBuildDir}/${abi}
     echo "Building Android shared lib for ABI $abi..."
-    cmake --target ${libTarget} -B${abiBuildDir} \
+    cmake -B${abiBuildDir} \
         -DBUILD_TESTS=OFF \
         -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
         -DCMAKE_SYSTEM_NAME=Android \
@@ -47,7 +47,7 @@ function build_android_abi() {
 
 function ios() {
     echo "Building iOS shared lib..."
-    cmake --target ${libTarget} -B${iosBuildDir} -GXcode \
+    cmake -B${iosBuildDir} -GXcode \
         -DBUILD_TESTS=OFF \
         -DCMAKE_SYSTEM_NAME=iOS \
         -DCMAKE_OSX_DEPLOYMENT_TARGET=9.3
