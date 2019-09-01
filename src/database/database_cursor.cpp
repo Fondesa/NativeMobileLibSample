@@ -1,5 +1,4 @@
 #include "database_cursor.hpp"
-#include "database_exception.hpp"
 
 namespace Db {
 
