@@ -33,14 +33,41 @@ void Cursor::ensureIndexInBounds(int colIndex) {
 }
 
 int Cursor::getInt(int colIndex) {
+    int columnType = sqlite3_column_type(stmt, colIndex);
+    if (columnType != SQLITE_INTEGER) {
+        throw Db::Sql::Exception("The column at index " +
+            std::to_string(colIndex) +
+            " should be of type " +
+            std::to_string(SQLITE_INTEGER) +
+            " instead of " +
+            std::to_string(columnType));
+    }
     return sqlite3_column_int(stmt, colIndex);
 }
 
 double Cursor::getDouble(int colIndex) {
+    int columnType = sqlite3_column_type(stmt, colIndex);
+    if (columnType != SQLITE_FLOAT) {
+        throw Db::Sql::Exception("The column at index " +
+            std::to_string(colIndex) +
+            " should be of type " +
+            std::to_string(SQLITE_FLOAT) +
+            " instead of " +
+            std::to_string(columnType));
+    }
     return sqlite3_column_double(stmt, colIndex);
 }
 
 std::string Cursor::getString(int colIndex) {
+    int columnType = sqlite3_column_type(stmt, colIndex);
+    if (columnType != SQLITE_TEXT) {
+        throw Db::Sql::Exception("The column at index " +
+            std::to_string(colIndex) +
+            " should be of type " +
+            std::to_string(SQLITE_TEXT) +
+            " instead of " +
+            std::to_string(columnType));
+    }
     auto text = sqlite3_column_text(stmt, colIndex);
     return std::string(reinterpret_cast<const char *>(text));
 }
