@@ -29,6 +29,7 @@ class Statement : public Db::Statement {
     void bindBool(int colIndex, bool value) override;
 
    private:
+    sqlite3 *db{};
     SmartCStatement stmt;
 };
 }

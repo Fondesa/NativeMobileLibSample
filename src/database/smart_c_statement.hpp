@@ -8,7 +8,7 @@ namespace Db::Sql {
 class SmartCStatement {
    public:
     // Prepare the statement and initialize its reference counter
-    SmartCStatement(sqlite3 *db, const std::string& query);
+    SmartCStatement(sqlite3 *db, const std::string &query);
     // Copy constructor increments the ref counter
     SmartCStatement(const SmartCStatement &other);
     // Decrement the ref counter and finalize the sqlite3_stmt when it reaches 0
@@ -29,5 +29,12 @@ class SmartCStatement {
     sqlite3_stmt *originalStmt;      //!< Pointer to SQLite Statement Object
     unsigned int *refCount;  //!< Pointer to the heap allocated reference counter of the sqlite3_stmt
     //!< (to share it with Column objects)
+
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "OCUnusedStructInspection"
+    // Expose the private variables to the following test method.
+    // This is not a good approach generally but otherwise we can't simulate errors using sqlite3_step().
+    friend class SQLiteCursorTest_givenErrorInSqliteStepWhenNextIsInvokedThenExceptionIsThrown_Test;
+#pragma clang diagnostic pop
 };
 }

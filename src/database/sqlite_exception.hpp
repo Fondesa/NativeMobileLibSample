@@ -11,6 +11,5 @@ class Exception : public Db::Exception {
    public:
     explicit Exception(std::string msg);
     explicit Exception(sqlite3 *db);
-    explicit Exception(sqlite3_stmt *stmt);
 };
 }
