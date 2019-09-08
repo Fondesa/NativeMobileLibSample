@@ -11,8 +11,6 @@ class SmartCStatement {
     SmartCStatement(sqlite3 *db, std::string &query);
     // Copy constructor increments the ref counter
     SmartCStatement(const SmartCStatement &other);
-    // Move constructor
-    SmartCStatement(SmartCStatement &&other) noexcept;
     // Decrement the ref counter and finalize the sqlite3_stmt when it reaches 0
     ~SmartCStatement();
 

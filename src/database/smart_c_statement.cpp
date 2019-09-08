@@ -25,13 +25,6 @@ SmartCStatement::SmartCStatement(const SmartCStatement &other) :
     ++(*refCount);
 }
 
-SmartCStatement::SmartCStatement(SmartCStatement &&other) noexcept :
-    originalStmt(other.originalStmt),
-    refCount(other.refCount) {
-    other.originalStmt = nullptr;
-    other.refCount = nullptr;
-}
-
 SmartCStatement::~SmartCStatement() {
     if (refCount && --(*refCount) == 0) {
         // If count reaches zero, finalize the sqlite3_stmt, as no Statement nor Column object use it anymore.
