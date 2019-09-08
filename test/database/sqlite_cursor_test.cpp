@@ -2,8 +2,6 @@
 #include "database/smart_c_statement.hpp"
 #include "database/sqlite_exception.hpp"
 
-namespace Db::Sql {
-
 void SQLiteCursorTest::SetUp() {
     sqlite3_open(":memory:", &db);
     sqlite3_step(Db::Sql::SmartCStatement(
@@ -250,5 +248,4 @@ TEST_F(SQLiteCursorTest, givenErrorInClearBindingsWhenNextIsInvokedThenException
     );
 
     EXPECT_THROW(cursor->next(), Db::Sql::Exception);
-}
 }

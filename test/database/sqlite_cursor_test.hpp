@@ -4,8 +4,6 @@
 #include "database/sqlite_cursor.hpp"
 #include <gtest/gtest.h>
 
-namespace Db::Sql {
-
 class SQLiteCursorTest : public ::testing::Test {
    protected:
     sqlite3 *db{};
@@ -21,7 +19,7 @@ class SQLiteCursorTest : public ::testing::Test {
 
 class ResetViolationCursor : public Db::Sql::Cursor {
    public:
-    ResetViolationCursor(sqlite3 *db, const SmartCStatement &stmt): Db::Sql::Cursor(db, stmt) {};
+    ResetViolationCursor(sqlite3 *db, const Db::Sql::SmartCStatement &stmt) : Db::Sql::Cursor(db, stmt) {};
 
    protected:
     int reset() override {
@@ -31,11 +29,10 @@ class ResetViolationCursor : public Db::Sql::Cursor {
 
 class ClearBindingsViolationCursor : public Db::Sql::Cursor {
    public:
-    ClearBindingsViolationCursor(sqlite3 *db, const SmartCStatement &stmt): Db::Sql::Cursor(db, stmt) {};
+    ClearBindingsViolationCursor(sqlite3 *db, const Db::Sql::SmartCStatement &stmt) : Db::Sql::Cursor(db, stmt) {};
 
    protected:
     int clearBindings() override {
         return SQLITE_MISUSE;
     }
 };
-}
