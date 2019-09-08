@@ -35,7 +35,9 @@ set(TEST_FILES
     main.cpp
     foo_test.cpp
     database/database_client_test.cpp
+    database/database_exception_test.cpp
     database/sqlite_cursor_test.cpp
+    database/sqlite_exception_test.cpp
     )
 
 # Now simply link against gtest or gtest_main as needed.
