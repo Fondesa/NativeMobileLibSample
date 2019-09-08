@@ -12,6 +12,7 @@ option(ENABLE_TESTS_COVERAGE "Enable the coverage for tests" ON)
 set(LIB_SOURCE_FILES
     src/foo.cpp
     src/core/compatible_bad_optional_access_exception.cpp
+    src/database/smart_c_statement.cpp
     src/note/note.cpp
     src/note/draft.cpp
     src/note/in_memory_note_repository.cpp

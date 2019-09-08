@@ -5,17 +5,7 @@
 
 namespace Db::Sql {
 
-Statement::Statement(sqlite3 *db, std::string sql) {
-    auto movedSql = std::move(sql);
-    int rc = sqlite3_prepare_v2(db, movedSql.c_str(), -1, &stmt, nullptr);
-    if (rc != SQLITE_OK) {
-        throw Db::Sql::Exception(db);
-    }
-}
-
-Statement::~Statement() {
-    sqlite3_finalize(stmt);
-}
+Statement::Statement(sqlite3 *db, std::string sql) : stmt(db, sql) {}
 
 void Statement::executeVoid() {
     if (sqlite3_step(stmt) != SQLITE_DONE) {

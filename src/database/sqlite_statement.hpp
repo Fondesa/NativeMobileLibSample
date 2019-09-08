@@ -3,14 +3,13 @@
 #include <string>
 #include "sqlite3/sqlite3.h"
 #include "database_statement.hpp"
+#include "smart_c_statement.hpp"
 
 namespace Db::Sql {
 
 class Statement : public Db::Statement {
    public:
     Statement(sqlite3 *db, std::string sql);
-
-    ~Statement();
 
    protected:
     void executeVoid() override;
@@ -30,6 +29,6 @@ class Statement : public Db::Statement {
     void bindBool(int colIndex, bool value) override;
 
    private:
-    sqlite3_stmt *stmt{};
+    SmartCStatement stmt;
 };
 }
