@@ -7,9 +7,14 @@ SmartCStatement::SmartCStatement(sqlite3 *db, std::string &query) :
     originalStmt(nullptr),
     refCount(nullptr) {
 
-    int rc = sqlite3_prepare_v2(db, query.c_str(), static_cast<int>(query.size()), &originalStmt, nullptr);
+    int rc = sqlite3_prepare_v2(db, query.c_str(), -1, &originalStmt, nullptr);
     if (rc != SQLITE_OK) {
         throw Db::Sql::Exception(db);
+    }
+    if (!originalStmt) {
+        // When the query is empty for example, SQLite returns SQLITE_OK without initializing the pointer
+        // to the statement.
+        throw Db::Sql::Exception("Can't generate any statement from the query \"" + query + "\".");
     }
     // Initialize the reference counter of the sqlite3_stmt :
     // used to share the mStmtPtr between Statement and Column objects;
