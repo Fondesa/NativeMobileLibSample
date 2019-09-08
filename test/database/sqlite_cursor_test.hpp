@@ -18,4 +18,24 @@ class SQLiteCursorTest : public ::testing::Test {
 
     std::shared_ptr<Db::Sql::Cursor> selectAll();
 };
+
+class ResetViolationCursor : public Db::Sql::Cursor {
+   public:
+    ResetViolationCursor(sqlite3 *db, const SmartCStatement &stmt): Db::Sql::Cursor(db, stmt) {};
+
+   protected:
+    int reset() override {
+        return SQLITE_MISUSE;
+    }
+};
+
+class ClearBindingsViolationCursor : public Db::Sql::Cursor {
+   public:
+    ClearBindingsViolationCursor(sqlite3 *db, const SmartCStatement &stmt): Db::Sql::Cursor(db, stmt) {};
+
+   protected:
+    int clearBindings() override {
+        return SQLITE_MISUSE;
+    }
+};
 }
