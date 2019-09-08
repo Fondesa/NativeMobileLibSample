@@ -9,7 +9,7 @@ namespace Db::Sql {
 
 class Cursor : public Db::Cursor {
    public:
-    explicit Cursor(SmartCStatement stmt);
+    explicit Cursor(const SmartCStatement& stmt);
 
     ~Cursor();
 

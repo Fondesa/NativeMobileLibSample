@@ -3,7 +3,7 @@
 
 namespace Db::Sql {
 
-Cursor::Cursor(SmartCStatement stmt) : stmt(std::move(stmt)) {
+Cursor::Cursor(const SmartCStatement& stmt) : stmt(stmt) {
     columnCount = sqlite3_column_count(stmt);
 }
 
