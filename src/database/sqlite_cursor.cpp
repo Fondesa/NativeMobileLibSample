@@ -3,12 +3,13 @@
 
 namespace Db::Sql {
 
-Cursor::Cursor(const SmartCStatement &stmt) : stmt(stmt) {
+Cursor::Cursor(sqlite3 *db, const SmartCStatement &stmt) : db(db), stmt(stmt) {
     columnCount = sqlite3_column_count(stmt);
     hadNext = false;
 }
 
 Cursor::~Cursor() {
+    // TODO: each step?
     sqlite3_clear_bindings(stmt);
     sqlite3_reset(stmt);
 }
@@ -20,7 +21,7 @@ bool Cursor::next() {
     }
     if (rc != SQLITE_ROW) {
         hadNext = false;
-        throw Db::Sql::Exception(stmt);
+        throw Db::Sql::Exception(db);
     }
     return hadNext = true;
 }

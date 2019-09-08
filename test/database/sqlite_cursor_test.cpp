@@ -1,37 +1,48 @@
-#include "database_client.hpp"
 #include "sqlite_cursor_test.hpp"
+#include "database/smart_c_statement.hpp"
 #include "database/sqlite_exception.hpp"
 
+namespace Db::Sql {
+
 void SQLiteCursorTest::SetUp() {
-    Db::Client::create(":memory:");
-    db = Db::Client::get();
-    db->createStatement(
+    sqlite3_open(":memory:", &db);
+    sqlite3_step(Db::Sql::SmartCStatement(
+        db,
         "CREATE TABLE dummy_table ("
         "col_string TEXT NOT NULL, "
         "col_double REAL NOT NULL, "
         "col_int INTEGER NOT NULL, "
         "col_bool INTEGER NOT NULL"
         ")"
-    )->execute<void>();
+    ));
 }
 
 void SQLiteCursorTest::TearDown() {
-    Db::Client::release();
+    sqlite3_close(db);
 }
 
-void SQLiteCursorTest::insertRecord(std::string colText, double colDouble, int colInt, bool colBool) {
-    auto stmt = db->createStatement("INSERT INTO dummy_table (col_string, col_double, col_int, col_bool) "
-                                    "VALUES (?, ?, ?, ?)");
-    stmt->bind(1, std::move(colText));
-    stmt->bind(2, colDouble);
-    stmt->bind(3, colInt);
-    stmt->bind(4, colBool);
-    stmt->execute<void>();
+void SQLiteCursorTest::insertRecord(const std::string &colText, double colDouble, int colInt, bool colBool) {
+    auto intFromBool = colBool ? 1 : 0;
+    sqlite3_step(Db::Sql::SmartCStatement(
+        db,
+        "INSERT INTO dummy_table (col_string, col_double, col_int, col_bool) "
+        "VALUES (\"" +
+            colText +
+            "\", " +
+            std::to_string(colDouble) +
+            ", " +
+            std::to_string(colInt) +
+            ", " +
+            std::to_string(intFromBool) +
+            ")"
+    ));
 }
 
-std::shared_ptr<Db::Cursor> SQLiteCursorTest::selectAll() {
-    return db->createStatement("SELECT col_string, col_double, col_int, col_bool FROM dummy_table")->
-        execute<std::shared_ptr<Db::Cursor>>();
+std::shared_ptr<Db::Sql::Cursor> SQLiteCursorTest::selectAll() {
+    return std::make_shared<Db::Sql::Cursor>(db, Db::Sql::SmartCStatement(
+        db,
+        "SELECT col_string, col_double, col_int, col_bool FROM dummy_table"
+    ));
 }
 
 TEST_F(SQLiteCursorTest, givenZeroRecordsWhenNextIsInvokedThenNextReturnsFalse) {
@@ -202,4 +213,22 @@ TEST_F(SQLiteCursorTest, givenTrueNextWhenGetStringIsInvokedOnCorrectColumnThenV
     auto value = cursor->get<std::string>(0);
 
     EXPECT_EQ(expected, value);
+}
+
+TEST_F(SQLiteCursorTest, givenErrorInSqliteStepWhenNextIsInvokedThenExceptionIsThrown) {
+    auto cursor = selectAll();
+    // Store the original sqlite3_stmt pointer to re-assign it afterwards.
+    auto originalStmt = cursor->stmt.originalStmt;
+    // Assign it to nullptr because in this way we can simulate a SQLITE_MISUSE_BKPT error when sqlite3_step()
+    // will be invoked by cursor->next().
+    cursor->stmt.originalStmt = nullptr;
+
+    EXPECT_THROW(cursor->next(), Db::Sql::Exception);
+
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "UnusedValue"
+    // Re-assign the original value to avoid exceptions when the destructor of SmartCStatement will be invoked.
+    cursor->stmt.originalStmt = originalStmt;
+#pragma clang diagnostic pop
+}
 }

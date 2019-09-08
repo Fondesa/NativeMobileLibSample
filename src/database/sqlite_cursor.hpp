@@ -9,7 +9,7 @@ namespace Db::Sql {
 
 class Cursor : public Db::Cursor {
    public:
-    explicit Cursor(const SmartCStatement& stmt);
+    Cursor(sqlite3 *db, const SmartCStatement &stmt);
 
     ~Cursor();
 
@@ -29,8 +29,16 @@ class Cursor : public Db::Cursor {
     bool getBool(int colIndex) override;
 
    private:
+    sqlite3 *db{};
     SmartCStatement stmt;
     int columnCount;
     bool hadNext;
+
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "OCUnusedStructInspection"
+    // Expose the private variables to the following test method.
+    // This is not a good approach generally but otherwise we can't simulate errors using sqlite3_step().
+    friend class SQLiteCursorTest_givenErrorInSqliteStepWhenNextIsInvokedThenExceptionIsThrown_Test;
+#pragma clang diagnostic pop
 };
 }
