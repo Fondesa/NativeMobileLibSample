@@ -16,6 +16,8 @@ class Cursor : public Db::Cursor {
     bool next() override;
 
    protected:
+    void ensureNextWasInvoked() override;
+
     void ensureIndexInBounds(int colIndex) override;
 
     int getInt(int colIndex) override;
@@ -29,5 +31,6 @@ class Cursor : public Db::Cursor {
    private:
     SmartCStatement stmt;
     int columnCount;
+    bool hadNext;
 };
 }

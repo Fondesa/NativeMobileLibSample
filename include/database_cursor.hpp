@@ -12,6 +12,8 @@ class Cursor {
     T get(int colIndex);
 
    protected:
+    virtual void ensureNextWasInvoked() = 0;
+
     virtual void ensureIndexInBounds(int colIndex) = 0;
 
     virtual int getInt(int colIndex) = 0;

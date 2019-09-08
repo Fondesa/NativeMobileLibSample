@@ -6,6 +6,7 @@ namespace Db {
 
 template<>
 int Cursor::get(int colIndex) {
+    ensureNextWasInvoked();
     ensureIndexInBounds(colIndex);
 
     return getInt(colIndex);
@@ -13,6 +14,7 @@ int Cursor::get(int colIndex) {
 
 template<>
 double Cursor::get(int colIndex) {
+    ensureNextWasInvoked();
     ensureIndexInBounds(colIndex);
 
     return getDouble(colIndex);
@@ -20,6 +22,7 @@ double Cursor::get(int colIndex) {
 
 template<>
 std::string Cursor::get(int colIndex) {
+    ensureNextWasInvoked();
     ensureIndexInBounds(colIndex);
 
     return getString(colIndex);
@@ -27,6 +30,7 @@ std::string Cursor::get(int colIndex) {
 
 template<>
 bool Cursor::get(int colIndex) {
+    ensureNextWasInvoked();
     ensureIndexInBounds(colIndex);
 
     return getBool(colIndex);

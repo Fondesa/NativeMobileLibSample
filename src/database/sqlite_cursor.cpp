@@ -3,8 +3,9 @@
 
 namespace Db::Sql {
 
-Cursor::Cursor(const SmartCStatement& stmt) : stmt(stmt) {
+Cursor::Cursor(const SmartCStatement &stmt) : stmt(stmt) {
     columnCount = sqlite3_column_count(stmt);
+    hadNext = false;
 }
 
 Cursor::~Cursor() {
@@ -15,12 +16,20 @@ Cursor::~Cursor() {
 bool Cursor::next() {
     int rc = sqlite3_step(stmt);
     if (rc == SQLITE_DONE) {
-        return false;
+        return hadNext = false;
     }
     if (rc != SQLITE_ROW) {
+        hadNext = false;
         throw Db::Sql::Exception(stmt);
     }
-    return true;
+    return hadNext = true;
+}
+
+void Cursor::ensureNextWasInvoked() {
+    if (!hadNext) {
+        throw Db::Sql::Exception("The next() method returned false so it's " +
+            std::string("not possible to get the value of the columns"));
+    }
 }
 
 void Cursor::ensureIndexInBounds(int colIndex) {
