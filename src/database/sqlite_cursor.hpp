@@ -33,12 +33,5 @@ class Cursor : public Db::Cursor {
     SmartCStatement stmt;
     int columnCount;
     bool hadNext;
-
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "OCUnusedStructInspection"
-    // Expose the private variables to the following test method.
-    // This is not a good approach generally but otherwise we can't simulate errors using sqlite3_step().
-    friend class SQLiteCursorTest_givenErrorInSqliteStepWhenNextIsInvokedThenExceptionIsThrown_Test;
-#pragma clang diagnostic pop
 };
 }

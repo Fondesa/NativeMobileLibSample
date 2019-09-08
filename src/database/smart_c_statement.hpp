@@ -29,12 +29,5 @@ class SmartCStatement {
     sqlite3_stmt *originalStmt;      //!< Pointer to SQLite Statement Object
     unsigned int *refCount;  //!< Pointer to the heap allocated reference counter of the sqlite3_stmt
     //!< (to share it with Column objects)
-
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "OCUnusedStructInspection"
-    // Expose the private variables to the following test method.
-    // This is not a good approach generally but otherwise we can't simulate errors using sqlite3_step().
-    friend class SQLiteCursorTest_givenErrorInSqliteStepWhenNextIsInvokedThenExceptionIsThrown_Test;
-#pragma clang diagnostic pop
 };
 }
