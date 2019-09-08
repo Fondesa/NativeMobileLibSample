@@ -8,7 +8,7 @@ namespace Db::Sql {
 class SmartCStatement {
    public:
     // Prepare the statement and initialize its reference counter
-    SmartCStatement(sqlite3 *db, std::string &query);
+    SmartCStatement(sqlite3 *db, const std::string& query);
     // Copy constructor increments the ref counter
     SmartCStatement(const SmartCStatement &other);
     // Decrement the ref counter and finalize the sqlite3_stmt when it reaches 0

@@ -3,7 +3,7 @@
 
 namespace Db::Sql {
 
-SmartCStatement::SmartCStatement(sqlite3 *db, std::string &query) :
+SmartCStatement::SmartCStatement(sqlite3 *db, const std::string& query) :
     originalStmt(nullptr),
     refCount(nullptr) {
 
