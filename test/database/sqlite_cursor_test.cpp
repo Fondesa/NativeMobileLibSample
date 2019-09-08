@@ -11,7 +11,7 @@ void SQLiteCursorTest::SetUp() {
         "CREATE TABLE dummy_table ("
         "col_string TEXT NOT NULL, "
         "col_double REAL NOT NULL, "
-        "col_int INTEGER NOT NULL, "
+        "col_int INTEGER PRIMARY KEY, "
         "col_bool INTEGER NOT NULL"
         ")"
     ));
@@ -216,19 +216,17 @@ TEST_F(SQLiteCursorTest, givenTrueNextWhenGetStringIsInvokedOnCorrectColumnThenV
 }
 
 TEST_F(SQLiteCursorTest, givenErrorInSqliteStepWhenNextIsInvokedThenExceptionIsThrown) {
-    auto cursor = selectAll();
-    // Store the original sqlite3_stmt pointer to re-assign it afterwards.
-    auto originalStmt = cursor->stmt.originalStmt;
-    // Assign it to nullptr because in this way we can simulate a SQLITE_MISUSE_BKPT error when sqlite3_step()
-    // will be invoked by cursor->next().
-    cursor->stmt.originalStmt = nullptr;
+    insertRecord("text", 4.5, 1, true);
+    // We try to insert a record with the same id to simulate a constraint violation.
+    // The error code will be SQLITE_CONSTRAINT.
+    auto cursor = std::make_shared<Db::Sql::Cursor>(db, Db::Sql::SmartCStatement(
+        db,
+        "INSERT INTO dummy_table (col_string, col_double, col_int, col_bool) "
+        "VALUES (\"test\", 6.7, 1, 0)"
+        ));
 
     EXPECT_THROW(cursor->next(), Db::Sql::Exception);
-
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "UnusedValue"
-    // Re-assign the original value to avoid exceptions when the destructor of SmartCStatement will be invoked.
-    cursor->stmt.originalStmt = originalStmt;
-#pragma clang diagnostic pop
 }
+
+// TODO: test on dtor???
 }
