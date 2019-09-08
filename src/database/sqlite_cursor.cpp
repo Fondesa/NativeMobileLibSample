@@ -8,21 +8,19 @@ Cursor::Cursor(sqlite3 *db, const SmartCStatement &stmt) : db(db), stmt(stmt) {
     hadNext = false;
 }
 
-Cursor::~Cursor() {
-    // TODO: each step?
-    sqlite3_clear_bindings(stmt);
-    sqlite3_reset(stmt);
-}
-
 bool Cursor::next() {
     int rc = sqlite3_step(stmt);
     if (rc == SQLITE_DONE) {
+        if (clearBindings() != SQLITE_OK || reset() != SQLITE_OK) {
+            throw Db::Sql::Exception(db);
+        }
         return hadNext = false;
     }
     if (rc != SQLITE_ROW) {
         hadNext = false;
         throw Db::Sql::Exception(db);
     }
+
     return hadNext = true;
 }
 
@@ -84,5 +82,12 @@ std::string Cursor::getString(int colIndex) {
 
 bool Cursor::getBool(int colIndex) {
     return getInt(colIndex) != 0;
+}
+int Cursor::reset() {
+    return sqlite3_reset(stmt);
+}
+
+int Cursor::clearBindings() {
+    return sqlite3_clear_bindings(stmt);
 }
 }

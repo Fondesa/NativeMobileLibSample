@@ -33,10 +33,7 @@ std::optional<int> Statement::executeInt() {
     if (sqlite3_step(stmt) != SQLITE_DONE) {
         throw Db::Sql::Exception(db);
     }
-    if (sqlite3_clear_bindings(stmt) != SQLITE_OK) {
-        throw Db::Sql::Exception(db);
-    }
-    if (sqlite3_reset(stmt) != SQLITE_OK) {
+    if (sqlite3_clear_bindings(stmt) != SQLITE_OK || sqlite3_reset(stmt) != SQLITE_OK) {
         throw Db::Sql::Exception(db);
     }
     return result;
@@ -57,10 +54,7 @@ std::optional<std::string> Statement::executeString() {
     if (sqlite3_step(stmt) != SQLITE_DONE) {
         throw Db::Sql::Exception(db);
     }
-    if (sqlite3_clear_bindings(stmt) != SQLITE_OK) {
-        throw Db::Sql::Exception(db);
-    }
-    if (sqlite3_reset(stmt) != SQLITE_OK) {
+    if (sqlite3_clear_bindings(stmt) != SQLITE_OK || sqlite3_reset(stmt) != SQLITE_OK) {
         throw Db::Sql::Exception(db);
     }
     return result;

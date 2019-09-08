@@ -223,10 +223,32 @@ TEST_F(SQLiteCursorTest, givenErrorInSqliteStepWhenNextIsInvokedThenExceptionIsT
         db,
         "INSERT INTO dummy_table (col_string, col_double, col_int, col_bool) "
         "VALUES (\"test\", 6.7, 1, 0)"
-        ));
+    ));
 
     EXPECT_THROW(cursor->next(), Db::Sql::Exception);
 }
 
-// TODO: test on dtor???
+TEST_F(SQLiteCursorTest, givenErrorInResetWhenNextIsInvokedThenExceptionIsThrown) {
+    // This cursor simply overrides the method reset() to return always SQLITE_MISUSE.
+    // The result of sqlite3_reset() should be mocked since it depends on the version of SQLite used.
+    // In this way we can ensure the compatibility among the SQLite versions.
+    auto cursor = std::make_shared<ResetViolationCursor>(db, Db::Sql::SmartCStatement(
+        db,
+        "SELECT col_string, col_double, col_int, col_bool FROM dummy_table")
+    );
+
+    EXPECT_THROW(cursor->next(), Db::Sql::Exception);
+}
+
+TEST_F(SQLiteCursorTest, givenErrorInClearBindingsWhenNextIsInvokedThenExceptionIsThrown) {
+    // This cursor simply overrides the method clearBindings() to return always SQLITE_MISUSE.
+    // The result of sqlite3_clear_bindings() should be mocked since it depends on the version of SQLite used.
+    // In this way we can ensure the compatibility among the SQLite versions.
+    auto cursor = std::make_shared<ClearBindingsViolationCursor>(db, Db::Sql::SmartCStatement(
+        db,
+        "SELECT col_string, col_double, col_int, col_bool FROM dummy_table")
+    );
+
+    EXPECT_THROW(cursor->next(), Db::Sql::Exception);
+}
 }

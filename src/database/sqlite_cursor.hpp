@@ -11,8 +11,6 @@ class Cursor : public Db::Cursor {
    public:
     Cursor(sqlite3 *db, const SmartCStatement &stmt);
 
-    ~Cursor();
-
     bool next() override;
 
    protected:
@@ -27,6 +25,10 @@ class Cursor : public Db::Cursor {
     std::string getString(int colIndex) override;
 
     bool getBool(int colIndex) override;
+
+    virtual int reset();
+
+    virtual int clearBindings();
 
    private:
     sqlite3 *db{};
