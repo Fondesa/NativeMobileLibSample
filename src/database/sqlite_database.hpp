@@ -14,7 +14,7 @@ class Database : public Db::Database {
 
     void executeTransaction(std::function<void()> transact) const override;
 
-    std::shared_ptr<Db::Statement> createStatement(std::string sql) const override;
+    [[nodiscard]] std::shared_ptr<Db::Statement> createStatement(std::string sql) const override;
 
    private:
     sqlite3 *db{};
