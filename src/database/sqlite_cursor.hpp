@@ -3,12 +3,13 @@
 #include <string>
 #include "sqlite3/sqlite3.h"
 #include "database_cursor.hpp"
+#include "smart_c_statement.hpp"
 
 namespace Db::Sql {
 
 class Cursor : public Db::Cursor {
    public:
-    explicit Cursor(sqlite3_stmt *stmt);
+    explicit Cursor(SmartCStatement stmt);
 
     ~Cursor();
 
@@ -26,7 +27,7 @@ class Cursor : public Db::Cursor {
     bool getBool(int colIndex) override;
 
    private:
-    sqlite3_stmt *stmt;
+    SmartCStatement stmt;
     int columnCount;
 };
 }
