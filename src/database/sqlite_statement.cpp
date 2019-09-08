@@ -82,7 +82,6 @@ void Statement::bindDouble(int colIndex, double value) {
     if (rc != SQLITE_OK) {
         throw Db::Sql::Exception(stmt);
     }
-
 }
 
 void Statement::bindString(int colIndex, std::string value) {
