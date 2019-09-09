@@ -34,6 +34,7 @@ add_subdirectory(
 set(TEST_FILES
     main.cpp
     foo_test.cpp
+    core/compat_bad_optional_access_exception_test.cpp
     database/database_client_test.cpp
     database/database_exception_test.cpp
     database/smart_c_statement_test.cpp
