@@ -6,6 +6,23 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_DIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR})
 
+# Download and unpack sqlite3 at configure time.
+configure_file(CMakeLists.txt.in sqlite3-download/CMakeLists.txt)
+
+execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
+    RESULT_VARIABLE result
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/sqlite3-download)
+if (result)
+    message(FATAL_ERROR "CMake step for sqlite failed: ${result}")
+endif ()
+
+execute_process(COMMAND ${CMAKE_COMMAND} --build .
+    RESULT_VARIABLE result
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/sqlite3-download)
+if (result)
+    message(FATAL_ERROR "Build step for sqlite failed: ${result}")
+endif ()
+
 option(ENABLE_TESTS "Enable the test target" ON)
 option(ENABLE_TESTS_COVERAGE "Enable the coverage for tests" ON)
 
@@ -47,7 +64,8 @@ set(PUBLIC_HEADER_FILES
     )
 
 set(SQLITE3_SOURCE_FILES
-    libs/sqlite3/sqlite3.c
+    # This will be downloaded using ExternalProject_Add().
+    ${CMAKE_CURRENT_BINARY_DIR}/libs/src/sqlite3/sqlite3.c
     )
 
 set(MERGED_SOURCE_FILES ${LIB_SOURCE_FILES} ${SQLITE3_SOURCE_FILES})
@@ -65,8 +83,9 @@ set_target_properties(${TARGET_NAME} PROPERTIES
 
 target_include_directories(${TARGET_NAME}
     PUBLIC include
-    PUBLIC libs
     PUBLIC src
+    # Includes the directories downloaded with ExternalProject_Add().
+    PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/libs/src
     )
 
 # Defines where the destination of tis library when it will be exported.
