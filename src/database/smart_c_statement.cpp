@@ -3,7 +3,7 @@
 
 namespace Db::Sql {
 
-SmartCStatement::SmartCStatement(sqlite3 *db, const std::string& query) :
+SmartCStatement::SmartCStatement(sqlite3 *db, const std::string &query) :
     originalStmt(nullptr),
     refCount(nullptr) {
 
@@ -12,35 +12,36 @@ SmartCStatement::SmartCStatement(sqlite3 *db, const std::string& query) :
         throw Db::Sql::Exception(db);
     }
     if (!originalStmt) {
-        // When the query is empty for example, SQLite returns SQLITE_OK without initializing the pointer
-        // to the statement.
+        // When the query is empty for example, SQLite returns SQLITE_OK without initializing the statement.
         throw Db::Sql::Exception("Can't generate any statement from the query \"" + query + "\".");
     }
-    // Initialize the reference counter of the sqlite3_stmt :
-    // used to share the mStmtPtr between Statement and Column objects;
-    // This is needed to enable Column objects to live longer than the Statement object it refers to.
+    // The reference count is 1 since we have to count the object which created this statement.
     refCount = new unsigned int(1);
 }
 
 SmartCStatement::SmartCStatement(const SmartCStatement &other) :
     originalStmt(other.originalStmt),
     refCount(other.refCount) {
-    // Increment the reference counter of the sqlite3_stmt,
-    // asking not to finalize the sqlite3_stmt during the lifetime of the new object
+    // Increment the reference counter of the sqlite3_stmt since it has been copied somewhere else.
     ++(*refCount);
 }
 
 SmartCStatement::~SmartCStatement() {
     if (refCount && --(*refCount) == 0) {
-        // If count reaches zero, finalize the sqlite3_stmt, as no Statement nor Column object use it anymore.
-        // No need to check the return code, as it is the same as the last statement evaluation.
+        // If the count reaches zero, finalize the sqlite3_stmt, as it's not owned by someone anymore.
+        // Since we are in the destructor, there's no need to check the result code of this API because it won't be used.
         sqlite3_finalize(originalStmt);
-
-        // and delete the reference counter
+        // Delete the reference counter.
         delete refCount;
         refCount = nullptr;
         originalStmt = nullptr;
     }
+}
+
+unsigned int SmartCStatement::useCount() {
+    // We don't need to check the validity of the pointer since this method requires a valid instance of SmartCStatement
+    // to be invoked and if SmartCStatement is initialized then refCount is initialized too.
+    return *refCount;
 }
 
 SmartCStatement::operator sqlite3_stmt *() const {
