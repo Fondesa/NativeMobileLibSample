@@ -10,7 +10,6 @@ option(ENABLE_TESTS "Enable the test target" ON)
 option(ENABLE_TESTS_COVERAGE "Enable the coverage for tests" ON)
 
 set(LIB_SOURCE_FILES
-    src/foo.cpp
     src/core/compat_bad_optional_access_exception.cpp
     src/database/smart_c_statement.cpp
     src/note/note.cpp
@@ -41,7 +40,6 @@ set(PUBLIC_HEADER_FILES
     include/database_cursor.hpp
     include/database_exception.hpp
     include/draft.hpp
-    include/foo.hpp
     include/note.hpp
     include/note_database_initializer.hpp
     include/notes_interactor.hpp
