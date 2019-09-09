@@ -1,0 +1,15 @@
+cmake_minimum_required(VERSION 3.10)
+
+project(sqlite3-download NONE)
+
+include(ExternalProject)
+ExternalProject_Add(sqlite3
+  GIT_REPOSITORY    https://github.com/Fondesa/SQLiteAmalgamation.git
+  GIT_TAG           3.29.0
+  SOURCE_DIR        "${CMAKE_CURRENT_BINARY_DIR}/libs/src/sqlite3"
+  BINARY_DIR        "${CMAKE_CURRENT_BINARY_DIR}/libs/build/sqlite3"
+  CONFIGURE_COMMAND ""
+  BUILD_COMMAND     ""
+  INSTALL_COMMAND   ""
+  TEST_COMMAND      ""
+)
