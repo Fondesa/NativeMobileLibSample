@@ -224,10 +224,12 @@ if (ENABLE_TESTS)
             --directory ${CMAKE_BINARY_DIR}
             --gcov-tool ${CMAKE_SOURCE_DIR}/llvm-gcov.sh
             --capture
+            --rc lcov_branch_coverage=1
             -o ${COVERAGE_OUTPUT_RAW_FILE_PATH}
             # Exclude the unwanted files from the generated report.
             COMMAND ${LCOV_PATH}
             --remove ${COVERAGE_OUTPUT_RAW_FILE_PATH}
+            --rc lcov_branch_coverage=1
             -o ${COVERAGE_OUTPUT_FILTERED_FILE_PATH}
             # The default /usr/include dir of Xcode shouldn't be included since we are not testing those files.
             '*/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/*'
@@ -241,6 +243,7 @@ if (ENABLE_TESTS)
             COMMAND ${GENHTML_PATH}
             ${COVERAGE_OUTPUT_FILTERED_FILE_PATH}
             -o ${COVERAGE_OUTPUT_HTML_DIR}
+            --rc lcov_branch_coverage=1
             COMMENT "Generating the code coverage report...")
 
         # Run all the tests before generating the report.
