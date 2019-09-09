@@ -88,7 +88,7 @@ target_include_directories(${TARGET_NAME}
     PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/libs/src
     )
 
-# Defines where the destination of tis library when it will be exported.
+# Defines the destination of this library when it will be exported.
 set(EXPORTED_LIB_PATH $ENV{PREBUILT_LIBS}/nativemobile)
 set(QUALIFIED_EXPORTED_LIB_PATH ${EXPORTED_LIB_PATH}/${SYSTEM_QUALIFIER})
 
