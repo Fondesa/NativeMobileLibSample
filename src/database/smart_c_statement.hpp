@@ -5,29 +5,60 @@
 
 namespace Db::Sql {
 
+/**
+ * This class is used to share a sqlite3_stmt pointer between different objects and to finalize it when it's
+ * no longer owned by someone.
+ */
 class SmartCStatement {
    public:
-    // Prepare the statement and initialize its reference counter
+    /**
+     * The main constructor.
+     * Prepares the sqlite3_stmt of the given query and initializes its reference counter.
+     *
+     * @param db the pointer to the sqlite3 database which prepares the statement from the given query.
+     * @param query the query used to create the statement.
+     */
     SmartCStatement(sqlite3 *db, const std::string &query);
-    // Copy constructor increments the ref counter
+
+    /**
+     * The copy constructor.
+     *
+     * @param other the other instance of this class which will be copied.
+     */
     SmartCStatement(const SmartCStatement &other);
-    // Decrement the ref counter and finalize the sqlite3_stmt when it reaches 0
+
+    /**
+     * The destructor.
+     * It decrements the reference counter and finalizes the sqlite3_stmt when it reaches 0.
+     */
     ~SmartCStatement();
+
+    /**
+     * Gets the number of the {@link SmartCStatement} objects referring to the same sqlite3_stmt*.
+     *
+     * @return the number of the owners of this object.
+     */
+    unsigned int useCount();
 
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "google-explicit-constructor"
-    /// Inline cast operator returning the pointer to SQLite Statement Object
+    /**
+     * The cast operator returns the pointer to sqlite3_stmt.
+     * This is useful to use this type directly with the SQLite C api.
+     */
     operator sqlite3_stmt *() const;
 #pragma clang diagnostic pop
 
    private:
-    /// @{ Unused/forbidden copy/assignment operator
-    SmartCStatement &operator=(const SmartCStatement &other);
-    /// @}
+    // Points to the original statement.
+    sqlite3_stmt *originalStmt;
+    // Points to the heap allocated reference counter of the sqlite3_stmt.
+    // It's used to make the owning object to live longer than the object which originally created it.
+    // e.g. The Db::Sql::Cursor should live longer than the Db::Sql::Statement which created it.
+    unsigned int *refCount;
 
-   private:
-    sqlite3_stmt *originalStmt;      //!< Pointer to SQLite Statement Object
-    unsigned int *refCount;  //!< Pointer to the heap allocated reference counter of the sqlite3_stmt
-    //!< (to share it with Column objects)
+    // The forbidden assignment operator.
+    // Making it private avoids any assignments.
+    SmartCStatement &operator=(const SmartCStatement &other);
 };
 }
