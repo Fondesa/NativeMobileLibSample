@@ -1,6 +1,6 @@
 # Notes - native library
 
-This library contains all the cross-platform native code, written in C/C++, currently used by the Notes mobile apps:
+This library contains all the cross-platform native code, written in C/C++, currently used by the _Notes_ mobile apps:
 - [Android](https://github.com/Fondesa/notes-android)
 - [iOS](https://github.com/Fondesa/notes-ios)
 
