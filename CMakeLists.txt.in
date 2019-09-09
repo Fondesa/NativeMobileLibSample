@@ -4,7 +4,7 @@ project(sqlite3-download NONE)
 
 include(ExternalProject)
 ExternalProject_Add(sqlite3
-  GIT_REPOSITORY    https://github.com/Fondesa/SQLiteAmalgamation.git
+  GIT_REPOSITORY    https://github.com/Fondesa/sqlite-amalgamation.git
   GIT_TAG           3.29.0
   SOURCE_DIR        "${CMAKE_CURRENT_BINARY_DIR}/libs/src/sqlite3"
   BINARY_DIR        "${CMAKE_CURRENT_BINARY_DIR}/libs/build/sqlite3"
