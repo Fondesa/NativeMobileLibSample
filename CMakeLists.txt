@@ -5,6 +5,11 @@ set(OUTPUT_DIR ${CMAKE_BINARY_DIR}/out)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_DIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR})
+# The lib name will be used for:
+# - the output library files
+# - the iOS framework identifier
+# - the name of the directory inside $PREBUILT_LIBS
+set(LIB_NAME notesnative)
 
 # Download and unpack sqlite3 at configure time.
 configure_file(CMakeLists.txt.in sqlite3-download/CMakeLists.txt)
@@ -78,7 +83,7 @@ add_library(${TARGET_NAME} SHARED ${MERGED_SOURCE_FILES} ${PUBLIC_HEADER_FILES})
 
 # Change the output name for the generated target.
 set_target_properties(${TARGET_NAME} PROPERTIES
-    OUTPUT_NAME "nativemobile"
+    OUTPUT_NAME ${LIB_NAME}
     )
 
 target_include_directories(${TARGET_NAME}
@@ -89,12 +94,12 @@ target_include_directories(${TARGET_NAME}
     )
 
 # Defines the destination of this library when it will be exported.
-set(EXPORTED_LIB_PATH $ENV{PREBUILT_LIBS}/nativemobile)
+set(EXPORTED_LIB_PATH $ENV{PREBUILT_LIBS}/${LIB_NAME})
 set(QUALIFIED_EXPORTED_LIB_PATH ${EXPORTED_LIB_PATH}/${SYSTEM_QUALIFIER})
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL Android)
-    set(LIB_FILE_PATH ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/libnativemobile.so)
-    set(LIB_SYM_PATH ${QUALIFIED_EXPORTED_LIB_PATH}/${ANDROID_ABI}/libnativemobile.so)
+    set(LIB_FILE_PATH ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/lib${LIB_NAME}.so)
+    set(LIB_SYM_PATH ${QUALIFIED_EXPORTED_LIB_PATH}/${ANDROID_ABI}/lib${LIB_NAME}.so)
     # For Android old APIs it's necessary to support both hash styles.
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--hash-style=both")
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--hash-style=both")
@@ -112,7 +117,7 @@ elseif (${CMAKE_SYSTEM_NAME} STREQUAL iOS)
     set_target_properties(${TARGET_NAME} PROPERTIES
         FRAMEWORK TRUE
         FRAMEWORK_VERSION C
-        MACOSX_FRAMEWORK_IDENTIFIER com.fondesa.nativemobilelib
+        MACOSX_FRAMEWORK_IDENTIFIER com.fondesa.${LIB_NAME}
         PUBLIC_HEADER "${FRAMEWORK_PUBLIC_HEADERS}"
         IOS_INSTALL_COMBINED YES
         OSX_ARCHITECTURES "armv7;armv7s;arm64;i386;x86_64"
@@ -121,8 +126,8 @@ elseif (${CMAKE_SYSTEM_NAME} STREQUAL iOS)
         )
 
 elseif (${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
-    set(LIB_FILE_PATH ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/libnativemobile.dylib)
-    set(LIB_SYM_PATH ${QUALIFIED_EXPORTED_LIB_PATH}/libnativemobile.dylib)
+    set(LIB_FILE_PATH ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/lib${LIB_NAME}.dylib)
+    set(LIB_SYM_PATH ${QUALIFIED_EXPORTED_LIB_PATH}/lib${LIB_NAME}.dylib)
 else ()
     message(FATAL_ERROR "The system ${CMAKE_SYSTEM_NAME} is not supported")
 endif ()
@@ -131,7 +136,7 @@ if (DEFINED LIB_FILE_PATH AND DEFINED LIB_SYM_PATH)
     # Get the directory containing the symlink.
     get_filename_component(LIB_SYM_PATH_DIR ${LIB_SYM_PATH} DIRECTORY)
 
-    set(INCLUDE_DIR_PATH include)
+    set(INCLUDE_DIR_PATH ${CMAKE_SOURCE_DIR}/include)
     set(INCLUDE_SYM_PATH ${EXPORTED_LIB_PATH}/include)
 
     add_custom_command(OUTPUT export-headers SYMBOLIC
