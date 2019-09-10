@@ -9,9 +9,9 @@ jobs:
     - stage: build
       name: Darwin
       script: ./build.sh --darwin
-    - script: cmake --version
+    - script: echo "TODO Android build"
       name: Android
-    - script: clang --version
+    - script: ./build.sh --ios
       name: iOS
     # The test stage will run all the tests and it will calculate the coverage.
     - stage: test
