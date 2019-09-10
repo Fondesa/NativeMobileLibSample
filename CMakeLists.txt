@@ -8,7 +8,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR})
 # The lib name will be used for:
 # - the output library files
 # - the iOS framework identifier
-# - the name of the directory inside $PREBUILT_LIBS
+# - the name of the directory inside $PREBUILT_LIBS (if defined)
 set(LIB_NAME notesnative)
 
 # Download and unpack sqlite3 at configure time.
@@ -93,13 +93,17 @@ target_include_directories(${TARGET_NAME}
     PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/libs/src
     )
 
-# Defines the destination of this library when it will be exported.
-set(EXPORTED_LIB_PATH $ENV{PREBUILT_LIBS}/${LIB_NAME})
-set(QUALIFIED_EXPORTED_LIB_PATH ${EXPORTED_LIB_PATH}/${SYSTEM_QUALIFIER})
+if (DEFINED $ENV{PREBUILT_LIBS})
+    # Defines the destination of this library when it will be exported.
+    set(EXPORTED_LIB_PATH $ENV{PREBUILT_LIBS}/${LIB_NAME})
+    set(QUALIFIED_EXPORTED_LIB_PATH ${EXPORTED_LIB_PATH}/${SYSTEM_QUALIFIER})
+endif ()
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL Android)
-    set(LIB_FILE_PATH ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/lib${LIB_NAME}.so)
-    set(LIB_SYM_PATH ${QUALIFIED_EXPORTED_LIB_PATH}/${ANDROID_ABI}/lib${LIB_NAME}.so)
+    if (DEFINED $ENV{PREBUILT_LIBS})
+        set(LIB_FILE_PATH ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/lib${LIB_NAME}.so)
+        set(LIB_SYM_PATH ${QUALIFIED_EXPORTED_LIB_PATH}/${ANDROID_ABI}/lib${LIB_NAME}.so)
+    endif ()
     # For Android old APIs it's necessary to support both hash styles.
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--hash-style=both")
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--hash-style=both")
@@ -126,8 +130,10 @@ elseif (${CMAKE_SYSTEM_NAME} STREQUAL iOS)
         )
 
 elseif (${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
-    set(LIB_FILE_PATH ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/lib${LIB_NAME}.dylib)
-    set(LIB_SYM_PATH ${QUALIFIED_EXPORTED_LIB_PATH}/lib${LIB_NAME}.dylib)
+    if (DEFINED $ENV{PREBUILT_LIBS})
+        set(LIB_FILE_PATH ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/lib${LIB_NAME}.dylib)
+        set(LIB_SYM_PATH ${QUALIFIED_EXPORTED_LIB_PATH}/lib${LIB_NAME}.dylib)
+    endif ()
 else ()
     message(FATAL_ERROR "The system ${CMAKE_SYSTEM_NAME} is not supported")
 endif ()

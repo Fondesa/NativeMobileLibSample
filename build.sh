@@ -61,9 +61,12 @@ function ios() {
     build_universal_framework
 
     local libFilePath=${iosUniversalFrameworkDir}/${iosFrameworkFileName}
-    local libSymPath=${PREBUILT_LIBS}/${libName}/ios
-    mkdir -p "$libSymPath"
-    ln -sf ${libFilePath} ${libSymPath}
+    if [[ ! -z "${PREBUILT_LIBS}" ]]; then
+        local libSymPath=${PREBUILT_LIBS}/${libName}/ios
+        echo "Symlinking the iOS library from \"${libFilePath}\" to \"${libSymPath}\""
+        mkdir -p "$libSymPath"
+        ln -sf ${libFilePath} ${libSymPath}
+    fi
 }
 
 function build_universal_framework() {
