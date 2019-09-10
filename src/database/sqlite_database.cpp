@@ -6,10 +6,10 @@
 
 namespace Db::Sql {
 
-Database::Database(std::string dbPath) {
+Database::Database(std::string dbPath, int flags) {
     auto movedPath = std::move(dbPath);
-    int canNotOpen = sqlite3_open(movedPath.c_str(), &db);
-    if (canNotOpen) {
+    int rc = sqlite3_open_v2(movedPath.c_str(), &db, flags, nullptr);
+    if (rc != SQLITE_OK) {
         throw Db::Sql::Exception(db);
     }
     std::cout << "Opened database successfully" << std::endl;

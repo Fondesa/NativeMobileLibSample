@@ -38,6 +38,7 @@ set(TEST_FILES
     database/database_exception_test.cpp
     database/smart_c_statement_test.cpp
     database/sqlite_cursor_test.cpp
+    database/sqlite_database_test.cpp
     database/sqlite_exception_test.cpp
     )
 
