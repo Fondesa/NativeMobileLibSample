@@ -5,11 +5,15 @@ osx_image: xcode10.2
 
 jobs:
   include:
+    # The build stage will build the library for Darwin, Android and iOS.
     - stage: build
-      script:
-        - clang --version
-    - script:
-        - cmake --version
+      name: Darwin
+      script: ./build.sh --darwin
+    - script: cmake --version
+      name: Android
+    - script: clang --version
+      name: iOS
+    # The test stage will run all the tests and it will calculate the coverage.
     - stage: test
       script:
         - echo "Test stage"
