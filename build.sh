@@ -31,6 +31,11 @@ function darwin() {
 }
 
 function android() {
+    if [[ -z "${ANDROID_NDK}" ]]; then
+        echo "The environment variable ANDROID_NDK must be set before building the library for Android."
+        exit 1
+    fi
+
     local abis=(armeabi-v7a arm64-v8a x86 x86_64)
     for abi in "${abis[@]}"; do
         build_android_abi ${abi}
