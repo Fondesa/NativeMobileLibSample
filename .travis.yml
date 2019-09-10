@@ -1,5 +1,7 @@
 language: cpp
 compiler: clang
+os: osx
+osx_image: xcode10.2
 script:
   - clang --version
   - cmake --version
