@@ -93,14 +93,14 @@ target_include_directories(${TARGET_NAME}
     PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/libs/src
     )
 
-if (DEFINED $ENV{PREBUILT_LIBS})
+if (DEFINED ENV{PREBUILT_LIBS})
     # Defines the destination of this library when it will be exported.
     set(EXPORTED_LIB_PATH $ENV{PREBUILT_LIBS}/${LIB_NAME})
     set(QUALIFIED_EXPORTED_LIB_PATH ${EXPORTED_LIB_PATH}/${SYSTEM_QUALIFIER})
 endif ()
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL Android)
-    if (DEFINED $ENV{PREBUILT_LIBS})
+    if (DEFINED ENV{PREBUILT_LIBS})
         set(LIB_FILE_PATH ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/lib${LIB_NAME}.so)
         set(LIB_SYM_PATH ${QUALIFIED_EXPORTED_LIB_PATH}/${ANDROID_ABI}/lib${LIB_NAME}.so)
     endif ()
@@ -130,13 +130,15 @@ elseif (${CMAKE_SYSTEM_NAME} STREQUAL iOS)
         )
 
 elseif (${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
-    if (DEFINED $ENV{PREBUILT_LIBS})
+    if (DEFINED ENV{PREBUILT_LIBS})
         set(LIB_FILE_PATH ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/lib${LIB_NAME}.dylib)
         set(LIB_SYM_PATH ${QUALIFIED_EXPORTED_LIB_PATH}/lib${LIB_NAME}.dylib)
     endif ()
 else ()
     message(FATAL_ERROR "The system ${CMAKE_SYSTEM_NAME} is not supported")
 endif ()
+
+add_custom_target(build-lib)
 
 if (DEFINED LIB_FILE_PATH AND DEFINED LIB_SYM_PATH)
     # Get the directory containing the symlink.
@@ -162,6 +164,9 @@ if (DEFINED LIB_FILE_PATH AND DEFINED LIB_SYM_PATH)
 
     # The library must be built before the library is symlinked because the library file must be generated.
     add_dependencies(export-lib ${TARGET_NAME})
+    add_dependencies(build-lib export-lib)
+else()
+    add_dependencies(build-lib ${TARGET_NAME})
 endif ()
 
 if (ENABLE_TESTS)

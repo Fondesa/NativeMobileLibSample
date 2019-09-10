@@ -27,7 +27,7 @@ function darwin() {
     echo "Building lib for this system..."
     cmake -B${darwinBuildDir} \
         -DENABLE_TESTS=OFF
-    (cd ${darwinBuildDir} && make export-lib)
+    (cd ${darwinBuildDir} && make build-lib)
 }
 
 function android() {
@@ -48,7 +48,7 @@ function build_android_abi() {
         -DANDROID_PLATFORM=android-16 \
         -DANDROID_ABI=${abi}
 
-    (cd ${abiBuildDir} && make export-lib)
+    (cd ${abiBuildDir} && make build-lib)
 }
 
 function ios() {
