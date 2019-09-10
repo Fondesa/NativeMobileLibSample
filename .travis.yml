@@ -9,11 +9,18 @@ jobs:
     - stage: build
       name: Darwin
       script: ./build.sh --darwin
-    - script: echo "TODO Android build"
-      name: Android
-    - script: ./build.sh --ios
-      name: iOS
+    - name: Android
+      script: ./build.sh --android
+      env: BUILD_ANDROID=true
+    - name: iOS
+      script: ./build.sh --ios
     # The test stage will run all the tests and it will calculate the coverage.
     - stage: test
-      script:
-        - echo "Test stage"
+      script: ./run_tests.sh --coverage
+
+before_install:
+  - if [[ "BUILD_ANDROID" == "true" ]]; then
+    curl https://dl.google.com/android/repository/android-ndk-r20-darwin-x86_64.zip -o ndk-r20.zip;
+    unzip -q ndk-r20.zip;
+    export ANDROID_NDK=android-ndk-r20
+    fi
