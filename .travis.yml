@@ -3,6 +3,12 @@ compiler: clang
 os: osx
 osx_image: xcode10.2
 
+# TODO: lcov only for coverage stage
+addons:
+  homebrew:
+    packages:
+      - lcov
+
 jobs:
   include:
     # The build stage will build the library for Darwin, Android and iOS.
@@ -17,7 +23,7 @@ jobs:
     # The test stage will run all the tests and it will calculate the coverage.
     - stage: test
       name: Run all tests
-      script: ./run_tests.sh --coverage
+      script: lcov --version; ./run_tests.sh --coverage
 
 before_install:
   - if [[ "$BUILD_ANDROID" == "true" ]]; then
