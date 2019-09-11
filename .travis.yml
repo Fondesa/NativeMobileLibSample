@@ -22,7 +22,10 @@ jobs:
     # The test stage will run all the tests and it will calculate the coverage.
     - stage: test
       name: Run all tests
-      script: ./run_tests.sh --coverage
+      script:
+        - gem install coveralls-lcov
+        - ./run_tests.sh --coverage
+        - coveralls-lcov build/tests/out/coverage/filtered.info
 
 before_install:
   # The Android NDK toolchain file is needed to build the library for Android so, before building, Travis will download
