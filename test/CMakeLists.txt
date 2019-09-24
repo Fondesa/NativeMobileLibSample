@@ -40,6 +40,7 @@ set(TEST_FILES
     database/sqlite_cursor_test.cpp
     database/sqlite_database_test.cpp
     database/sqlite_exception_test.cpp
+    database/sqlite_statement_test.cpp
     )
 
 # Now simply link against gtest or gtest_main as needed.
