@@ -1,7 +1,7 @@
-#include "sqlite_cursor.hpp"
 #include "sqlite_statement.hpp"
-#include "sqlite_exception.hpp"
 #include <vector>
+#include "sqlite_cursor.hpp"
+#include "sqlite_exception.hpp"
 
 namespace Db::Sql {
 
@@ -11,10 +11,7 @@ void Statement::executeVoid() {
     if (sqlite3_step(stmt) != SQLITE_DONE) {
         throw Db::Sql::Exception(db);
     }
-    if (sqlite3_clear_bindings(stmt) != SQLITE_OK) {
-        throw Db::Sql::Exception(db);
-    }
-    if (sqlite3_reset(stmt) != SQLITE_OK) {
+    if (sqlite3_clear_bindings(stmt) != SQLITE_OK || sqlite3_reset(stmt) != SQLITE_OK) {
         throw Db::Sql::Exception(db);
     }
 }
@@ -84,11 +81,10 @@ void Statement::bindString(int colIndex, std::string value) {
     if (rc != SQLITE_OK) {
         throw Db::Sql::Exception(db);
     }
-
 }
 
 void Statement::bindBool(int colIndex, bool value) {
     int intValue = (value) ? 1 : 0;
     bindInt(colIndex, intValue);
 }
-}
+}  // namespace Db::Sql
