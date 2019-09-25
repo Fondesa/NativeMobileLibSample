@@ -1,9 +1,9 @@
 #pragma once
 
 #include <string>
-#include "sqlite3/sqlite3.h"
 #include "database_statement.hpp"
 #include "smart_c_statement.hpp"
+#include "sqlite3/sqlite3.h"
 
 namespace Db::Sql {
 
@@ -28,8 +28,12 @@ class Statement : public Db::Statement {
 
     void bindBool(int colIndex, bool value) override;
 
+    virtual int reset();
+
+    virtual int clearBindings();
+
    private:
     sqlite3 *db{};
     SmartCStatement stmt;
 };
-}
+}  // namespace Db::Sql
