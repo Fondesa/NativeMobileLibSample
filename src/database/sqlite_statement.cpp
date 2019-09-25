@@ -11,7 +11,7 @@ void Statement::executeVoid() {
     if (sqlite3_step(stmt) != SQLITE_DONE) {
         throw Db::Sql::Exception(db);
     }
-    if (sqlite3_clear_bindings(stmt) != SQLITE_OK || sqlite3_reset(stmt) != SQLITE_OK) {
+    if (clearBindings() != SQLITE_OK || reset() != SQLITE_OK) {
         throw Db::Sql::Exception(db);
     }
 }
@@ -30,7 +30,7 @@ std::optional<int> Statement::executeInt() {
     if (sqlite3_step(stmt) != SQLITE_DONE) {
         throw Db::Sql::Exception(db);
     }
-    if (sqlite3_clear_bindings(stmt) != SQLITE_OK || sqlite3_reset(stmt) != SQLITE_OK) {
+    if (clearBindings() != SQLITE_OK || reset() != SQLITE_OK) {
         throw Db::Sql::Exception(db);
     }
     return result;
@@ -51,7 +51,7 @@ std::optional<std::string> Statement::executeString() {
     if (sqlite3_step(stmt) != SQLITE_DONE) {
         throw Db::Sql::Exception(db);
     }
-    if (sqlite3_clear_bindings(stmt) != SQLITE_OK || sqlite3_reset(stmt) != SQLITE_OK) {
+    if (clearBindings() != SQLITE_OK || reset() != SQLITE_OK) {
         throw Db::Sql::Exception(db);
     }
     return result;
@@ -86,5 +86,13 @@ void Statement::bindString(int colIndex, std::string value) {
 void Statement::bindBool(int colIndex, bool value) {
     int intValue = (value) ? 1 : 0;
     bindInt(colIndex, intValue);
+}
+
+int Statement::reset() {
+    return sqlite3_reset(stmt);
+}
+
+int Statement::clearBindings() {
+    return sqlite3_clear_bindings(stmt);
 }
 }  // namespace Db::Sql
