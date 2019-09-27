@@ -26,6 +26,14 @@ std::optional<int> Statement::executeInt() {
     if (status != SQLITE_ROW) {
         throw Db::Sql::Exception(db);
     }
+    int columnType = sqlite3_column_type(stmt, 0);
+    if (columnType != SQLITE_INTEGER) {
+        throw Db::Sql::Exception(
+            "The result should be of type " +
+            std::to_string(SQLITE_INTEGER) +
+            " instead of " +
+            std::to_string(columnType));
+    }
     result = sqlite3_column_int(stmt, 0);
     if (sqlite3_step(stmt) != SQLITE_DONE) {
         throw Db::Sql::Exception(db);
@@ -45,6 +53,14 @@ std::optional<std::string> Statement::executeString() {
     }
     if (status != SQLITE_ROW) {
         throw Db::Sql::Exception(db);
+    }
+    int columnType = sqlite3_column_type(stmt, 0);
+    if (columnType != SQLITE_TEXT) {
+        throw Db::Sql::Exception(
+            "The result should be of type " +
+            std::to_string(SQLITE_TEXT) +
+            " instead of " +
+            std::to_string(columnType));
     }
     auto text = sqlite3_column_text(stmt, 0);
     result = std::string(reinterpret_cast<const char *>(text));
