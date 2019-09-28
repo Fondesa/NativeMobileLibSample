@@ -14,11 +14,3 @@ std::string Draft::getTitle() const {
 std::string Draft::getDescription() const {
     return description;
 }
-
-void Draft::setTitle(std::string title) {
-    this->title = std::move(title);
-}
-
-void Draft::setDescription(std::string description) {
-    this->description = std::move(description);
-}

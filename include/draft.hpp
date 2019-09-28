@@ -13,8 +13,4 @@ class Draft {
     std::string getTitle() const;
 
     std::string getDescription() const;
-
-    void setTitle(std::string title);
-
-    void setDescription(std::string description);
 };
