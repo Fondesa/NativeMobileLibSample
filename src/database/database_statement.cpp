@@ -11,12 +11,17 @@ void Statement::execute() {
 
 template<>
 std::optional<int> Statement::execute() {
+    return executeOptionalInt();
+}
+
+template<>
+int Statement::execute() {
     return executeInt();
 }
 
 template<>
 std::optional<std::string> Statement::execute() {
-    return executeString();
+    return executeOptionalString();
 }
 
 template<>

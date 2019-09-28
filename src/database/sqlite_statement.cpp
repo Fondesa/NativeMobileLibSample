@@ -16,7 +16,7 @@ void Statement::executeVoid() {
     }
 }
 
-std::optional<int> Statement::executeInt() {
+std::optional<int> Statement::executeOptionalInt() {
     int status = sqlite3_step(stmt);
     auto result = std::optional<int>();
     if (status == SQLITE_DONE) {
@@ -44,7 +44,15 @@ std::optional<int> Statement::executeInt() {
     return result;
 }
 
-std::optional<std::string> Statement::executeString() {
+int Statement::executeInt() {
+    auto result = executeOptionalInt();
+    if (!result) {
+        throw Db::Sql::Exception("The statement didn't return any row.");
+    }
+    return *result;
+}
+
+std::optional<std::string> Statement::executeOptionalString() {
     int status = sqlite3_step(stmt);
     auto result = std::optional<std::string>();
     if (status == SQLITE_DONE) {
