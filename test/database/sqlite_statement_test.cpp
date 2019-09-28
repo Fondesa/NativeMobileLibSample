@@ -1,5 +1,6 @@
 #include "sqlite_statement_test.hpp"
 #include "database/smart_c_statement.hpp"
+#include "database/sqlite_cursor.hpp"
 #include "database/sqlite_exception.hpp"
 
 void SQLiteStatementTest::SetUp() {
@@ -187,4 +188,21 @@ TEST_F(SQLiteStatementTest, givenOneStringRowResultWhenExecuteStringIsInvokedThe
     auto result = statement.execute<std::optional<std::string>>();
 
     ASSERT_EQ("first", result);
+}
+
+TEST_F(SQLiteStatementTest, givenValidStatementWhenExecuteCursorIsInvokedThenCursorIsReturned) {
+    int rc = sqlite3_step(Db::Sql::SmartCStatement(db, "CREATE TABLE dummy_table (id INTEGER PRIMARY KEY)"));
+    // The statement should be executed correctly.
+    ASSERT_EQ(SQLITE_DONE, rc);
+    rc = sqlite3_step(Db::Sql::SmartCStatement(db, "INSERT INTO dummy_table (id) VALUES (1)"));
+    // The statement should be executed correctly.
+    ASSERT_EQ(SQLITE_DONE, rc);
+    auto statement = Db::Sql::Statement(db, "SELECT id FROM dummy_table");
+
+    auto cursor = statement.execute<std::shared_ptr<Db::Cursor>>();
+
+    EXPECT_TRUE(std::dynamic_pointer_cast<Db::Sql::Cursor>(cursor));
+    ASSERT_TRUE(cursor->next());
+    auto id = cursor->get<int>(0);
+    ASSERT_EQ(1, id);
 }
