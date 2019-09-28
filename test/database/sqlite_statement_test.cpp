@@ -149,7 +149,7 @@ TEST_F(SQLiteStatementTest, givenDifferentTypeOfColumnWhenExecuteStringIsInvoked
 }
 
 TEST_F(SQLiteStatementTest, givenMoreThanOneRowWhenExecuteStringIsInvokedThenExceptionIsThrown) {
-    int rc = sqlite3_step(Db::Sql::SmartCStatement(db, "CREATE TABLE dummy_table (title TEXT)"));
+    int rc = sqlite3_step(Db::Sql::SmartCStatement(db, "CREATE TABLE dummy_table (title TEXT PRIMARY KEY)"));
     // The statement should be executed correctly.
     ASSERT_EQ(SQLITE_DONE, rc);
     rc = sqlite3_step(Db::Sql::SmartCStatement(db, "INSERT INTO dummy_table (title) VALUES (\"first\")"));
@@ -177,7 +177,7 @@ TEST_F(SQLiteStatementTest, givenClearBindingsViolationWhenExecuteStringIsInvoke
 }
 
 TEST_F(SQLiteStatementTest, givenOneStringRowResultWhenExecuteStringIsInvokedThenIntIsReturned) {
-    int rc = sqlite3_step(Db::Sql::SmartCStatement(db, "CREATE TABLE dummy_table (title TEXT)"));
+    int rc = sqlite3_step(Db::Sql::SmartCStatement(db, "CREATE TABLE dummy_table (title TEXT PRIMARY KEY)"));
     // The statement should be executed correctly.
     ASSERT_EQ(SQLITE_DONE, rc);
     rc = sqlite3_step(Db::Sql::SmartCStatement(db, "INSERT INTO dummy_table (title) VALUES (\"first\")"));
@@ -203,6 +203,105 @@ TEST_F(SQLiteStatementTest, givenValidStatementWhenExecuteCursorIsInvokedThenCur
 
     EXPECT_TRUE(std::dynamic_pointer_cast<Db::Sql::Cursor>(cursor));
     ASSERT_TRUE(cursor->next());
-    auto id = cursor->get<int>(0);
-    ASSERT_EQ(1, id);
+    ASSERT_EQ(1, cursor->get<int>(0));
+}
+
+TEST_F(SQLiteStatementTest, givenErrorInSqlBindingWhenBindIntIsInvokedThenExceptionIsThrown) {
+    int rc = sqlite3_step(Db::Sql::SmartCStatement(db, "CREATE TABLE dummy_table (id INTEGER PRIMARY KEY)"));
+    // The statement should be executed correctly.
+    ASSERT_EQ(SQLITE_DONE, rc);
+    auto statement = Db::Sql::Statement(db, "INSERT INTO dummy_table (id) VALUES (?)");
+
+    // The binding is 1-indexed so the index 0 is considered out of range.
+    ASSERT_THROW(statement.bind<int>(0, 1), Db::Sql::Exception);
+}
+
+TEST_F(SQLiteStatementTest, givenValidSqlBindingWhenBindIntIsInvokedThenValueIsBoundCorrectly) {
+    int rc = sqlite3_step(Db::Sql::SmartCStatement(db, "CREATE TABLE dummy_table (id INTEGER PRIMARY KEY)"));
+    // The statement should be executed correctly.
+    ASSERT_EQ(SQLITE_DONE, rc);
+    auto statement = Db::Sql::Statement(db, "INSERT INTO dummy_table (id) VALUES (?)");
+
+    statement.bind<int>(1, 1);
+    statement.execute<void>();
+    auto readStmt = Db::Sql::Statement(db, "SELECT id FROM dummy_table");
+    auto cursor = readStmt.execute<std::shared_ptr<Db::Cursor>>();
+
+    ASSERT_TRUE(cursor->next());
+    ASSERT_EQ(1, cursor->get<int>(0));
+}
+
+TEST_F(SQLiteStatementTest, givenErrorInSqlBindingWhenBindDoubleIsInvokedThenExceptionIsThrown) {
+    int rc = sqlite3_step(Db::Sql::SmartCStatement(db, "CREATE TABLE dummy_table (number REAL PRIMARY KEY)"));
+    // The statement should be executed correctly.
+    ASSERT_EQ(SQLITE_DONE, rc);
+    auto statement = Db::Sql::Statement(db, "INSERT INTO dummy_table (number) VALUES (?)");
+
+    // The binding is 1-indexed so the index 0 is considered out of range.
+    ASSERT_THROW(statement.bind<double>(0, 4.5), Db::Sql::Exception);
+}
+
+TEST_F(SQLiteStatementTest, givenValidSqlBindingWhenBindDoubleIsInvokedThenValueIsBoundCorrectly) {
+    int rc = sqlite3_step(Db::Sql::SmartCStatement(db, "CREATE TABLE dummy_table (number REAL PRIMARY KEY)"));
+    // The statement should be executed correctly.
+    ASSERT_EQ(SQLITE_DONE, rc);
+    auto statement = Db::Sql::Statement(db, "INSERT INTO dummy_table (number) VALUES (?)");
+
+    statement.bind<double>(1, 4.5);
+    statement.execute<void>();
+    auto readStmt = Db::Sql::Statement(db, "SELECT number FROM dummy_table");
+    auto cursor = readStmt.execute<std::shared_ptr<Db::Cursor>>();
+
+    ASSERT_TRUE(cursor->next());
+    ASSERT_EQ(4.5, cursor->get<double>(0));
+}
+
+TEST_F(SQLiteStatementTest, givenErrorInSqlBindingWhenBindStringIsInvokedThenExceptionIsThrown) {
+    int rc = sqlite3_step(Db::Sql::SmartCStatement(db, "CREATE TABLE dummy_table (title TEXT PRIMARY KEY)"));
+    // The statement should be executed correctly.
+    ASSERT_EQ(SQLITE_DONE, rc);
+    auto statement = Db::Sql::Statement(db, "INSERT INTO dummy_table (title) VALUES (?)");
+
+    // The binding is 1-indexed so the index 0 is considered out of range.
+    ASSERT_THROW(statement.bind<std::string>(0, "dummy-text-value"), Db::Sql::Exception);
+}
+
+TEST_F(SQLiteStatementTest, givenValidSqlBindingWhenBindStringIsInvokedThenValueIsBoundCorrectly) {
+    int rc = sqlite3_step(Db::Sql::SmartCStatement(db, "CREATE TABLE dummy_table (title TEXT PRIMARY KEY)"));
+    // The statement should be executed correctly.
+    ASSERT_EQ(SQLITE_DONE, rc);
+    auto statement = Db::Sql::Statement(db, "INSERT INTO dummy_table (title) VALUES (?)");
+
+    statement.bind<std::string>(1, "dummy-text-value");
+    statement.execute<void>();
+    auto readStmt = Db::Sql::Statement(db, "SELECT title FROM dummy_table");
+    auto cursor = readStmt.execute<std::shared_ptr<Db::Cursor>>();
+
+    ASSERT_TRUE(cursor->next());
+    ASSERT_EQ("dummy-text-value", cursor->get<std::string>(0));
+}
+
+TEST_F(SQLiteStatementTest, givenErrorInSqlBindingWhenBindBoolIsInvokedThenExceptionIsThrown) {
+    int rc = sqlite3_step(Db::Sql::SmartCStatement(db, "CREATE TABLE dummy_table (is_true INTEGER PRIMARY KEY)"));
+    // The statement should be executed correctly.
+    ASSERT_EQ(SQLITE_DONE, rc);
+    auto statement = Db::Sql::Statement(db, "INSERT INTO dummy_table (is_true) VALUES (?)");
+
+    // The binding is 1-indexed so the index 0 is considered out of range.
+    ASSERT_THROW(statement.bind<bool>(0, true), Db::Sql::Exception);
+}
+
+TEST_F(SQLiteStatementTest, givenValidSqlBindingWhenBindBoolIsInvokedThenValueIsBoundCorrectly) {
+    int rc = sqlite3_step(Db::Sql::SmartCStatement(db, "CREATE TABLE dummy_table (is_true INTEGER PRIMARY KEY)"));
+    // The statement should be executed correctly.
+    ASSERT_EQ(SQLITE_DONE, rc);
+    auto statement = Db::Sql::Statement(db, "INSERT INTO dummy_table (is_true) VALUES (?)");
+
+    statement.bind<bool>(1, true);
+    statement.execute<void>();
+    auto readStmt = Db::Sql::Statement(db, "SELECT is_true FROM dummy_table");
+    auto cursor = readStmt.execute<std::shared_ptr<Db::Cursor>>();
+
+    ASSERT_TRUE(cursor->next());
+    ASSERT_EQ(true, cursor->get<bool>(0));
 }
