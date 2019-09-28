@@ -36,7 +36,6 @@ set(LIB_SOURCE_FILES
     src/database/smart_c_statement.cpp
     src/note/note.cpp
     src/note/draft.cpp
-    src/note/in_memory_note_repository.cpp
     src/note/notes_repository_impl.cpp
     src/database/sqlite_database.cpp
     src/database/database_exception.cpp
