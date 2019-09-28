@@ -4,7 +4,7 @@ IncompleteDraftException::IncompleteDraftException(const MutableDraft &draft) {
     auto hasTitle = draft.hasTitle();
     auto hasDescription = draft.hasDescription();
     if (hasTitle && hasDescription) {
-        this->msg = "The new draft is complete so this exception mustn't be thrown, use another exception.";
+        this->msg = "Invalid usage: the new draft is complete.";
         return;
     }
     this->msg = "The following fields of the new draft aren't set: ";
@@ -23,9 +23,9 @@ IncompleteDraftException::IncompleteDraftException(int id, const MutableDraft &d
     auto hasTitle = draft.hasTitle();
     auto hasDescription = draft.hasDescription();
     if (hasTitle && hasDescription) {
-        this->msg = "The draft with id " +
+        this->msg = "Invalid usage: the existing draft with id " +
             std::to_string(id) +
-            " is complete so this exception mustn't be thrown, use another exception.";
+            " is complete.";
         return;
     }
     this->msg = "The following fields of the existing draft with id " +
