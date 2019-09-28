@@ -12,3 +12,23 @@ class SQLiteStatementTest : public ::testing::Test {
 
     void TearDown() override;
 };
+
+class ResetViolationStatement : public Db::Sql::Statement {
+   public:
+    ResetViolationStatement(sqlite3 *db, std::string sql) : Db::Sql::Statement(db, sql){};
+
+   protected:
+    int reset() override {
+        return SQLITE_MISUSE;
+    }
+};
+
+class ClearBindingsViolationStatement : public Db::Sql::Statement {
+   public:
+    ClearBindingsViolationStatement(sqlite3 *db, std::string sql) : Db::Sql::Statement(db, sql){};
+
+   protected:
+    int clearBindings() override {
+        return SQLITE_MISUSE;
+    }
+};
