@@ -12,19 +12,3 @@ TEST(DraftTest, givenDescriptionInConstructorWhenGetDescriptionIsInvokedThenDesc
 
     ASSERT_EQ("dummy-description", draft.getDescription());
 }
-
-TEST(DraftTest, givenDraftWhenSetTitleIsInvokedThenTitleIsUpdated) {
-    auto draft = Draft("dummy-title", "dummy-description");
-
-    draft.setTitle("updated-title");
-
-    ASSERT_EQ("updated-title", draft.getTitle());
-}
-
-TEST(DraftTest, givenDraftWhenSetDescriptionIsInvokedThenDescriptionIsUpdated) {
-    auto draft = Draft("dummy-title", "dummy-description");
-
-    draft.setDescription("updated-description");
-
-    ASSERT_EQ("updated-description", draft.getDescription());
-}
