@@ -42,6 +42,7 @@ set(TEST_FILES
     database/sqlite_exception_test.cpp
     database/sqlite_statement_test.cpp
     note/draft_test.cpp
+    note/incomplete_draft_exception_test.cpp
     note/mutable_draft_test.cpp
     note/note_test.cpp
     )
