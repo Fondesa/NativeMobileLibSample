@@ -1,7 +1,7 @@
 #pragma once
 
-#include "sqlite3/sqlite3.h"
 #include <string>
+#include "sqlite3/sqlite3.h"
 
 namespace Db::Sql {
 
@@ -40,14 +40,11 @@ class SmartCStatement {
      */
     unsigned int useCount();
 
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "google-explicit-constructor"
     /**
      * The cast operator returns the pointer to sqlite3_stmt.
      * This is useful to use this type directly with the SQLite C api.
      */
     operator sqlite3_stmt *() const;
-#pragma clang diagnostic pop
 
    private:
     // Points to the original statement.
@@ -61,4 +58,4 @@ class SmartCStatement {
     // Making it private avoids any assignments.
     SmartCStatement &operator=(const SmartCStatement &other);
 };
-}
+}  // namespace Db::Sql
