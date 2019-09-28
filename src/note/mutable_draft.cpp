@@ -40,5 +40,5 @@ Draft MutableDraft::toDraft() {
     if (isIncomplete()) {
         throw IncompleteDraftException(*this);
     }
-    return Draft(requireTitle(), requireDescription());
+    return Draft(*title, *description);
 }
