@@ -1,21 +1,18 @@
 #pragma once
 
-#include <string>
 #include <optional>
+#include <string>
 #include "database_cursor.hpp"
 
 namespace Db {
 
 class Statement {
    public:
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "NotImplementedFunctions"
-    template<typename T>
+    template <typename T>
     void bind(int colIndex, T value);
 
-    template<typename T>
+    template <typename T>
     T execute();
-#pragma clang diagnostic pop
 
    protected:
     virtual void executeVoid() = 0;
@@ -34,4 +31,4 @@ class Statement {
 
     virtual void bindBool(int colIndex, bool value) = 0;
 };
-}
+}  // namespace Db

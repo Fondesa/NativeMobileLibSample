@@ -1,5 +1,5 @@
-#include "core/compat_bad_optional_access_exception.hpp"
 #include "mutable_draft.hpp"
+#include "core/compat_bad_optional_access_exception.hpp"
 #include "incomplete_draft_exception.hpp"
 
 std::string MutableDraft::requireTitle() const {
@@ -15,9 +15,6 @@ std::string MutableDraft::requireDescription() const {
     }
     return *description;
 }
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wshadow"
 
 void MutableDraft::updateTitle(std::string title) {
     this->title = title;
@@ -45,5 +42,3 @@ Draft MutableDraft::toDraft() {
     }
     return Draft(requireTitle(), requireDescription());
 }
-
-#pragma clang diagnostic pop
