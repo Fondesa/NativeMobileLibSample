@@ -16,4 +16,6 @@ class Note {
     std::string getTitle() const;
 
     std::string getDescription() const;
+
+    friend bool operator==(const Note &first, const Note &second);
 };

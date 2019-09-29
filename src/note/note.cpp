@@ -17,3 +17,9 @@ std::string Note::getTitle() const {
 std::string Note::getDescription() const {
     return description;
 }
+
+bool operator==(const Note &first, const Note &second) {
+    return first.id == second.id &&
+        first.title == second.title &&
+        first.description == second.description;
+}
