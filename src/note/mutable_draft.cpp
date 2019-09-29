@@ -42,3 +42,7 @@ Draft MutableDraft::toDraft() {
     }
     return Draft(*title, *description);
 }
+
+bool operator==(const MutableDraft &first, const MutableDraft &second) {
+    return first.title == second.title && first.description == second.description;
+}
