@@ -48,6 +48,7 @@ set(TEST_FILES
     note/note_database_initializer_test.cpp
     note/note_test.cpp
     note/notes_interactor_factory_test.cpp
+    note/notes_interactor_impl_test.cpp
     note/notes_repository_factory_test.cpp
     )
 
