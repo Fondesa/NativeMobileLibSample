@@ -22,6 +22,8 @@ class MutableDraft {
 
     Draft toDraft();
 
+    friend bool operator==(const MutableDraft &first, const MutableDraft &second);
+
    private:
     std::optional<std::string> title;
     std::optional<std::string> description;

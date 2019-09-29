@@ -38,7 +38,8 @@ TEST(MutableDraftTest, givenTitleUpdatedMultipleTimesWhenRequireTitleIsInvokedTh
     ASSERT_EQ("third", draft.requireTitle());
 }
 
-TEST(MutableDraftTest, givenDescriptionUpdatedMultipleTimesWhenRequireDescriptionIsInvokedThenLastDescriptionIsReturned) {
+TEST(MutableDraftTest,
+     givenDescriptionUpdatedMultipleTimesWhenRequireDescriptionIsInvokedThenLastDescriptionIsReturned) {
     auto draft = MutableDraft();
     draft.updateDescription("first");
     draft.updateDescription("second");
@@ -130,4 +131,42 @@ TEST(MutableDraftTest, givenDraftWithTitleAndDescriptionWhenToDraftIsInvokedThen
 
     ASSERT_EQ("dummy-title", draft.getTitle());
     ASSERT_EQ("dummy-description", draft.getDescription());
+}
+
+TEST(MutableDraftTest, givenEqualFieldsWhenEqualityOperatorIsInvokedThenItReturnsTrue) {
+    auto first = MutableDraft();
+    auto second = MutableDraft();
+
+    EXPECT_TRUE(first == second);
+
+    first.updateTitle("dummy-title");
+    second.updateTitle("dummy-title");
+
+    EXPECT_TRUE(first == second);
+
+    first.updateDescription("dummy-description");
+    second.updateDescription("dummy-description");
+
+    EXPECT_TRUE(first == second);
+}
+
+TEST(MutableDraftTest, givenDifferentFieldsWhenEqualityOperatorIsInvokedThenItReturnsFalse) {
+    auto first = MutableDraft();
+    auto second = MutableDraft();
+
+    first.updateTitle("dummy-title");
+
+    EXPECT_FALSE(first == second);
+
+    second.updateDescription("dummy-description");
+
+    EXPECT_FALSE(first == second);
+
+    first.updateDescription("dummy-different-description");
+
+    EXPECT_FALSE(first == second);
+
+    second.updateTitle("dummy-different-title");
+
+    EXPECT_FALSE(first == second);
 }
