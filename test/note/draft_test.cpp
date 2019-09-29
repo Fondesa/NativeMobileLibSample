@@ -12,3 +12,12 @@ TEST(DraftTest, givenDescriptionInConstructorWhenGetDescriptionIsInvokedThenDesc
 
     ASSERT_EQ("dummy-description", draft.getDescription());
 }
+
+TEST(DraftTest, givenEqualFieldsWhenEqualityOperatorIsInvokedThenItReturnsTrue) {
+    ASSERT_TRUE(Draft("a", "b") == Draft("a", "b"));
+}
+
+TEST(DraftTest, givenDifferentFieldsWhenEqualityOperatorIsInvokedThenItReturnsFalse) {
+    EXPECT_FALSE(Draft("a", "b") == Draft("c", "b"));
+    EXPECT_FALSE(Draft("a", "b") == Draft("a", "c"));
+}
