@@ -30,14 +30,6 @@ void initialize(std::string path) {
             std::cout << "Creating the database schema" << std::endl;
             // Create the database schema.
             createSchema(db);
-        } else if (version > currentVersion) {
-            std::cout << "Updating the schema from version "
-                      << std::to_string(currentVersion)
-                      << " to version "
-                      << std::to_string(version)
-                      << std::endl;
-
-            // Nothing to update.
         }
 
         auto writeVersionStmt = db->createStatement("PRAGMA user_version = " + std::to_string(version));

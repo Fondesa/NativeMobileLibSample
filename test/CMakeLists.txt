@@ -44,6 +44,7 @@ set(TEST_FILES
     note/draft_test.cpp
     note/incomplete_draft_exception_test.cpp
     note/mutable_draft_test.cpp
+    note/note_database_initializer_test.cpp
     note/note_test.cpp
     )
 
