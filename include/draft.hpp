@@ -13,4 +13,6 @@ class Draft {
     std::string getTitle() const;
 
     std::string getDescription() const;
+
+    friend bool operator==(const Draft &first, const Draft &second);
 };

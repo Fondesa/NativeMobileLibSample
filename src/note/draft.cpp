@@ -14,3 +14,7 @@ std::string Draft::getTitle() const {
 std::string Draft::getDescription() const {
     return description;
 }
+
+bool operator==(const Draft &first, const Draft &second) {
+    return first.title == second.title && first.description == second.description;
+}
