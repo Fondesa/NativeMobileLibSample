@@ -47,6 +47,7 @@ set(TEST_FILES
     note/mutable_draft_test.cpp
     note/note_database_initializer_test.cpp
     note/note_test.cpp
+    note/notes_interactor_factory_test.cpp
     note/notes_repository_factory_test.cpp
     )
 
