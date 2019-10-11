@@ -50,6 +50,7 @@ set(TEST_FILES
     note/notes_interactor_factory_test.cpp
     note/notes_interactor_impl_test.cpp
     note/notes_repository_factory_test.cpp
+    note/notes_repository_impl_test.cpp
     )
 
 # Now simply link against gtest or gtest_main as needed.
