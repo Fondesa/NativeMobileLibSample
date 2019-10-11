@@ -164,7 +164,7 @@ if (DEFINED LIB_FILE_PATH AND DEFINED LIB_SYM_PATH)
     # The library must be built before the library is symlinked because the library file must be generated.
     add_dependencies(export-lib ${TARGET_NAME})
     add_dependencies(build-lib export-lib)
-else()
+else ()
     add_dependencies(build-lib ${TARGET_NAME})
 endif ()
 
@@ -184,11 +184,6 @@ if (ENABLE_TESTS)
         find_program(LCOV_PATH lcov)
         if (NOT LCOV_PATH)
             message(FATAL_ERROR "lcov not found! Aborting...")
-        endif ()
-
-        find_program(GENHTML_PATH genhtml)
-        if (NOT GENHTML_PATH)
-            message(FATAL_ERROR "genhtml not found! Aborting...")
         endif ()
 
         add_library(coverage-config INTERFACE)
@@ -226,7 +221,7 @@ if (ENABLE_TESTS)
         # In this way, we can be sure the new report will use only the tracefiles from the latest run.
         add_dependencies(run-tests coverage-clean)
 
-        add_custom_target(coverage-report
+        add_custom_target(coverage-raw
             # Create the output dir of the coverage reports.
             COMMAND ${CMAKE_COMMAND} -E make_directory ${COVERAGE_OUTPUT_DIR}
             # Generate the raw coverage report containing all the files.
@@ -249,17 +244,36 @@ if (ENABLE_TESTS)
             '${CMAKE_CURRENT_SOURCE_DIR}/libs/*'
             # All the test files are hit during the tests so it's pointless to include them.
             '${CMAKE_CURRENT_SOURCE_DIR}/test/*'
-            # Use genhtml to generate the HTML report from the raw one.
-            COMMAND ${GENHTML_PATH}
-            ${COVERAGE_OUTPUT_FILTERED_FILE_PATH}
-            -o ${COVERAGE_OUTPUT_HTML_DIR}
-            --rc lcov_branch_coverage=1
-            COMMENT "Generating the code coverage report...")
+            COMMENT "Generating the raw code coverage report...")
 
         # Run all the tests before generating the report.
-        add_dependencies(coverage-report run-tests)
+        add_dependencies(coverage-raw run-tests)
 
-        add_custom_command(TARGET coverage-report POST_BUILD
-            COMMENT "The coverage report is available at ${COVERAGE_OUTPUT_HTML_DIR}/index.html")
+        # Just an empty target to avoid to change the target name based on the report type.
+        add_custom_target(coverage-report)
+
+        if (GENERATE_HTML_REPORT)
+            find_program(GENHTML_PATH genhtml)
+            if (NOT GENHTML_PATH)
+                message(FATAL_ERROR "genhtml not found! Aborting...")
+            endif ()
+
+            add_custom_target(coverage-html
+                # Use genhtml to generate the HTML report from the raw one.
+                COMMAND ${GENHTML_PATH}
+                ${COVERAGE_OUTPUT_FILTERED_FILE_PATH}
+                -o ${COVERAGE_OUTPUT_HTML_DIR}
+                --rc lcov_branch_coverage=1
+                COMMENT "Generating the HTML code coverage report...")
+
+            add_custom_command(TARGET coverage-html POST_BUILD
+                COMMENT "The HTML coverage report is available at ${COVERAGE_OUTPUT_HTML_DIR}/index.html")
+
+            # The HTML report is based on the raw one.
+            add_dependencies(coverage-html coverage-raw)
+            add_dependencies(coverage-report coverage-html)
+        else ()
+            add_dependencies(coverage-report coverage-raw)
+        endif ()
     endif ()
 endif ()

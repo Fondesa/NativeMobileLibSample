@@ -7,18 +7,27 @@ testsBuildDir=${projectDir}/build/tests
 if [ -z "$1" ]; then
     enableCoverage=OFF
     targetName=run-tests
-elif [ $1 = "--coverage" ]; then
+    generateHtmlReport=OFF
+elif [ $1 = "--coverage-html" ]; then
     enableCoverage=ON
     targetName=coverage-report
+    generateHtmlReport=ON
+elif [ $1 = "--coverage-raw" ]; then
+    enableCoverage=ON
+    targetName=coverage-report
+    generateHtmlReport=OFF
 else
     cat <<EOF
-The argument \"$1\" can't be recognized.
-Don't specify any argument or use \"--coverage\" to run the tests with coverage.
+The argument "$1" can't be recognized.
+Don't specify any argument or use:
+--coverage-raw -> run the tests with coverage generating a Gcov raw report
+--coverage-html -> run the tests with coverage generating an HTML report
 EOF
     exit 1
 fi
 
 cmake -B${testsBuildDir} \
     -DENABLE_TESTS=ON \
-    -DENABLE_TESTS_COVERAGE=${enableCoverage}
+    -DENABLE_TESTS_COVERAGE=${enableCoverage} \
+    -DGENERATE_HTML_REPORT=${generateHtmlReport}
 (cd ${testsBuildDir} && make $targetName)

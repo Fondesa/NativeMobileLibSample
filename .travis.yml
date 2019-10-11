@@ -24,7 +24,7 @@ jobs:
       name: Run all tests
       script:
         - gem install coveralls-lcov
-        - ./run_tests.sh --coverage
+        - ./run_tests.sh --coverage-raw
         - coveralls-lcov build/tests/out/coverage/filtered.info
 
 before_install:
