@@ -43,6 +43,7 @@ set(TEST_FILES
     database/sqlite_statement_test.cpp
     note/draft_test.cpp
     note/drafts_repository_factory_test.cpp
+    note/drafts_repository_impl_test.cpp
     note/incomplete_draft_exception_test.cpp
     note/mutable_draft_test.cpp
     note/note_database_initializer_test.cpp
