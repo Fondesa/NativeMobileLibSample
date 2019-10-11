@@ -14,7 +14,6 @@ void DraftsRepositoryImpl::updateNewTitle(std::string title) {
             description = *descriptionResult;
         }
         pendingNew->updateDescription(description);
-
     }
     pendingNew->updateTitle(title);
 }
