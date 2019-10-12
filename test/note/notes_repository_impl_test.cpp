@@ -30,7 +30,7 @@ TEST_F(NotesRepositoryImplTest, givenDraftWhenInsertIsInvokedThenNoteIsInserted)
 
     auto stmt = db->createStatement("SELECT title, description FROM notes");
     auto cursor = stmt->execute<std::shared_ptr<Db::Cursor>>();
-    // The DB should contain one record.
+    // The table should contain one record.
     ASSERT_TRUE(cursor->next());
     auto title = cursor->get<std::string>(0);
     auto description = cursor->get<std::string>(1);
@@ -73,7 +73,7 @@ TEST_F(NotesRepositoryImplTest, givenExistentIdWhenUpdateIsInvokedThenNoteIsUpda
 
     auto stmt = db->createStatement("SELECT rowid, title, description FROM notes");
     auto cursor = stmt->execute<std::shared_ptr<Db::Cursor>>();
-    // The DB should contain one record.
+    // The table should contain one record.
     ASSERT_TRUE(cursor->next());
     auto id = cursor->get<int>(0);
     auto title = cursor->get<std::string>(1);
@@ -81,7 +81,7 @@ TEST_F(NotesRepositoryImplTest, givenExistentIdWhenUpdateIsInvokedThenNoteIsUpda
     EXPECT_EQ(rowId, id);
     EXPECT_EQ(expectedTitle, title);
     EXPECT_EQ(expectedDescription, description);
-    // The DB should still contain only one record after the update.
+    // The table should still contain only one record after the update.
     ASSERT_FALSE(cursor->next());
 }
 
