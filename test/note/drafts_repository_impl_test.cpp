@@ -15,17 +15,12 @@ void DraftsRepositoryImplTest::TearDown() {
     Db::Client::release();
 }
 
-int DraftsRepositoryImplTest::getPendingNewDraftCount() {
+int DraftsRepositoryImplTest::getPendingNewDraftsCount() {
     return db->createStatement("SELECT COUNT(*) FROM pending_draft_creation")->execute<int>();
 }
 
-int DraftsRepositoryImplTest::getPendingExistingDraftCount() {
+int DraftsRepositoryImplTest::getPendingExistingDraftsCount() {
     return db->createStatement("SELECT COUNT(*) FROM pending_drafts_update")->execute<int>();
-}
-
-int DraftsRepositoryImplTest::getLastRowId() {
-    // It returns the rowid of the last inserted record.
-    return db->createStatement("SELECT last_insert_rowid()")->execute<int>();
 }
 
 TEST_F(DraftsRepositoryImplTest, givenNoPendingNewWhenGetNewIsInvokedThenNullOptionalIsReturned) {
@@ -52,13 +47,13 @@ TEST_F(DraftsRepositoryImplTest, givenPendingNewInDbWhenGetNewIsInvokedThenDraft
 TEST_F(DraftsRepositoryImplTest, givenNoNewDraftInDbWhenUpdateNewTitleIsInvokedThenDraftIsNotStoredInDb) {
     repository->updateNewTitle("dummy-title");
 
-    ASSERT_EQ(0, getPendingNewDraftCount());
+    ASSERT_EQ(0, getPendingNewDraftsCount());
 }
 
 TEST_F(DraftsRepositoryImplTest, givenNoNewDraftInDbWhenUpdateNewDescriptionIsInvokedThenDraftIsNotStoredInDb) {
     repository->updateNewDescription("dummy-description");
 
-    ASSERT_EQ(0, getPendingNewDraftCount());
+    ASSERT_EQ(0, getPendingNewDraftsCount());
 }
 
 TEST_F(DraftsRepositoryImplTest, givenNewDraftWithOnlyTitleWhenGetNewIsInvokedThenDraftIsReturnedWithEmptyDescription) {
@@ -197,14 +192,14 @@ TEST_F(DraftsRepositoryImplTest, givenPendingExistingInDbWhenGetExistingIsInvoke
 TEST_F(DraftsRepositoryImplTest, givenNoExistingDraftInDbWhenUpdateExistingTitleIsInvokedThenDraftIsNotStoredInDb) {
     repository->updateExistingTitle(1, "dummy-title");
 
-    ASSERT_EQ(0, getPendingExistingDraftCount());
+    ASSERT_EQ(0, getPendingExistingDraftsCount());
 }
 
 TEST_F(DraftsRepositoryImplTest,
        givenNoExistingDraftInDbWhenUpdateExistingDescriptionIsInvokedThenDraftIsNotStoredInDb) {
     repository->updateExistingDescription(1, "dummy-description");
 
-    ASSERT_EQ(0, getPendingExistingDraftCount());
+    ASSERT_EQ(0, getPendingExistingDraftsCount());
 }
 
 TEST_F(DraftsRepositoryImplTest, givenExistingDraftWithOnlyTitleWhenGetExistingIsInvokedThenExceptionIsThrown) {
@@ -364,4 +359,98 @@ TEST_F(DraftsRepositoryImplTest, givenDraftsInDbWhenDeleteAllIsInvokedThenAllDra
     EXPECT_FALSE(draft.has_value());
     draft = repository->getExisting(secondExistingId);
     EXPECT_FALSE(draft.has_value());
+}
+
+TEST_F(DraftsRepositoryImplTest, givenNewDraftInMemoryWhenPersistIsInvokedThenDraftIsPersisted) {
+    std::string expectedTitle = "dummy-title";
+    std::string expectedDescription = "dummy-description";
+    repository->updateNewTitle(expectedTitle);
+    repository->updateNewDescription(expectedDescription);
+
+    repository->persist();
+
+    auto stmt = db->createStatement("SELECT title, description FROM pending_draft_creation");
+    auto cursor = stmt->execute<std::shared_ptr<Db::Cursor>>();
+    // The table should contain one record.
+    ASSERT_TRUE(cursor->next());
+    EXPECT_EQ(expectedTitle, cursor->get<std::string>(0));
+    EXPECT_EQ(expectedDescription, cursor->get<std::string>(1));
+    // Only one record should have been inserted.
+    ASSERT_FALSE(cursor->next());
+}
+
+TEST_F(DraftsRepositoryImplTest, givenExistingDraftInMemoryWhenPersistIsInvokedThenDraftIsPersisted) {
+    int draftId = 45;
+    std::string expectedTitle = "dummy-title";
+    std::string expectedDescription = "dummy-description";
+    repository->updateExistingTitle(draftId, expectedTitle);
+    repository->updateExistingDescription(draftId, expectedDescription);
+
+    repository->persist();
+
+    auto stmt = db->createStatement("SELECT rowid, title, description FROM pending_drafts_update");
+    auto cursor = stmt->execute<std::shared_ptr<Db::Cursor>>();
+    // The table should contain one record.
+    ASSERT_TRUE(cursor->next());
+    EXPECT_EQ(draftId, cursor->get<int>(0));
+    EXPECT_EQ(expectedTitle, cursor->get<std::string>(1));
+    EXPECT_EQ(expectedDescription, cursor->get<std::string>(2));
+    // Only one record should have been inserted.
+    ASSERT_FALSE(cursor->next());
+}
+
+TEST_F(DraftsRepositoryImplTest, givenMultipleDraftsInMemoryWhenPersistIsInvokedThenAllDraftsArePersisted) {
+    int firstDraftId = 45;
+    int secondDraftId = 87;
+    auto newDraft = Draft("dummy-title", "dummy-description");
+    auto firstExistingDraft = Draft("first-title", "first-description");
+    auto secondExistingDraft = Draft("second-title", "second-description");
+    repository->updateNewTitle(newDraft.getTitle());
+    repository->updateNewDescription(newDraft.getDescription());
+    repository->updateExistingTitle(firstDraftId, firstExistingDraft.getTitle());
+    repository->updateExistingDescription(firstDraftId, firstExistingDraft.getDescription());
+    repository->updateExistingTitle(secondDraftId, secondExistingDraft.getTitle());
+    repository->updateExistingDescription(secondDraftId, secondExistingDraft.getDescription());
+
+    repository->persist();
+
+    auto newStmt = db->createStatement("SELECT title, description FROM pending_draft_creation");
+    auto newCursor = newStmt->execute<std::shared_ptr<Db::Cursor>>();
+    // The table should contain one record.
+    ASSERT_TRUE(newCursor->next());
+    EXPECT_EQ(newDraft.getTitle(), newCursor->get<std::string>(0));
+    EXPECT_EQ(newDraft.getDescription(), newCursor->get<std::string>(1));
+    // Only one record should have been inserted.
+    EXPECT_FALSE(newCursor->next());
+    auto existingStmt =
+        db->createStatement("SELECT rowid, title, description FROM pending_drafts_update ORDER BY rowid ASC");
+    auto existingCursor = existingStmt->execute<std::shared_ptr<Db::Cursor>>();
+    // The table should contain 2 records.
+    ASSERT_TRUE(existingCursor->next());
+    EXPECT_EQ(firstDraftId, existingCursor->get<int>(0));
+    EXPECT_EQ(firstExistingDraft.getTitle(), existingCursor->get<std::string>(1));
+    EXPECT_EQ(firstExistingDraft.getDescription(), existingCursor->get<std::string>(2));
+    EXPECT_TRUE(existingCursor->next());
+    EXPECT_EQ(secondDraftId, existingCursor->get<int>(0));
+    EXPECT_EQ(secondExistingDraft.getTitle(), existingCursor->get<std::string>(1));
+    EXPECT_EQ(secondExistingDraft.getDescription(), existingCursor->get<std::string>(2));
+    // Only 2 records should have been inserted.
+    EXPECT_FALSE(existingCursor->next());
+}
+
+TEST_F(DraftsRepositoryImplTest, givenEmptyNewDraftInMemoryWhenPersistIsInvokedThenNothingIsPersisted) {
+    repository->updateNewTitle("dummy-title");
+    repository->updateNewDescription("dummy-description");
+    repository->updateNewTitle("");
+    repository->updateNewDescription("");
+
+    repository->persist();
+
+    ASSERT_EQ(0, getPendingNewDraftsCount());
+}
+
+TEST_F(DraftsRepositoryImplTest, givenIncompleteExistingDraftInMemoryWhenPersistIsInvokedThenExceptionIsThrown) {
+    repository->updateExistingTitle(45, "dummy-title");
+
+    ASSERT_THROW(repository->persist(), IncompleteDraftException);
 }

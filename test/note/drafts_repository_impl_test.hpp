@@ -13,9 +13,7 @@ class DraftsRepositoryImplTest : public ::testing::Test {
 
     void TearDown() override;
 
-    int getPendingNewDraftCount();
+    int getPendingNewDraftsCount();
 
-    int getPendingExistingDraftCount();
-
-    int getLastRowId();
+    int getPendingExistingDraftsCount();
 };
