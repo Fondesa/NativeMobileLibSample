@@ -3,11 +3,6 @@ compiler: clang
 os: osx
 osx_image: xcode10.2
 
-addons:
-  homebrew:
-    packages:
-      - lcov
-
 jobs:
   include:
     # The build stage will build the library for Darwin, Android and iOS.
@@ -26,6 +21,7 @@ jobs:
         - gem install coveralls-lcov
         - ./run_tests.sh --coverage-raw
         - coveralls-lcov build/tests/out/coverage/filtered.info
+      env: RUN_TESTS_WITH_COVERAGE=true
 
 before_install:
   # The Android NDK toolchain file is needed to build the library for Android so, before building, Travis will download
@@ -34,4 +30,16 @@ before_install:
     curl https://dl.google.com/android/repository/android-ndk-r20-darwin-x86_64.zip -o ndk-r20.zip;
     unzip -q ndk-r20.zip;
     export ANDROID_NDK=android-ndk-r20;
+    fi
+
+install:
+  # Install LCOV only when the tests are run with coverage.
+  # This is optimal since we don't want to install it in jobs which don't use it.
+  - if [[ "$RUN_TESTS_WITH_COVERAGE" == "true" ]]; then
+    if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+    brew install lcov;
+    else
+    echo "Only OSX is supported";
+    exit 1;
+    fi
     fi
