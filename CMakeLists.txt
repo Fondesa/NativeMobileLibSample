@@ -267,7 +267,7 @@ if (ENABLE_TESTS)
                 COMMENT "Generating the HTML code coverage report...")
 
             add_custom_command(TARGET coverage-html POST_BUILD
-                COMMENT "The HTML coverage report is available at ${COVERAGE_OUTPUT_HTML_DIR}/index.html")
+                COMMENT "The HTML coverage report is available at:\n${COVERAGE_OUTPUT_HTML_DIR}/index.html")
 
             # The HTML report is based on the raw one.
             add_dependencies(coverage-html coverage-raw)
