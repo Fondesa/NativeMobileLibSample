@@ -71,6 +71,9 @@ void DraftsRepositoryImpl::updateExistingDescription(int id, std::string descrip
 void DraftsRepositoryImpl::deleteAll() {
     db->executeTransaction([this]() {
         deleteNew();
+        // Reset the existing drafts in memory.
+        pendingExisting.clear();
+        // Delete all the existing drafts from the DB.
         db->createStatement("DELETE FROM pending_drafts_update")->execute<void>();
     });
 }
