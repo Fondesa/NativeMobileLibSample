@@ -134,10 +134,6 @@ void DraftsRepositoryImpl::persist() {
 }
 
 void DraftsRepositoryImpl::persistNew(const MutableDraft &draft) {
-    if (draft.isIncomplete()) {
-        throw IncompleteDraftException(draft);
-    }
-
     auto title = draft.requireTitle();
     auto description = draft.requireDescription();
     if (title.empty() && description.empty()) {
