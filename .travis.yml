@@ -37,7 +37,8 @@ install:
   # This is optimal since we don't want to install it in jobs which don't use it.
   - if [[ "$RUN_TESTS_WITH_COVERAGE" == "true" ]]; then
     if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-    brew install lcov;
+    # Disable the auto update of Homebrew.
+    HOMEBREW_NO_AUTO_UPDATE=1 brew install lcov;
     else
     echo "Only OSX is supported";
     exit 1;
