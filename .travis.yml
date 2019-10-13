@@ -1,5 +1,5 @@
-language: cpp
-compiler: clang
+#language: cpp
+#compiler: clang
 os: osx
 osx_image: xcode10.2
 
@@ -23,6 +23,7 @@ jobs:
       env:
         - CC=clang
         - CXX=clang++
+    # The Android compiler is given by the NDK toolchain file.
     - name: Target=Android; Compiler=NDK-Based
       script: ./build.sh --android
       env:
