@@ -11,31 +11,67 @@ jobs:
   include:
     # The build stage will build the library for Darwin, Android and iOS.
     - stage: build
-      name: Darwin GCC
+      name: Target=Darwin; Compiler=GCC-8
       script: ./build.sh --darwin
       compiler: gcc
       env:
         - CC=gcc-8
         - CXX=g++-8
-    - name: Darwin Clang
+    - name: Target=Darwin; Compiler=Clang-10
       script: ./build.sh --darwin
       compiler: clang
       env:
         - CC=clang
         - CXX=clang++
-    - name: Android
+    - name: Target=Android; Compiler=GCC-8
       script: ./build.sh --android
-      env: BUILD_ANDROID=true
-    - name: iOS
+      compiler: gcc
+      env:
+        - CC=gcc-8
+        - CXX=g++-8
+        - BUILD_ANDROID=true
+    - name: Target=Android; Compiler=Clang-10
+        script: ./build.sh --android
+        compiler: clang
+        env:
+          - CC=clang
+          - CXX=clang++
+          - BUILD_ANDROID=true
+    - name: Target=iOS; Compiler=GCC-8
       script: ./build.sh --ios
+      compiler: gcc
+      env:
+        - CC=gcc-8
+        - CXX=g++-8
+    - name: Target=iOS; Compiler=Clang-10
+        script: ./build.sh --ios
+        compiler: clang
+        env:
+          - CC=clang
+          - CXX=clang++
     # The test stage will run all the tests and it will calculate the coverage.
     - stage: test
-      name: Run all tests
+      name: Compiler=GCC-8
       script:
         - gem install coveralls-lcov
         - ./run_tests.sh --coverage-raw
         - coveralls-lcov build/tests/out/coverage/filtered.info
-      env: RUN_TESTS_WITH_COVERAGE=true
+      compiler: gcc
+      env:
+        - CC=gcc-8
+        - CXX=g++-8
+        - RUN_TESTS_WITH_COVERAGE=true
+    - stage: test
+      name: Compiler=Clang-10
+      script:
+        - gem install coveralls-lcov
+        - ./run_tests.sh --coverage-raw
+        - coveralls-lcov build/tests/out/coverage/filtered.info
+      compiler: clang
+      env:
+        - CC=clang
+        - CXX=clang++
+        - RUN_TESTS_WITH_COVERAGE=true
 
 before_install:
   # The Android NDK toolchain file is needed to build the library for Android so, before building, Travis will download

@@ -24,7 +24,7 @@ EOF
 }
 
 function darwin() {
-    echo "Building lib for this system..."
+    echo "Building Darwin shared lib..."
     cmake -B${darwinBuildDir} \
         -DENABLE_TESTS=OFF
     (cd ${darwinBuildDir} && make build-lib)
