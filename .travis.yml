@@ -1,8 +1,5 @@
 language: cpp
-compiler:
-  - clang
-  - gcc
-
+compiler: clang
 os: osx
 osx_image: xcode10.2
 
@@ -16,6 +13,9 @@ jobs:
     - stage: build
       name: Darwin
       script: ./build.sh --darwin
+      compiler:
+        - gcc
+        - clang
     - name: Android
       script: ./build.sh --android
       env: BUILD_ANDROID=true
