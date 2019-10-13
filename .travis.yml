@@ -11,11 +11,12 @@ jobs:
   include:
     # The build stage will build the library for Darwin, Android and iOS.
     - stage: build
-      name: Darwin
+      name: Darwin GCC
       script: ./build.sh --darwin
-      compiler:
-        - gcc
-        - clang
+      compiler: gcc
+    - name: Darwin Clang
+      script: ./build.sh --darwin
+      compiler: clang
     - name: Android
       script: ./build.sh --android
       env: BUILD_ANDROID=true
