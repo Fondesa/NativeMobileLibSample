@@ -14,9 +14,15 @@ jobs:
       name: Darwin GCC
       script: ./build.sh --darwin
       compiler: gcc
+      env:
+        - CC=gcc-9
+        - CXX=g++-9
     - name: Darwin Clang
       script: ./build.sh --darwin
       compiler: clang
+      env:
+        - CC=clang
+        - CXX=clang++
     - name: Android
       script: ./build.sh --android
       env: BUILD_ANDROID=true
@@ -38,6 +44,9 @@ before_install:
     curl https://dl.google.com/android/repository/android-ndk-r20-darwin-x86_64.zip -o ndk-r20.zip;
     unzip -q ndk-r20.zip;
     export ANDROID_NDK=android-ndk-r20;
+    fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$TRAVIS_COMPILER" == "gcc" ]]; then
+    HOMEBREW_NO_AUTO_UPDATE=1 brew install gcc;
     fi
 
 install:

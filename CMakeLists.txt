@@ -5,6 +5,8 @@ set(OUTPUT_DIR ${CMAKE_BINARY_DIR}/out)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_DIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR})
+set(CMAKE_C_COMPILER $ENV{CC} CACHE STRING "C compiler" FORCE)
+set(CMAKE_CXX_COMPILER $ENV{CXX} CACHE STRING "C++ compiler" FORCE)
 # The lib name will be used for:
 # - the output library files
 # - the iOS framework identifier
