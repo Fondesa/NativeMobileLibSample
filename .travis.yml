@@ -66,7 +66,7 @@ before_install:
     fi
   # Install GCC if needed.
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$CC" == "$CC_GCC" ]]; then
-    HOMEBREW_NO_AUTO_UPDATE=1 brew install gcc;
+    brew install gcc;
     fi
 
 install:
@@ -74,7 +74,7 @@ install:
   # This is optimal since we don't want to install it in jobs which don't use it.
   - if [[ "$RUN_TESTS_WITH_COVERAGE" == "true" ]]; then
     if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-    HOMEBREW_NO_AUTO_UPDATE=1 brew install lcov;
+    brew install lcov;
     else
     echo "Only OSX is supported";
     exit 1;
