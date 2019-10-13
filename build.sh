@@ -62,8 +62,6 @@ function ios() {
     echo "Building iOS shared lib..."
     cmake -B${iosBuildDir} -GXcode \
         -DENABLE_TESTS=OFF \
-        -DCMAKE_C_COMPILER=${CC} \
-        -DCMAKE_CXX_COMPILER=${CXX} \
         -DCMAKE_SYSTEM_NAME=iOS \
         -DCMAKE_OSX_DEPLOYMENT_TARGET=9.3
 
