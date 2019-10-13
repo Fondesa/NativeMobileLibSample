@@ -23,19 +23,9 @@ jobs:
       env:
         - CC=clang
         - CXX=clang++
-    - name: Target=Android; Compiler=GCC-8
+    - name: Target=Android; Compiler=NDK-Based
       script: ./build.sh --android
-      compiler: gcc
       env:
-        - CC=gcc-8
-        - CXX=g++-8
-        - BUILD_ANDROID=true
-    - name: Target=Android; Compiler=Clang-10
-      script: ./build.sh --android
-      compiler: clang
-      env:
-        - CC=clang
-        - CXX=clang++
         - BUILD_ANDROID=true
     - name: Target=iOS; Compiler=GCC-8
       script: ./build.sh --ios
