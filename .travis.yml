@@ -6,12 +6,12 @@ osx_image: xcode10.2
 branches:
   only:
     - master
-
-env:
-  - CC_GCC=/usr/local/bin/gcc-8
-  - CXX_GCC=/usr/local/bin/g++-8
-  - CC_CLANG=clang
-  - CXX_CLANG=clang++
+#
+#env:
+#  - CC_GCC=/usr/local/bin/gcc-8
+#  - CXX_GCC=/usr/local/bin/g++-8
+#  - CC_CLANG=clang
+#  - CXX_CLANG=clang++
 
 jobs:
   include:
