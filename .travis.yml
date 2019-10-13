@@ -7,8 +7,8 @@ branches:
 
 env:
   global:
-    - CC_GCC=/usr/local/bin/gcc-8
-    - CXX_GCC=/usr/local/bin/g++-8
+    - CC_GCC=/usr/local/bin/gcc-9
+    - CXX_GCC=/usr/local/bin/g++-9
     - CC_CLANG=clang
     - CXX_CLANG=clang++
 
@@ -16,7 +16,7 @@ jobs:
   include:
     # The build stage will build the library for Darwin, Android and iOS.
     - stage: build
-      name: Target=Darwin; Compiler=GCC-8
+      name: Target=Darwin; Compiler=GCC-9
       script: ./build.sh --darwin
       env:
         - CC=$CC_GCC
@@ -36,7 +36,7 @@ jobs:
       script: ./build.sh --ios
     # The test stage will run all the tests and it will calculate the coverage.
     - stage: test
-      name: Compiler=GCC-8
+      name: Compiler=GCC-9
       script:
         - gem install coveralls-lcov
         - ./run_tests.sh --coverage-raw
