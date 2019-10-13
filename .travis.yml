@@ -31,12 +31,12 @@ jobs:
         - CXX=g++-8
         - BUILD_ANDROID=true
     - name: Target=Android; Compiler=Clang-10
-        script: ./build.sh --android
-        compiler: clang
-        env:
-          - CC=clang
-          - CXX=clang++
-          - BUILD_ANDROID=true
+      script: ./build.sh --android
+      compiler: clang
+      env:
+        - CC=clang
+        - CXX=clang++
+        - BUILD_ANDROID=true
     - name: Target=iOS; Compiler=GCC-8
       script: ./build.sh --ios
       compiler: gcc
@@ -44,11 +44,11 @@ jobs:
         - CC=gcc-8
         - CXX=g++-8
     - name: Target=iOS; Compiler=Clang-10
-        script: ./build.sh --ios
-        compiler: clang
-        env:
-          - CC=clang
-          - CXX=clang++
+      script: ./build.sh --ios
+      compiler: clang
+      env:
+        - CC=clang
+        - CXX=clang++
     # The test stage will run all the tests and it will calculate the coverage.
     - stage: test
       name: Compiler=GCC-8
