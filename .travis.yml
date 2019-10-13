@@ -24,16 +24,16 @@ jobs:
         - gcc --version;
         - ./build.sh --darwin
       env:
-        - CC="/usr/local/bin/gcc-8"
-        - CXX="/usr/local/bin/g++-8"
+        - CC=$CC_GCC
+        - CXX=$CXX_GCC
     - name: Target=Darwin; Compiler=Clang-10
       script:
         - which gcc;
         - gcc --version;
         - ./build.sh --darwin
       env:
-        - CC=clang
-        - CXX=clang++
+        - CC=$CC_CLANG
+        - CXX=$CXX_CLANG
     # The Android compiler is given by the NDK toolchain file.
     - name: Target=Android; Compiler=NDK-Based
       script:
@@ -48,16 +48,16 @@ jobs:
         - gcc --version;
         - ./build.sh --ios
       env:
-        - CC="/usr/local/bin/gcc-8"
-        - CXX="/usr/local/bin/g++-8"
+        - CC=$CC_GCC
+        - CXX=$CXX_GCC
     - name: Target=iOS; Compiler=Clang-10
       script:
         - which gcc;
         - gcc --version;
         - ./build.sh --ios
       env:
-        - CC=clang
-        - CXX=clang++
+        - CC=$CC_CLANG
+        - CXX=$CXX_CLANG
     # The test stage will run all the tests and it will calculate the coverage.
     - stage: test
       name: Compiler=GCC-8
@@ -66,8 +66,8 @@ jobs:
         - ./run_tests.sh --coverage-raw
         - coveralls-lcov build/tests/out/coverage/filtered.info
       env:
-        - CC="/usr/local/bin/gcc-8"
-        - CXX="/usr/local/bin/g++-8"
+        - CC=$CC_GCC
+        - CXX=$CXX_GCC
         - RUN_TESTS_WITH_COVERAGE=true
     - stage: test
       name: Compiler=Clang-10
@@ -76,8 +76,8 @@ jobs:
         - ./run_tests.sh --coverage-raw
         - coveralls-lcov build/tests/out/coverage/filtered.info
       env:
-        - CC=clang
-        - CXX=clang++
+        - CC=$CC_CLANG
+        - CXX=$CXX_CLANG
         - RUN_TESTS_WITH_COVERAGE=true
 
 before_install:
