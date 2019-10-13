@@ -1,7 +1,14 @@
 language: cpp
-compiler: clang
+compiler:
+  - clang
+  - gcc
+
 os: osx
 osx_image: xcode10.2
+
+branches:
+  only:
+    - master
 
 jobs:
   include:
