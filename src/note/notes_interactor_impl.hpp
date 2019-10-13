@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include "notes_interactor.hpp"
 #include "notes_repository.hpp"
 #include "drafts_repository.hpp"

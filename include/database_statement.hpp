@@ -2,6 +2,7 @@
 
 #include <optional>
 #include <string>
+#include <memory>
 #include "database_cursor.hpp"
 
 namespace Db {
