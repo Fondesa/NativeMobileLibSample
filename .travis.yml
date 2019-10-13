@@ -7,6 +7,9 @@ branches:
   only:
     - master
 
+env:
+  - PATH="/usr/local/bin":$PATH
+
 jobs:
   include:
     # The build stage will build the library for Darwin, Android and iOS.
