@@ -12,27 +12,42 @@ jobs:
     # The build stage will build the library for Darwin, Android and iOS.
     - stage: build
       name: Target=Darwin; Compiler=GCC-8
-      script: ./build.sh --darwin
+      script:
+        - which gcc;
+        - gcc --version;
+        - ./build.sh --darwin
       env:
         - CC=gcc-8
         - CXX=g++-8
     - name: Target=Darwin; Compiler=Clang-10
-      script: ./build.sh --darwin
+      script:
+        - which gcc;
+        - gcc --version;
+        - ./build.sh --darwin
       env:
         - CC=clang
         - CXX=clang++
     # The Android compiler is given by the NDK toolchain file.
     - name: Target=Android; Compiler=NDK-Based
-      script: ./build.sh --android
+      script:
+        - which gcc;
+        - gcc --version;
+        - ./build.sh --android
       env:
         - BUILD_ANDROID=true
     - name: Target=iOS; Compiler=GCC-8
-      script: ./build.sh --ios
+      script:
+        - which gcc;
+        - gcc --version;
+        - ./build.sh --ios
       env:
         - CC=gcc-8
         - CXX=g++-8
     - name: Target=iOS; Compiler=Clang-10
-      script: ./build.sh --ios
+      script:
+        - which gcc;
+        - gcc --version;
+        - ./build.sh --ios
       env:
         - CC=clang
         - CXX=clang++
@@ -66,7 +81,7 @@ before_install:
     unzip -q ndk-r20.zip;
     export ANDROID_NDK=android-ndk-r20;
     fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$TRAVIS_COMPILER" == "gcc" ]]; then
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$CC" == "gcc-8" ]]; then
     HOMEBREW_NO_AUTO_UPDATE=1 brew install gcc;
     fi
 
