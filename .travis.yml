@@ -1,5 +1,5 @@
 os: osx
-osx_image: xcode10.2
+osx_image: xcode11
 
 branches:
   only:
@@ -25,11 +25,6 @@ jobs:
     - stage: build
       name: Target=Darwin; Compiler=GCC-9
       script: ./build.sh --darwin
-      #      addons:
-      #        homebrew:
-      #          packages:
-      #            - gcc@9
-      #          update: true
       env:
         - CC=$CC_GCC
         - CXX=$CXX_GCC
@@ -47,21 +42,21 @@ jobs:
     - name: Target=iOS
       script: ./build.sh --ios
     # The test stage will run all the tests and it will calculate the coverage.
-    - stage: test
-      name: Compiler=GCC-9
-      script:
-        - gem install coveralls-lcov
-        - ./run_tests.sh --coverage-raw
-        - coveralls-lcov build/tests/out/coverage/filtered.info
-      env:
-        - CC=$CC_GCC
-        - CXX=$CXX_GCC
-        - RUN_TESTS_WITH_COVERAGE=true
+#    - stage: test
+#      name: Compiler=GCC-9
+#      script:
+#        - gem install coveralls-lcov
+#        - ./run_tests.sh --coverage-raw
+#      env:
+#        - CC=$CC_GCC
+#        - CXX=$CXX_GCC
+#        - RUN_TESTS_WITH_COVERAGE=true
     - stage: test
       name: Compiler=Clang-10
       script:
         - gem install coveralls-lcov
         - ./run_tests.sh --coverage-raw
+        # Publish the coverage results to Coveralls.io.
         - coveralls-lcov build/tests/out/coverage/filtered.info
       env:
         - CC=$CC_CLANG
