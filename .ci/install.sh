@@ -5,7 +5,7 @@ formulae=()
 if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
     # Install GCC if needed.
     if [[ "$CC" == "$CC_GCC" ]]; then
-        formulae+=(gcc@9)
+        formulae+=(gcc)
     fi
 
     # Install LCOV only when the tests are run with coverage.
