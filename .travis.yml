@@ -68,6 +68,6 @@ jobs:
         - CXX=$CXX_CLANG
         - RUN_TESTS_WITH_COVERAGE=true
 
-before_install: .ci/before-install.sh
+before_install: source .ci/before-install.sh
 
 install: .ci/install.sh
