@@ -25,11 +25,11 @@ jobs:
     - stage: build
       name: Target=Darwin; Compiler=GCC-9
       script: ./build.sh --darwin
-#      addons:
-#        homebrew:
-#          packages:
-#            - gcc@9
-#          update: true
+      #      addons:
+      #        homebrew:
+      #          packages:
+      #            - gcc@9
+      #          update: true
       env:
         - CC=$CC_GCC
         - CXX=$CXX_GCC
@@ -68,27 +68,6 @@ jobs:
         - CXX=$CXX_CLANG
         - RUN_TESTS_WITH_COVERAGE=true
 
-before_install:
-  # The Android NDK toolchain file is needed to build the library for Android so, before building, Travis will download
-  # the NDK R20, unzip them and export their path to use it inside the build script.
-  - if [[ "$BUILD_ANDROID" == "true" ]]; then
-    curl https://dl.google.com/android/repository/android-ndk-r20-darwin-x86_64.zip -o ndk-r20.zip;
-    unzip -q ndk-r20.zip;
-    export ANDROID_NDK=android-ndk-r20;
-    fi
-  # Install GCC if needed.
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$CC" == "$CC_GCC" ]]; then
-    brew install gcc@9;
-    fi
+before_install: .ci/before-install.sh
 
-install:
-  # Install LCOV only when the tests are run with coverage.
-  # This is optimal since we don't want to install it in jobs which don't use it.
-  - if [[ "$RUN_TESTS_WITH_COVERAGE" == "true" ]]; then
-    if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-    brew install lcov;
-    else
-    echo "Only OSX is supported";
-    exit 1;
-    fi
-    fi
+install: .ci/install.sh
