@@ -18,6 +18,10 @@ jobs:
     - stage: build
       name: Target=Darwin; Compiler=GCC-9
       script: ./build.sh --darwin
+      addons:
+        homebrew:
+          packages:
+            - gcc@9
       env:
         - CC=$CC_GCC
         - CXX=$CXX_GCC
@@ -65,9 +69,9 @@ before_install:
     export ANDROID_NDK=android-ndk-r20;
     fi
   # Install GCC if needed.
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$CC" == "$CC_GCC" ]]; then
-    brew install gcc;
-    fi
+  #- if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$CC" == "$CC_GCC" ]]; then
+   # brew install gcc;
+    #fi
 
 install:
   # Install LCOV only when the tests are run with coverage.
