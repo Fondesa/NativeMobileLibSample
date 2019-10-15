@@ -21,19 +21,19 @@ cache:
 
 jobs:
   include:
-    # The build stage will build the library for Darwin, Android and iOS.
+    # The build stage will build the library for the source OS, Android and iOS.
     - stage: build
       name: OS = macOS | Target = Darwin | Compiler = GCC-9
       os: osx
       osx_image: xcode11
-      script: ./build.sh --darwin
+      script: ./build.sh --system
       env:
         - CC=$CC_GCC
         - CXX=$CXX_GCC
     - name: OS = macOS | Target = Darwin | Compiler = Clang-10
       os: osx
       osx_image: xcode11
-      script: ./build.sh --darwin
+      script: ./build.sh --system
       env:
         - CC=$CC_CLANG
         - CXX=$CXX_CLANG
@@ -59,15 +59,15 @@ jobs:
     #        - CC=$CC_GCC
     #        - CXX=$CXX_GCC
     #        - RUN_TESTS_WITH_COVERAGE=true
-    - name: OS = Linux | Target = Darwin | Compiler = GCC-9
+    - name: OS = Linux | Target = Linux | Compiler = GCC-9
       os: linux
-      script: ./build.sh --darwin
+      script: ./build.sh --system
       env:
         - CC=$CC_GCC
         - CXX=$CXX_GCC
-    - name: OS = Linux | Target = Darwin | Compiler = Clang-10
+    - name: OS = Linux | Target = Linux | Compiler = Clang-10
       os: linux
-      script: ./build.sh --darwin
+      script: ./build.sh --system
       env:
         - CC=$CC_CLANG
         - CXX=$CXX_CLANG
