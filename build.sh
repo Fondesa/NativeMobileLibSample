@@ -25,6 +25,7 @@ EOF
 
 function darwin() {
     echo "Building Darwin shared lib..."
+    mkdir -p ${darwinBuildDir}
     cmake -B${darwinBuildDir} \
         -DCMAKE_C_COMPILER=${CC} \
         -DCMAKE_CXX_COMPILER=${CXX} \
@@ -46,6 +47,7 @@ function android() {
 
 function build_android_abi() {
     local abi=$1
+    mkdir -p ${abiBuildDir}
     local abiBuildDir=${androidBuildDir}/${abi}
     echo "Building Android shared lib for ABI $abi..."
     cmake -B${abiBuildDir} \
