@@ -3,7 +3,7 @@
 function install_osx() {
     local formulae=()
     # Install GCC if needed.
-    if [[ "$CC" == "$CC_GCC" ]]; then
+    if [[ "$CC" == "$CC_GCC_OSX" ]]; then
         formulae+=(gcc)
     fi
 
@@ -59,11 +59,14 @@ function install_osx() {
 
 function install_linux() {
     sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+    sudo add-apt-repository ppa:jonathonf/llvm -y
     sudo apt-get update
 
     # Install GCC if needed.
-    if [[ "$CC" == "$CC_GCC" ]]; then
+    if [[ "$CC" == "$CC_GCC_LINUX" ]]; then
         sudo apt-get install gcc-9
+    elif [[ "$CC" == "$CC_CLANG" ]]; then
+        sudo apt-get install llvm-toolchain-9
     fi
 
     # Install LCOV only when the tests are run with coverage.
