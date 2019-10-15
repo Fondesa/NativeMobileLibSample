@@ -25,7 +25,7 @@ EOF
 
 function darwin() {
     echo "Building Darwin shared lib..."
-    cmake -B${darwinBuildDir} \
+    cmake ${projectDir} -B${darwinBuildDir} \
         -DCMAKE_C_COMPILER=${CC} \
         -DCMAKE_CXX_COMPILER=${CXX} \
         -DENABLE_TESTS=OFF
@@ -48,7 +48,7 @@ function build_android_abi() {
     local abi=$1
     local abiBuildDir=${androidBuildDir}/${abi}
     echo "Building Android shared lib for ABI $abi..."
-    cmake -B${abiBuildDir} \
+    cmake ${projectDir} -B${abiBuildDir} \
         -DENABLE_TESTS=OFF \
         -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
         -DCMAKE_SYSTEM_NAME=Android \
@@ -60,7 +60,7 @@ function build_android_abi() {
 
 function ios() {
     echo "Building iOS shared lib..."
-    cmake -B${iosBuildDir} -GXcode \
+    cmake ${projectDir} -B${iosBuildDir} -GXcode \
         -DENABLE_TESTS=OFF \
         -DCMAKE_SYSTEM_NAME=iOS \
         -DCMAKE_OSX_DEPLOYMENT_TARGET=9.3
