@@ -1,6 +1,8 @@
 #!/bin/bash
 
-brew update
+if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+    brew update
+fi
 
 # The Android NDK toolchain file is needed to build the library for Android so, before building, Travis will download
 # the NDK R20, unzip them and export their path to use it inside the build script.
