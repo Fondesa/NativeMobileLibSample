@@ -6,8 +6,10 @@ sudo: true
 
 env:
   global:
-    - CC_GCC=/usr/local/bin/gcc-9
-    - CXX_GCC=/usr/local/bin/g++-9
+    - CC_GCC_OSX=/usr/local/bin/gcc-9
+    - CXX_GCC_OSX=/usr/local/bin/g++-9
+    - CC_GCC_LINUX=gcc-9
+    - CXX_GCC_LINUX=g++-9
     - CC_CLANG=clang
     - CXX_CLANG=clang++
     - OSX_IMAGE=xcode11
@@ -28,8 +30,8 @@ jobs:
       osx_image: xcode11
       script: ./build.sh --system
       env:
-        - CC=$CC_GCC
-        - CXX=$CXX_GCC
+        - CC=$CC_GCC_OSX
+        - CXX=$CXX_GCC_OSX
     - name: OS = macOS | Target = Darwin | Compiler = Clang-10
       os: osx
       osx_image: xcode11
@@ -56,15 +58,15 @@ jobs:
     #        - gem install coveralls-lcov
     #        - ./run_tests.sh --coverage-raw
     #      env:
-    #        - CC=$CC_GCC
-    #        - CXX=$CXX_GCC
+    #        - CC=$CC_GCC_OSX
+    #        - CXX=$CXX_GCC_OSX
     #        - RUN_TESTS_WITH_COVERAGE=true
     - name: OS = Linux | Target = Linux | Compiler = GCC-9
       os: linux
       script: ./build.sh --system
       env:
-        - CC=$CC_GCC
-        - CXX=$CXX_GCC
+        - CC=$CC_GCC_LINUX
+        - CXX=$CXX_GCC_LINUX
     - name: OS = Linux | Target = Linux | Compiler = Clang-10
       os: linux
       script: ./build.sh --system
