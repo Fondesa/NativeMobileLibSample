@@ -65,8 +65,14 @@ function install_linux() {
     # Install GCC if needed.
     if [[ "$CC" == "$CC_GCC_LINUX" ]]; then
         sudo apt-get install gcc-9
+        which gcc
+        which g++
+        gcc --version
+        g++ --version
     elif [[ "$CC" == "$CC_CLANG" ]]; then
-        sudo apt-get install llvm-toolchain-9
+        wget https://apt.llvm.org/llvm.sh
+        chmod +x llvm.sh
+        sudo ./llvm.sh 9
     fi
 
     # Install LCOV only when the tests are run with coverage.
