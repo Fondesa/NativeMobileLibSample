@@ -10,11 +10,11 @@ env:
     - CXX_CLANG=clang++
     - OSX_IMAGE=xcode11
 
-before_cache:
-  - brew cleanup
+before_cache: ci/before-cache.sh
 
 cache:
   directories:
+    # For Homebrew's formulae on macOS.
     - $HOME/Library/Caches/Homebrew
 
 jobs:
@@ -98,6 +98,6 @@ jobs:
         - CXX=$CXX_CLANG
         - RUN_TESTS_WITH_COVERAGE=true
 
-before_install: source .ci/before-install.sh
+before_install: source ci/before-install.sh
 
-install: .ci/install.sh
+install: ci/install.sh
