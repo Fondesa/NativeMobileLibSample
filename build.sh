@@ -5,7 +5,7 @@ projectDir=${scriptDir}
 libName="notesnative"
 libTarget=${projectDir}/lib
 libBuildDir=${projectDir}/build/lib
-darwinBuildDir=${libBuildDir}/darwin
+systemBuildDir=${libBuildDir}/system
 androidBuildDir=${libBuildDir}/android
 iosBuildDir=${libBuildDir}/ios
 iosFrameworkDir=${iosBuildDir}/framework
@@ -15,7 +15,7 @@ iosUniversalFrameworkDir=${iosFrameworkDir}/universal
 function notify_uncorrect_usage() {
     cat <<EOF
 Supported args:
---darwin
+--system
 --android
 --ios
 --all
@@ -23,13 +23,13 @@ EOF
     exit 1
 }
 
-function darwin() {
-    echo "Building Darwin shared lib..."
-    cmake ${projectDir} -B${darwinBuildDir} \
+function system() {
+    echo "Building shared lib for this system..."
+    cmake ${projectDir} -B${systemBuildDir} \
         -DCMAKE_C_COMPILER=${CC} \
         -DCMAKE_CXX_COMPILER=${CXX} \
         -DENABLE_TESTS=OFF
-    (cd ${darwinBuildDir} && make build-lib)
+    (cd ${systemBuildDir} && make build-lib)
 }
 
 function android() {
@@ -115,8 +115,8 @@ system=$1
 [[ -z "$system" ]] && notify_uncorrect_usage
 
 case $system in
-"--darwin")
-    darwin
+"--system")
+    system
     ;;
 "--android")
     android
@@ -125,7 +125,7 @@ case $system in
     ios
     ;;
 "--all")
-    darwin
+    system
     android
     ios
     ;;
