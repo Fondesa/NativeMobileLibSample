@@ -2,6 +2,8 @@ branches:
   only:
     - master
 
+sudo: true
+
 env:
   global:
     - CC_GCC=/usr/local/bin/gcc-9
