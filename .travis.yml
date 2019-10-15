@@ -1,6 +1,3 @@
-os: osx
-osx_image: xcode11
-
 branches:
   only:
     - master
@@ -11,6 +8,7 @@ env:
     - CXX_GCC=/usr/local/bin/g++-9
     - CC_CLANG=clang
     - CXX_CLANG=clang++
+    - OSX_IMAGE=xcode11
 
 before_cache:
   - brew cleanup
@@ -23,41 +21,78 @@ jobs:
   include:
     # The build stage will build the library for Darwin, Android and iOS.
     - stage: build
-      name: Target=Darwin; Compiler=GCC-9
+      name: OS = macOS | Target = Darwin | Compiler = GCC-9
+      os: osx
+      osx_image: $OSX_IMAGE
       script: ./build.sh --darwin
       env:
         - CC=$CC_GCC
         - CXX=$CXX_GCC
-    - name: Target=Darwin; Compiler=Clang-10
+    - name: OS = macOS | Target = Darwin | Compiler = Clang-10
+      os: osx
+      osx_image: $OSX_IMAGE
       script: ./build.sh --darwin
       env:
         - CC=$CC_CLANG
         - CXX=$CXX_CLANG
     # The build the library for Android the compiler is given by the NDK toolchain file.
-    - name: Target=Android
+    - name: OS = macOS | Target = Android
+      os: osx
+      osx_image: $OSX_IMAGE
       script: ./build.sh --android
       env:
         - BUILD_ANDROID=true
     # To build the library for iOS the compiler is given by Xcode.
-    - name: Target=iOS
+    - name: OS = macOS | Target = iOS
+      os: osx
+      osx_image: $OSX_IMAGE
       script: ./build.sh --ios
     # The test stage will run all the tests and it will calculate the coverage.
-#    - stage: test
-#      name: Compiler=GCC-9
-#      script:
-#        - gem install coveralls-lcov
-#        - ./run_tests.sh --coverage-raw
-#      env:
-#        - CC=$CC_GCC
-#        - CXX=$CXX_GCC
-#        - RUN_TESTS_WITH_COVERAGE=true
+    #    - stage: test
+    #      name: Compiler=GCC-9
+    #      script:
+    #        - gem install coveralls-lcov
+    #        - ./run_tests.sh --coverage-raw
+    #      env:
+    #        - CC=$CC_GCC
+    #        - CXX=$CXX_GCC
+    #        - RUN_TESTS_WITH_COVERAGE=true
+    - name: OS = Linux | Target = Darwin | Compiler = GCC-9
+      os: linux
+      script: ./build.sh --darwin
+      env:
+        - CC=$CC_GCC
+        - CXX=$CXX_GCC
+    - name: OS = Linux | Target = Darwin | Compiler = Clang-10
+      os: linux
+      script: ./build.sh --darwin
+      env:
+        - CC=$CC_CLANG
+        - CXX=$CXX_CLANG
+    # The build the library for Android the compiler is given by the NDK toolchain file.
+    - name: OS = Linux | Target = Android
+      os: linux
+      script: ./build.sh --android
+      env:
+        - BUILD_ANDROID=true
     - stage: test
-      name: Compiler=Clang-10
+      name: OS = macOS | Compiler=Clang-10
+      os: osx
+      osx_image: $OSX_IMAGE
       script:
         - gem install coveralls-lcov
         - ./run_tests.sh --coverage-raw
         # Publish the coverage results to Coveralls.io.
         - coveralls-lcov build/tests/out/coverage/filtered.info
+      env:
+        - CC=$CC_CLANG
+        - CXX=$CXX_CLANG
+        - RUN_TESTS_WITH_COVERAGE=true
+    - name: OS = Linux | Compiler=Clang-10
+      os: linux
+      script:
+        - gem install coveralls-lcov
+        - ./run_tests.sh --coverage-raw
       env:
         - CC=$CC_CLANG
         - CXX=$CXX_CLANG
