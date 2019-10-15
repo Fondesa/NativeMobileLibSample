@@ -24,8 +24,10 @@ EOF
 }
 
 function darwin() {
-    echo "Building lib for this system..."
+    echo "Building Darwin shared lib..."
     cmake -B${darwinBuildDir} \
+        -DCMAKE_C_COMPILER=${CC} \
+        -DCMAKE_CXX_COMPILER=${CXX} \
         -DENABLE_TESTS=OFF
     (cd ${darwinBuildDir} && make build-lib)
 }
