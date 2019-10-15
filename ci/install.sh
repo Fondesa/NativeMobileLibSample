@@ -58,7 +58,7 @@ function install_osx() {
 }
 
 function install_linux() {
-    sudo add-apt-repository ppa:jonathonf/gcc-9.2
+    sudo add-apt-repository ppa:jonathonf/gcc-9.2 -y
     sudo apt-get update
 
     # Install GCC if needed.
