@@ -54,10 +54,12 @@ set(TEST_FILES
     note/notes_repository_impl_test.cpp
     )
 
+string(TOLOWER ${CMAKE_SYSTEM_NAME} SYSTEM_QUALIFIER)
+
 # Now simply link against gtest or gtest_main as needed.
 add_executable(${PROJECT_NAME} ${TEST_FILES})
 target_link_libraries(${PROJECT_NAME}
     gtest
     gmock_main
-    lib-${CMAKE_SYSTEM_NAME}
+    lib-${SYSTEM_QUALIFIER}
     )
