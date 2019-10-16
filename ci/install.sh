@@ -74,7 +74,7 @@ function install_linux() {
         #        sudo ./llvm.sh 9
         #        sudo apt-get install llvm-9-dev
         #        sudo ./llvm.sh 9
-        sudo apt-get install g++-9
+        sudo apt-get install libstd++-9-dev
         sudo apt-get install clang-9
         which clang-9
         clang-9 --version
