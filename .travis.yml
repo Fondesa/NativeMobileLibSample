@@ -10,8 +10,10 @@ env:
     - CXX_GCC_OSX=/usr/local/bin/g++-9
     - CC_GCC_LINUX=gcc-9
     - CXX_GCC_LINUX=g++-9
-    - CC_CLANG=clang
-    - CXX_CLANG=clang++
+    - CC_CLANG_OSX=clang
+    - CXX_CLANG_OSX=clang++
+    - CC_CLANG_LINUX=clang-9
+    - CXX_CLANG_LINUX=clang++-9
     - OSX_IMAGE=xcode11
 
 before_cache: ci/before-cache.sh
@@ -37,8 +39,8 @@ jobs:
       osx_image: xcode11
       script: ./build.sh --system
       env:
-        - CC=$CC_CLANG
-        - CXX=$CXX_CLANG
+        - CC=$CC_CLANG_OSX
+        - CXX=$CXX_CLANG_OSX
     # The build the library for Android the compiler is given by the NDK toolchain file.
     - name: OS = macOS | Target = Android
       os: osx
@@ -51,16 +53,6 @@ jobs:
       os: osx
       osx_image: xcode11
       script: ./build.sh --ios
-    # The test stage will run all the tests and it will calculate the coverage.
-    #    - stage: test
-    #      name: Compiler=GCC-9
-    #      script:
-    #        - gem install coveralls-lcov
-    #        - ./run_tests.sh --coverage-raw
-    #      env:
-    #        - CC=$CC_GCC_OSX
-    #        - CXX=$CXX_GCC_OSX
-    #        - RUN_TESTS_WITH_COVERAGE=true
     - name: OS = Linux | Target = Linux | Compiler = GCC 9.1
       os: linux
       script: ./build.sh --system
@@ -71,8 +63,8 @@ jobs:
       os: linux
       script: ./build.sh --system
       env:
-        - CC=$CC_CLANG
-        - CXX=$CXX_CLANG
+        - CC=$CC_CLANG_LINUX
+        - CXX=$CXX_CLANG_LINUX
     # The build the library for Android the compiler is given by the NDK toolchain file.
     - name: OS = Linux | Target = Android
       os: linux
@@ -89,8 +81,8 @@ jobs:
         # Publish the coverage results to Coveralls.io.
         - coveralls-lcov build/tests/out/coverage/filtered.info
       env:
-        - CC=$CC_CLANG
-        - CXX=$CXX_CLANG
+        - CC=$CC_CLANG_OSX
+        - CXX=$CXX_CLANG_OSX
         - RUN_TESTS_WITH_COVERAGE=true
     - name: OS = Linux | Compiler = Clang ??
       os: linux
@@ -98,8 +90,8 @@ jobs:
         - gem install coveralls-lcov
         - ./run_tests.sh --coverage-raw
       env:
-        - CC=$CC_CLANG
-        - CXX=$CXX_CLANG
+        - CC=$CC_CLANG_LINUX
+        - CXX=$CXX_CLANG_LINUX
         - RUN_TESTS_WITH_COVERAGE=true
 
 before_install: source ci/before-install.sh
