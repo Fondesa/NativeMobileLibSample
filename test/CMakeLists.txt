@@ -63,3 +63,8 @@ target_link_libraries(${PROJECT_NAME}
     gmock_main
     lib-${SYSTEM_QUALIFIER}
     )
+
+if (CMAKE_DL_LIBS)
+    # It adds the -ldl flag on the Unix machines which need dlopen and dlclose.
+    target_link_libraries(${PROJECT_NAME} ${CMAKE_DL_LIBS})
+endif ()
