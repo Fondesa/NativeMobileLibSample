@@ -243,6 +243,9 @@ if (ENABLE_TESTS)
             -o ${COVERAGE_OUTPUT_FILTERED_FILE_PATH}
             # The default /usr/include dir of Xcode shouldn't be included since we are not testing those files.
             '*/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/*'
+            # The default Linux include paths shouldn't be included.
+            '/usr/include/*
+            '/include/*'
             # The build files shouldn't be included.
             '${CMAKE_BINARY_DIR}/*'
             # All the files in the libs folder are external so they shoudn't be tested.
