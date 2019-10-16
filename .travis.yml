@@ -59,7 +59,7 @@ jobs:
       env:
         - CC=$CC_GCC_LINUX
         - CXX=$CXX_GCC_LINUX
-    - name: OS = Linux | Target = Linux | Compiler = Clang ???
+    - name: OS = Linux | Target = Linux | Compiler = Clang 9.0
       os: linux
       script: ./build.sh --system
       env:
@@ -84,7 +84,7 @@ jobs:
         - CC=$CC_CLANG_OSX
         - CXX=$CXX_CLANG_OSX
         - RUN_TESTS_WITH_COVERAGE=true
-    - name: OS = Linux | Compiler = Clang ??
+    - name: OS = Linux | Compiler = Clang 9.0
       os: linux
       script:
         - gem install coveralls-lcov

@@ -69,16 +69,10 @@ function install_linux() {
         # Install GNU 9.x.
         sudo apt-get install g++-9
     elif [[ "$CC" == "$CC_CLANG_LINUX" ]]; then
-        #        wget https://apt.llvm.org/llvm.sh
-        #        chmod +x llvm.sh
-        #        sudo ./llvm.sh 9
-        #        sudo apt-get install llvm-9-dev
-        #        sudo ./llvm.sh 9
-        sudo apt-get install libstd++-9-dev
+        # Clang doesn't come with the standard library so it should be installed separately.
+        # In this way we can get the C++17 standard library headers like <optional>.
+        sudo apt-get install g++-9
         sudo apt-get install clang-9
-        which clang-9
-        clang-9 --version
-        dpkg -L clang-9
     fi
 
     if [[ "$RUN_TESTS_WITH_COVERAGE" == "true" ]]; then
