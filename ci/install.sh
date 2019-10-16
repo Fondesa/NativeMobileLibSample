@@ -68,7 +68,7 @@ function install_linux() {
     if [[ "$CC" == "$CC_GCC_LINUX" ]]; then
         # Install GNU 9.x.
         sudo apt-get install g++-9
-    elif [[ "$CC" == "$CC_CLANG" ]]; then
+    elif [[ "$CC" == "$CC_CLANG_LINUX" ]]; then
         #        wget https://apt.llvm.org/llvm.sh
         #        chmod +x llvm.sh
         #        sudo ./llvm.sh 9
