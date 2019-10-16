@@ -25,14 +25,14 @@ jobs:
   include:
     # The build stage will build the library for the source OS, Android and iOS.
     - stage: build
-      name: OS = macOS | Target = Darwin | Compiler = GCC-9
+      name: OS = macOS | Target = Darwin | Compiler = GCC 9.2
       os: osx
       osx_image: xcode11
       script: ./build.sh --system
       env:
         - CC=$CC_GCC_OSX
         - CXX=$CXX_GCC_OSX
-    - name: OS = macOS | Target = Darwin | Compiler = Clang-10
+    - name: OS = macOS | Target = Darwin | Compiler = AppleClang 11.0
       os: osx
       osx_image: xcode11
       script: ./build.sh --system
@@ -61,13 +61,13 @@ jobs:
     #        - CC=$CC_GCC_OSX
     #        - CXX=$CXX_GCC_OSX
     #        - RUN_TESTS_WITH_COVERAGE=true
-    - name: OS = Linux | Target = Linux | Compiler = GCC-9
+    - name: OS = Linux | Target = Linux | Compiler = GCC 9.1
       os: linux
       script: ./build.sh --system
       env:
         - CC=$CC_GCC_LINUX
         - CXX=$CXX_GCC_LINUX
-    - name: OS = Linux | Target = Linux | Compiler = Clang-10
+    - name: OS = Linux | Target = Linux | Compiler = Clang ???
       os: linux
       script: ./build.sh --system
       env:
@@ -80,7 +80,7 @@ jobs:
       env:
         - BUILD_ANDROID=true
     - stage: test
-      name: OS = macOS | Compiler=Clang-10
+      name: OS = macOS | Compiler = AppleClang 11.0
       os: osx
       osx_image: xcode11
       script:
@@ -92,7 +92,7 @@ jobs:
         - CC=$CC_CLANG
         - CXX=$CXX_CLANG
         - RUN_TESTS_WITH_COVERAGE=true
-    - name: OS = Linux | Compiler=Clang-10
+    - name: OS = Linux | Compiler = Clang ??
       os: linux
       script:
         - gem install coveralls-lcov

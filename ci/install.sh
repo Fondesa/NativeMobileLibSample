@@ -65,10 +65,11 @@ function install_linux() {
     # Install GCC if needed.
     if [[ "$CC" == "$CC_GCC_LINUX" ]]; then
         sudo apt-get install gcc-9
-        which gcc
-        which g++
-        gcc --version
-        g++ --version
+        which gcc-9
+        which g++-9
+        gcc-9 --version
+        dpkg -L gcc-9
+        g++-9 --version
     elif [[ "$CC" == "$CC_CLANG" ]]; then
         wget https://apt.llvm.org/llvm.sh
         chmod +x llvm.sh
