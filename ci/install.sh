@@ -61,12 +61,12 @@ function install_osx() {
 function install_linux() {
     sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
     sudo add-apt-repository ppa:jonathonf/llvm -y
-    wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
+    wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
     sudo add-apt-repository 'deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-9 main' -y
     sudo apt-get update
 
     if [[ "$CC" == "$CC_GCC_LINUX" ]]; then
-        #
+        # Install GNU 9.x.
         sudo apt-get install g++-9
     elif [[ "$CC" == "$CC_CLANG" ]]; then
         #        wget https://apt.llvm.org/llvm.sh
@@ -80,9 +80,9 @@ function install_linux() {
         dpkg -L clang-9
     fi
 
-    # Install LCOV only when the tests are run with coverage.
-    # This is optimal since we don't want to install it in jobs which don't use it.
     if [[ "$RUN_TESTS_WITH_COVERAGE" == "true" ]]; then
+        # Install LCOV only when the tests are run with coverage because we don't want to install it in jobs which
+        # don't use it.
         sudo apt-get install lcov
     fi
 }
