@@ -3,14 +3,14 @@
 function install_osx() {
     local formulae=()
     if [[ "$CC" == "$CC_GCC_OSX" ]]; then
-        # Even if GCC is provided by default from macOS, we want to upgrade it if possible.
+        # Even if GCC is provided by default in macOS, we want to upgrade it if possible.
         # TODO: find a way to use gcc@9
         formulae+=(gcc)
     fi
 
     if [[ "$RUN_TESTS_WITH_COVERAGE" == "true" ]]; then
-        # Install LCOV only when the tests are run with coverage.
-        # This is optimal since we don't want to install it in jobs which don't use it.
+        # Install LCOV only when the tests are run with coverage because we don't want to install it in jobs which
+        # don't use it.
         formulae+=(lcov)
     fi
 
@@ -61,6 +61,7 @@ function install_osx() {
 function install_linux() {
     sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
     sudo add-apt-repository ppa:jonathonf/llvm -y
+    wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
     sudo add-apt-repository 'deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-9 main' -y
     sudo apt-get update
 
