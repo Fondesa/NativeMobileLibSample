@@ -29,7 +29,7 @@ if (result)
 endif ()
 
 option(ENABLE_TESTS "Enable the test target" ON)
-option(ENABLE_TESTS_COVERAGE "Enable the coverage for tests" ON)
+option(ENABLE_TESTS_COVERAGE "Enable the coverage for tests" OFF)
 
 set(LIB_SOURCE_FILES
     src/core/compat_bad_optional_access_exception.cpp
@@ -129,11 +129,17 @@ elseif (${CMAKE_SYSTEM_NAME} STREQUAL iOS)
         )
 
 elseif (${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
+    if (${CMAKE_CXX_COMPILER_ID} STREQUAL AppleClang)
+#        set(GCOV_TOOL ${CMAKE_SOURCE_DIR}/gcov/xcrun-llvm-cov-gcov.sh)
+    endif ()
     if (DEFINED ENV{PREBUILT_LIBS})
         set(LIB_FILE_PATH ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/lib${LIB_NAME}.dylib)
         set(LIB_SYM_PATH ${QUALIFIED_EXPORTED_LIB_PATH}/lib${LIB_NAME}.dylib)
     endif ()
 elseif (${CMAKE_SYSTEM_NAME} STREQUAL Linux)
+    if (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang)
+        set(GCOV_TOOL ${CMAKE_SOURCE_DIR}/gcov/llvm-cov-9-gcov.sh)
+    endif ()
     if (DEFINED ENV{PREBUILT_LIBS})
         set(LIB_FILE_PATH ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/lib${LIB_NAME}.so)
         set(LIB_SYM_PATH ${QUALIFIED_EXPORTED_LIB_PATH}/lib${LIB_NAME}.so)
@@ -186,6 +192,10 @@ if (ENABLE_TESTS)
     add_dependencies(run-tests lib_tests)
 
     if (ENABLE_TESTS_COVERAGE)
+#        if (NOT DEFINED GCOV_TOOL)
+#            message(FATAL_ERROR "The GCOV tool is not defined! Aborting...")
+#        endif ()
+
         find_program(LCOV_PATH lcov)
         if (NOT LCOV_PATH)
             message(FATAL_ERROR "lcov not found! Aborting...")
