@@ -26,7 +26,9 @@ EOF
     exit 1
 fi
 
-cmake -B${testsBuildDir} \
+cmake ${projectDir} -B${testsBuildDir} \
+    -DCMAKE_C_COMPILER=${CC} \
+    -DCMAKE_CXX_COMPILER=${CXX} \
     -DENABLE_TESTS=ON \
     -DENABLE_TESTS_COVERAGE=${enableCoverage} \
     -DGENERATE_HTML_REPORT=${generateHtmlReport}
