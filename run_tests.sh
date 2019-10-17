@@ -26,7 +26,7 @@ EOF
     exit 1
 fi
 
-cmake -B${testsBuildDir} \
+cmake ${projectDir} -B${testsBuildDir} \
     -DENABLE_TESTS=ON \
     -DENABLE_TESTS_COVERAGE=${enableCoverage} \
     -DGENERATE_HTML_REPORT=${generateHtmlReport}
