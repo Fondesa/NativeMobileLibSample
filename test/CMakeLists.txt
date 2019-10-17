@@ -54,10 +54,17 @@ set(TEST_FILES
     note/notes_repository_impl_test.cpp
     )
 
+string(TOLOWER ${CMAKE_SYSTEM_NAME} SYSTEM_QUALIFIER)
+
 # Now simply link against gtest or gtest_main as needed.
 add_executable(${PROJECT_NAME} ${TEST_FILES})
 target_link_libraries(${PROJECT_NAME}
     gtest
     gmock_main
-    lib-darwin
+    lib-${SYSTEM_QUALIFIER}
     )
+
+if (CMAKE_DL_LIBS)
+    # It adds the -ldl flag on the Unix machines which need dlopen and dlclose.
+    target_link_libraries(${PROJECT_NAME} ${CMAKE_DL_LIBS})
+endif ()

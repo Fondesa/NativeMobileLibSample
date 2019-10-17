@@ -29,7 +29,7 @@ if (result)
 endif ()
 
 option(ENABLE_TESTS "Enable the test target" ON)
-option(ENABLE_TESTS_COVERAGE "Enable the coverage for tests" ON)
+option(ENABLE_TESTS_COVERAGE "Enable the coverage for tests" OFF)
 
 set(LIB_SOURCE_FILES
     src/core/compat_bad_optional_access_exception.cpp
@@ -129,9 +129,20 @@ elseif (${CMAKE_SYSTEM_NAME} STREQUAL iOS)
         )
 
 elseif (${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
+    if (${CMAKE_CXX_COMPILER_ID} STREQUAL AppleClang)
+        set(GCOV_TOOL ${CMAKE_SOURCE_DIR}/gcov/xcrun-llvm-cov-gcov.sh)
+    endif ()
     if (DEFINED ENV{PREBUILT_LIBS})
         set(LIB_FILE_PATH ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/lib${LIB_NAME}.dylib)
         set(LIB_SYM_PATH ${QUALIFIED_EXPORTED_LIB_PATH}/lib${LIB_NAME}.dylib)
+    endif ()
+elseif (${CMAKE_SYSTEM_NAME} STREQUAL Linux)
+    if (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang)
+        set(GCOV_TOOL ${CMAKE_SOURCE_DIR}/gcov/llvm-cov-9-gcov.sh)
+    endif ()
+    if (DEFINED ENV{PREBUILT_LIBS})
+        set(LIB_FILE_PATH ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/lib${LIB_NAME}.so)
+        set(LIB_SYM_PATH ${QUALIFIED_EXPORTED_LIB_PATH}/lib${LIB_NAME}.so)
     endif ()
 else ()
     message(FATAL_ERROR "The system ${CMAKE_SYSTEM_NAME} is not supported")
@@ -181,6 +192,10 @@ if (ENABLE_TESTS)
     add_dependencies(run-tests lib_tests)
 
     if (ENABLE_TESTS_COVERAGE)
+        if (NOT DEFINED GCOV_TOOL)
+            message(FATAL_ERROR "The GCOV tool is not defined! Aborting...")
+        endif ()
+
         find_program(LCOV_PATH lcov)
         if (NOT LCOV_PATH)
             message(FATAL_ERROR "lcov not found! Aborting...")
@@ -227,7 +242,7 @@ if (ENABLE_TESTS)
             # Generate the raw coverage report containing all the files.
             COMMAND ${LCOV_PATH}
             --directory ${CMAKE_BINARY_DIR}
-            --gcov-tool ${CMAKE_SOURCE_DIR}/llvm-gcov.sh
+            --gcov-tool ${GCOV_TOOL}
             --capture
             --rc lcov_branch_coverage=1
             -o ${COVERAGE_OUTPUT_RAW_FILE_PATH}
@@ -238,6 +253,9 @@ if (ENABLE_TESTS)
             -o ${COVERAGE_OUTPUT_FILTERED_FILE_PATH}
             # The default /usr/include dir of Xcode shouldn't be included since we are not testing those files.
             '*/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/*'
+            # The default Linux include paths shouldn't be included.
+            '/usr/include/*'
+            '/include/*'
             # The build files shouldn't be included.
             '${CMAKE_BINARY_DIR}/*'
             # All the files in the libs folder are external so they shoudn't be tested.
