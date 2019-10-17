@@ -76,6 +76,10 @@ function install_linux() {
     fi
 
     if [[ "$RUN_TESTS_WITH_COVERAGE" == "true" ]]; then
+        if [[ "$CC" == "$CC_CLANG_LINUX" ]]; then
+            # This is necessary to install llvm-cov-9 for Clang.
+            sudo apt-get install llvm-9-dev
+        fi
         # Install LCOV only when the tests are run with coverage because we don't want to install it in jobs which
         # don't use it.
         sudo apt-get install lcov
