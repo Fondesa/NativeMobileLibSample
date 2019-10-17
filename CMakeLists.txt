@@ -130,7 +130,7 @@ elseif (${CMAKE_SYSTEM_NAME} STREQUAL iOS)
 
 elseif (${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
     if (${CMAKE_CXX_COMPILER_ID} STREQUAL AppleClang)
-#        set(GCOV_TOOL ${CMAKE_SOURCE_DIR}/gcov/xcrun-llvm-cov-gcov.sh)
+        set(GCOV_TOOL ${CMAKE_SOURCE_DIR}/gcov/xcrun-llvm-cov-gcov.sh)
     endif ()
     if (DEFINED ENV{PREBUILT_LIBS})
         set(LIB_FILE_PATH ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/lib${LIB_NAME}.dylib)
@@ -192,9 +192,9 @@ if (ENABLE_TESTS)
     add_dependencies(run-tests lib_tests)
 
     if (ENABLE_TESTS_COVERAGE)
-#        if (NOT DEFINED GCOV_TOOL)
-#            message(FATAL_ERROR "The GCOV tool is not defined! Aborting...")
-#        endif ()
+        if (NOT DEFINED GCOV_TOOL)
+            message(FATAL_ERROR "The GCOV tool is not defined! Aborting...")
+        endif ()
 
         find_program(LCOV_PATH lcov)
         if (NOT LCOV_PATH)
@@ -242,7 +242,7 @@ if (ENABLE_TESTS)
             # Generate the raw coverage report containing all the files.
             COMMAND ${LCOV_PATH}
             --directory ${CMAKE_BINARY_DIR}
-            --gcov-tool ${CMAKE_SOURCE_DIR}/llvm-gcov.sh
+            --gcov-tool ${GCOV_TOOL}
             --capture
             --rc lcov_branch_coverage=1
             -o ${COVERAGE_OUTPUT_RAW_FILE_PATH}
