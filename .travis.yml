@@ -6,24 +6,12 @@ branches:
 
 sudo: true
 
-env:
-  global:
-    - CC_GCC_OSX=/usr/local/bin/gcc-9
-    - CXX_GCC_OSX=/usr/local/bin/g++-9
-    - CC_CLANG_LINUX=clang-9
-    - CXX_CLANG_LINUX=clang++-9
-    - OSX_IMAGE=xcode11
-
 before_cache: ci/before-cache.sh
 
 cache:
   directories:
     # For Homebrew's formulae on macOS.
     - $HOME/Library/Caches/Homebrew
-
-before_install: source ci/before-install.sh
-
-install: ci/install.sh
 
 matrix:
   include:
@@ -45,6 +33,7 @@ matrix:
     - name: Clang 9.0
       os: linux
       before_install:
+        - source ci/install-android-ndk.sh
         - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
         - wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
         - sudo add-apt-repository 'deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-9 main' -y
@@ -56,24 +45,30 @@ matrix:
         - ./build.sh --android
         - ./run_tests.sh
       env:
-        - CC=$CC_CLANG_LINUX
-        - CXX=$CXX_CLANG_LINUX
-        - BUILD_ANDROID=true
+        - CC=clang-9
+        - CXX=clang++-9
 
     - name: GCC 9.2
       os: osx
       osx_image: xcode11
+      before_install:
+        - ci/brew-to-latest.sh gcc
       script:
         - ./build.sh --system
         - ./run_tests.sh
       env:
-        - CC=$CC_GCC_OSX
-        - CXX=$CXX_GCC_OSX
+        - CC=/usr/local/bin/gcc-9
+        - CXX=/usr/local/bin/g++-9
 
     - name: AppleClang 11.0 + coverage
       os: osx
       osx_image: xcode11
+      addons:
+        homebrew:
+          packages:
+            - lcov
       before_install:
+        - source ci/install-android-ndk.sh
         # Necessary to publish the coverage on coveralls.
         - gem install coveralls-lcov
       script:
@@ -86,5 +81,3 @@ matrix:
       env:
         - CC=clang
         - CXX=clang++
-        - BUILD_ANDROID=true
-        - RUN_TESTS_WITH_COVERAGE=true
