@@ -131,6 +131,8 @@ elseif (${CMAKE_SYSTEM_NAME} STREQUAL iOS)
 elseif (${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
     if (${CMAKE_CXX_COMPILER_ID} STREQUAL AppleClang)
         set(GCOV_TOOL ${CMAKE_SOURCE_DIR}/gcov/xcrun-llvm-cov-gcov.sh)
+    elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
+        set(GCOV_TOOL gcov-9)
     endif ()
     if (DEFINED ENV{PREBUILT_LIBS})
         set(LIB_FILE_PATH ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/lib${LIB_NAME}.dylib)
@@ -139,6 +141,8 @@ elseif (${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
 elseif (${CMAKE_SYSTEM_NAME} STREQUAL Linux)
     if (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang)
         set(GCOV_TOOL ${CMAKE_SOURCE_DIR}/gcov/llvm-cov-9-gcov.sh)
+    elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
+        set(GCOV_TOOL gcov-9)
     endif ()
     if (DEFINED ENV{PREBUILT_LIBS})
         set(LIB_FILE_PATH ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/lib${LIB_NAME}.so)
@@ -253,6 +257,10 @@ if (ENABLE_TESTS)
             -o ${COVERAGE_OUTPUT_FILTERED_FILE_PATH}
             # The default /usr/include dir of Xcode shouldn't be included since we are not testing those files.
             '*/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/*'
+            # The default macOS stdlib of GCC-X shouldn't be included.
+            '/usr/local/include/*'
+            # The default GCC-X directory downloaded with Homebrew shouldn't be included.
+            '/usr/local/Cellar/gcc/*'
             # The default Linux include paths shouldn't be included.
             '/usr/include/*'
             '/include/*'

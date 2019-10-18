@@ -4,18 +4,6 @@ branches:
 
 sudo: true
 
-env:
-  global:
-    - CC_GCC_OSX=/usr/local/bin/gcc-9
-    - CXX_GCC_OSX=/usr/local/bin/g++-9
-    - CC_GCC_LINUX=gcc-9
-    - CXX_GCC_LINUX=g++-9
-    - CC_CLANG_OSX=clang
-    - CXX_CLANG_OSX=clang++
-    - CC_CLANG_LINUX=clang-9
-    - CXX_CLANG_LINUX=clang++-9
-    - OSX_IMAGE=xcode11
-
 before_cache: ci/before-cache.sh
 
 cache:
@@ -23,77 +11,75 @@ cache:
     # For Homebrew's formulae on macOS.
     - $HOME/Library/Caches/Homebrew
 
-jobs:
+matrix:
   include:
-    # The build stage will build the library for the source OS, Android and iOS.
-    - stage: build
-      name: OS = macOS | Target = Darwin | Compiler = GCC 9.2
-      os: osx
-      osx_image: xcode11
-      script: ./build.sh --system
-      env:
-        - CC=$CC_GCC_OSX
-        - CXX=$CXX_GCC_OSX
-    - name: OS = macOS | Target = Darwin | Compiler = AppleClang 11.0
-      os: osx
-      osx_image: xcode11
-      script: ./build.sh --system
-      env:
-        - CC=$CC_CLANG_OSX
-        - CXX=$CXX_CLANG_OSX
-    # The build the library for Android the compiler is given by the NDK toolchain file.
-    - name: OS = macOS | Target = Android
-      os: osx
-      osx_image: xcode11
-      script: ./build.sh --android
-      env:
-        - BUILD_ANDROID=true
-    # To build the library for iOS the compiler is given by Xcode.
-    - name: OS = macOS | Target = iOS
-      os: osx
-      osx_image: xcode11
-      script: ./build.sh --ios
-    - name: OS = Linux | Target = Linux | Compiler = GCC 9.1
+    - name: GCC 9.1
       os: linux
-      script: ./build.sh --system
-      env:
-        - CC=$CC_GCC_LINUX
-        - CXX=$CXX_GCC_LINUX
-    - name: OS = Linux | Target = Linux | Compiler = Clang 9.0
-      os: linux
-      script: ./build.sh --system
-      env:
-        - CC=$CC_CLANG_LINUX
-        - CXX=$CXX_CLANG_LINUX
-    # The build the library for Android the compiler is given by the NDK toolchain file.
-    - name: OS = Linux | Target = Android
-      os: linux
-      script: ./build.sh --android
-      env:
-        - BUILD_ANDROID=true
-    - stage: test
-      name: OS = macOS | Compiler = AppleClang 11.0
-      os: osx
-      osx_image: xcode11
+      addons:
+        apt:
+          sources:
+            # It contains the g++-9 package.
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-9
       script:
+        - ./build.sh --system
+        - ./run_tests.sh
+      env:
+        - CC=gcc-9
+        - CXX=g++-9
+
+    - name: Clang 9.0
+      os: linux
+      before_install:
+        - source ci/install-android-ndk.sh
+        # It contains the g++-9 package.
+        - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+        # Add the Clang 9 repository following the instructions at https://apt.llvm.org/.
+        - wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+        - sudo add-apt-repository 'deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-9 main' -y
+        - sudo apt-get update
+        - sudo apt-get install g++-9
+        - sudo apt-get install clang-9
+      script:
+        - ./build.sh --system
+        - ./build.sh --android
+        - ./run_tests.sh
+      env:
+        - CC=clang-9
+        - CXX=clang++-9
+
+    - name: GCC 9.2
+      os: osx
+      osx_image: xcode11
+      before_install:
+        - ci/brew-to-latest.sh gcc
+      script:
+        - ./build.sh --system
+        - ./run_tests.sh
+      env:
+        - CC=/usr/local/bin/gcc-9
+        - CXX=/usr/local/bin/g++-9
+
+    - name: AppleClang 11.0 + coverage
+      os: osx
+      osx_image: xcode11
+      addons:
+        homebrew:
+          packages:
+            # Not needed to update Homebrew for LCOV.
+            - lcov
+      before_install:
+        - source ci/install-android-ndk.sh
+        # Necessary to publish the coverage on coveralls.
         - gem install coveralls-lcov
+      script:
+        - ./build.sh --system
+        - ./build.sh --android
+        - ./build.sh --ios
         - ./run_tests.sh --coverage-raw
         # Publish the coverage results to Coveralls.io.
         - coveralls-lcov build/tests/out/coverage/filtered.info
       env:
-        - CC=$CC_CLANG_OSX
-        - CXX=$CXX_CLANG_OSX
-        - RUN_TESTS_WITH_COVERAGE=true
-    - name: OS = Linux | Compiler = Clang 9.0
-      os: linux
-      script:
-        - gem install coveralls-lcov
-        - ./run_tests.sh --coverage-raw
-      env:
-        - CC=$CC_CLANG_LINUX
-        - CXX=$CXX_CLANG_LINUX
-        - RUN_TESTS_WITH_COVERAGE=true
-
-before_install: source ci/before-install.sh
-
-install: ci/install.sh
+        - CC=clang
+        - CXX=clang++
