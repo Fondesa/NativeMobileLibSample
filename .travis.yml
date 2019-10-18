@@ -1,3 +1,5 @@
+language: cpp
+
 branches:
   only:
     - master
@@ -23,27 +25,50 @@ cache:
     # For Homebrew's formulae on macOS.
     - $HOME/Library/Caches/Homebrew
 
+before_install: source ci/before-install.sh
+
+install: ci/install.sh
+
 matrix:
   include:
-    # The build stage will build the library for the source OS, Android and iOS.
-    - name: OS = macOS | Compiler = GCC 9.2
+    - name: GCC 9.1
+      os: linux
+      script:
+        - ./build.sh --system
+        - ./run_tests.sh
+      env:
+        - CC=$CC_GCC_LINUX
+        - CXX=$CXX_GCC_LINUX
+
+    - name: Clang 9.0
+      os: linux
+      script:
+        - ./build.sh --system
+        - ./build.sh --android
+        - ./run_tests.sh
+      env:
+        - CC=$CC_CLANG_LINUX
+        - CXX=$CXX_CLANG_LINUX
+        - BUILD_ANDROID=true
+
+    - name: GCC 9.2
       os: osx
       osx_image: xcode11
       script:
         - ./build.sh --system
-        - ./run-tests.sh
+        - ./run_tests.sh
       env:
         - CC=$CC_GCC_OSX
         - CXX=$CXX_GCC_OSX
 
-    - name: OS = macOS | Compiler = AppleClang 11.0
+    - name: AppleClang 11.0 + coverage
       os: osx
       osx_image: xcode11
       script:
         - ./build.sh --system
         - ./build.sh --android
         - ./build.sh --ios
-        - ./run-tests.sh --coverage-raw
+        - ./run_tests.sh --coverage-raw
         # Publish the coverage results to Coveralls.io.
         - coveralls-lcov build/tests/out/coverage/filtered.info
       env:
@@ -51,27 +76,3 @@ matrix:
         - CXX=$CXX_CLANG_OSX
         - BUILD_ANDROID=true
         - RUN_TESTS_WITH_COVERAGE=true
-
-    - name: OS = Linux | Compiler = GCC 9.1
-      os: linux
-      script:
-        - ./build.sh --system
-        - ./run-tests.sh
-      env:
-        - CC=$CC_GCC_LINUX
-        - CXX=$CXX_GCC_LINUX
-
-    - name: OS = Linux | Compiler = Clang 9.0
-      os: linux
-      script:
-        - ./build.sh --system
-        - ./build.sh --android
-        - ./run-tests.sh
-      env:
-        - CC=$CC_CLANG_LINUX
-        - CXX=$CXX_CLANG_LINUX
-        - BUILD_ANDROID=true
-
-before_install: source ci/before-install.sh
-
-install: ci/install.sh
