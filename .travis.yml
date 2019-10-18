@@ -48,7 +48,7 @@ matrix:
         apt:
           sources:
             - ubuntu-toolchain-r-test
-            - llvm-toolchain-xenial-9
+            - jonathonf-llvm-9
           packages:
             - g++-9
             - clang-9
