@@ -12,10 +12,6 @@ function install_osx() {
         # Install LCOV only when the tests are run with coverage because we don't want to install it in jobs which
         # don't use it.
         formulae+=(lcov)
-        if [[ "$CC" == "$CC_CLANG_OSX" ]]; then
-            # Necessary to publish the coverage on coveralls.
-            gem install coveralls-lcov
-        fi
     fi
 
     for formula in "${formulae[@]}"; do
@@ -62,36 +58,23 @@ function install_osx() {
     done
 }
 
-function install_linux() {
-    sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-    sudo add-apt-repository ppa:jonathonf/llvm -y
-    wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-    sudo add-apt-repository 'deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-9 main' -y
-    sudo apt-get update
-
-    if [[ "$CC" == "$CC_GCC_LINUX" ]]; then
-        # Install GNU 9.x.
-        sudo apt-get install g++-9
-    elif [[ "$CC" == "$CC_CLANG_LINUX" ]]; then
-        # Clang doesn't come with the standard library so it should be installed separately.
-        # In this way we can get the C++17 standard library headers like <optional>.
-        sudo apt-get install g++-9
-        sudo apt-get install clang-9
-    fi
-
-    if [[ "$RUN_TESTS_WITH_COVERAGE" == "true" ]]; then
-        if [[ "$CC" == "$CC_CLANG_LINUX" ]]; then
-            # This is necessary to install llvm-cov-9 for Clang.
-            sudo apt-get install llvm-9-dev
-        fi
-        # Install LCOV only when the tests are run with coverage because we don't want to install it in jobs which
-        # don't use it.
-        sudo apt-get install lcov
-    fi
-}
+#function install_linux() {
+#    sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+#    sudo add-apt-repository ppa:jonathonf/llvm -y
+#    wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+#    sudo add-apt-repository 'deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-9 main' -y
+#    sudo apt-get update
+#
+#    if [[ "$CC" == "$CC_CLANG_LINUX" ]]; then
+#        # Clang doesn't come with the standard library so it should be installed separately.
+#        # In this way we can get the C++17 standard library headers like <optional>.
+#        sudo apt-get install g++-9
+#        sudo apt-get install clang-9
+#    fi
+#}
 
 if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
     install_osx
 elif [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-    install_linux
+#    install_linux
 fi
