@@ -53,6 +53,7 @@ function build_android_abi() {
         -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
         -DCMAKE_SYSTEM_NAME=Android \
         -DANDROID_PLATFORM=android-16 \
+        -DANDROID_TOOLCHAIN=${CC} \
         -DANDROID_ABI=${abi}
 
     (cd ${abiBuildDir} && make build-lib)
