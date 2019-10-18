@@ -10,10 +10,6 @@ env:
   global:
     - CC_GCC_OSX=/usr/local/bin/gcc-9
     - CXX_GCC_OSX=/usr/local/bin/g++-9
-    - CC_GCC_LINUX=gcc-9
-    - CXX_GCC_LINUX=g++-9
-    - CC_CLANG_OSX=clang
-    - CXX_CLANG_OSX=clang++
     - CC_CLANG_LINUX=clang-9
     - CXX_CLANG_LINUX=clang++-9
     - OSX_IMAGE=xcode11
@@ -33,15 +29,29 @@ matrix:
   include:
     - name: GCC 9.1
       os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-9
       script:
         - ./build.sh --system
         - ./run_tests.sh
       env:
-        - CC=$CC_GCC_LINUX
-        - CXX=$CXX_GCC_LINUX
+        - CC=gcc-9
+        - CXX=g++-9
 
     - name: Clang 9.0
       os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-xenial-9
+          packages:
+            - g++-9
+            - clang-9
       script:
         - ./build.sh --system
         - ./build.sh --android
@@ -64,6 +74,9 @@ matrix:
     - name: AppleClang 11.0 + coverage
       os: osx
       osx_image: xcode11
+      before_install:
+        # Necessary to publish the coverage on coveralls.
+        - gem install coveralls-lcov
       script:
         - ./build.sh --system
         - ./build.sh --android
@@ -72,7 +85,7 @@ matrix:
         # Publish the coverage results to Coveralls.io.
         - coveralls-lcov build/tests/out/coverage/filtered.info
       env:
-        - CC=$CC_CLANG_OSX
-        - CXX=$CXX_CLANG_OSX
+        - CC=clang
+        - CXX=clang++
         - BUILD_ANDROID=true
         - RUN_TESTS_WITH_COVERAGE=true
