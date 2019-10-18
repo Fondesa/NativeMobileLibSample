@@ -12,6 +12,10 @@ function install_osx() {
         # Install LCOV only when the tests are run with coverage because we don't want to install it in jobs which
         # don't use it.
         formulae+=(lcov)
+        if [[ "$CC" == "$CC_CLANG_OSX" ]]; then
+            # Necessary to publish the coverage on coveralls.
+            gem install coveralls-lcov
+        fi
     fi
 
     for formula in "${formulae[@]}"; do
