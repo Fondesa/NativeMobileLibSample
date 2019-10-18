@@ -44,14 +44,13 @@ matrix:
 
     - name: Clang 9.0
       os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - jonathonf-llvm-9
-          packages:
-            - g++-9
-            - clang-9
+      before_install:
+        - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+        - wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+        - sudo add-apt-repository 'deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-9 main' -y
+        - sudo apt-get update
+        - sudo apt-get install g++-9
+        - sudo apt-get install clang-9
       script:
         - ./build.sh --system
         - ./build.sh --android
