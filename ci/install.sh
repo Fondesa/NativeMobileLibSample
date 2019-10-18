@@ -75,6 +75,6 @@ function install_osx() {
 
 if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
     install_osx
-elif [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+#elif [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
 #    install_linux
 fi
