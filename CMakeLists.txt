@@ -244,14 +244,14 @@ if (ENABLE_TESTS)
             # Create the output dir of the coverage reports.
             COMMAND ${CMAKE_COMMAND} -E make_directory ${COVERAGE_OUTPUT_DIR}
             # Generate the raw coverage report containing all the files.
-            COMMAND /Users/antoniolig/Downloads/lcov-master/bin/lcov
+            COMMAND ${LCOV_PATH}
             --directory ${CMAKE_BINARY_DIR}
             --gcov-tool ${GCOV_TOOL}
             --capture
             --rc lcov_branch_coverage=1
             -o ${COVERAGE_OUTPUT_RAW_FILE_PATH}
             # Exclude the unwanted files from the generated report.
-            COMMAND /Users/antoniolig/Downloads/lcov-master/bin/lcov
+            COMMAND ${LCOV_PATH}
             --remove ${COVERAGE_OUTPUT_RAW_FILE_PATH}
             --rc lcov_branch_coverage=1
             -o ${COVERAGE_OUTPUT_FILTERED_FILE_PATH}
