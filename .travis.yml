@@ -113,6 +113,7 @@ matrix:
 
     - name: GCC 7.4
       os: osx
+      osx_image: xcode11.2
       addons:
         homebrew:
           packages:
@@ -126,6 +127,7 @@ matrix:
 
     - name: GCC 8.3
       os: osx
+      osx_image: xcode11.2
       addons:
         homebrew:
           packages:
@@ -139,6 +141,7 @@ matrix:
 
     - name: GCC 9.2
       os: osx
+      osx_image: xcode11.2
       addons:
         homebrew:
           packages:
@@ -153,6 +156,12 @@ matrix:
     - name: AppleClang 6.4
       os: osx
       osx_image: xcode6.4
+      addons:
+        homebrew:
+          packages:
+            # The given CMake version is less than 3.10 so it should be updated.
+            - cmake
+          update: true
       before_install:
         - source ci/install-android-ndk.sh
       script:
@@ -167,6 +176,12 @@ matrix:
     - name: AppleClang 7.3
       os: osx
       osx_image: xcode7.3
+      addons:
+        homebrew:
+          packages:
+            # The given CMake version is less than 3.10 so it should be updated.
+            - cmake
+          update: true
       before_install:
         - source ci/install-android-ndk.sh
       script:
@@ -181,6 +196,12 @@ matrix:
     - name: AppleClang 8.3
       os: osx
       osx_image: xcode8.3
+      addons:
+        homebrew:
+          packages:
+            # The given CMake version is less than 3.10 so it should be updated.
+            - cmake
+          update: true
       before_install:
         - source ci/install-android-ndk.sh
       script:
