@@ -13,21 +13,6 @@ cache:
 
 matrix:
   include:
-    - name: GCC 5??
-      os: linux
-      addons:
-        apt:
-          sources:
-            # It contains the g++-7 package.
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-5
-      script:
-        - ./build.sh --system
-        - ./run_tests.sh
-      env:
-        - CC=gcc-5
-        - CXX=g++-5
     - name: GCC 6.5
       os: linux
       addons:
@@ -111,6 +96,20 @@ matrix:
         - CC=clang-9
         - CXX=clang++-9
 
+    - name: GCC 6???
+      os: osx
+      osx_image: xcode11.2
+      addons:
+        homebrew:
+          packages:
+            - gcc@6
+      script:
+        - ./build.sh --system
+        - ./run_tests.sh
+      env:
+        - CC=/usr/local/bin/gcc-6
+        - CXX=/usr/local/bin/g++-6
+
     - name: GCC 7.4
       os: osx
       osx_image: xcode11.2
@@ -177,6 +176,22 @@ matrix:
       os: osx
       osx_image: xcode9.4
       before_install:
+        #- sudo xcode-select --reset
+        - source ci/install-android-ndk.sh
+      script:
+        - ./build.sh --system
+        - ./build.sh --android
+        - ./build.sh --ios
+        - ./run_tests.sh
+      env:
+        - CC=clang
+        - CXX=clang++
+
+    - name: AppleClang 9.4 fixed
+      os: osx
+      osx_image: xcode9.4
+      before_install:
+        - sudo xcode-select --reset
         - source ci/install-android-ndk.sh
       script:
         - ./build.sh --system

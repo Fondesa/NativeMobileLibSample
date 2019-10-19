@@ -110,6 +110,10 @@ function build_framework_for_sdk() {
         CONFIGURATION_BUILD_DIR=${iosFrameworkDir}/${sdk} \
         clean \
         build)
+
+    if [[ $? != 0 ]]; then
+        exit 1;
+    fi
 }
 
 system=$1
