@@ -10,7 +10,7 @@ void Statement::execute() {
 }
 
 template<>
-std::optional<int> Statement::execute() {
+stdx::optional<int> Statement::execute() {
     return executeOptionalInt();
 }
 
@@ -20,7 +20,7 @@ int Statement::execute() {
 }
 
 template<>
-std::optional<std::string> Statement::execute() {
+stdx::optional<std::string> Statement::execute() {
     return executeOptionalString();
 }
 

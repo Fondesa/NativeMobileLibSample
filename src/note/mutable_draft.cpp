@@ -25,11 +25,11 @@ void MutableDraft::updateDescription(std::string description) {
 }
 
 bool MutableDraft::hasTitle() const {
-    return title.has_value();
+    return title ? true : false;
 }
 
 bool MutableDraft::hasDescription() const {
-    return description.has_value();
+    return description ? true : false;
 }
 
 bool MutableDraft::isIncomplete() const {

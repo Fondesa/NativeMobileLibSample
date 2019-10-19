@@ -14,7 +14,7 @@ TEST(SQLiteDatabaseTest, givenValidDbPathWhenDestructorIsInvokedThenDatabaseIsCl
     auto db = new Db::Sql::Database(":memory:", SQLITE_OPEN_READWRITE);
     // Increase the user version.
     db->createStatement("PRAGMA user_version = " + std::to_string(version))->execute<void>();
-    auto obtainedVersion = db->createStatement("PRAGMA user_version")->execute<std::optional<int>>();
+    auto obtainedVersion = db->createStatement("PRAGMA user_version")->execute<stdx::optional<int>>();
     // Just to be sure the obtained version is the one set before.
     ASSERT_EQ(version, obtainedVersion);
     // The db should be closed now.
@@ -22,7 +22,7 @@ TEST(SQLiteDatabaseTest, givenValidDbPathWhenDestructorIsInvokedThenDatabaseIsCl
     delete db;
 
     auto newDb = Db::Sql::Database(":memory:", SQLITE_OPEN_READWRITE);
-    obtainedVersion = newDb.createStatement("PRAGMA user_version")->execute<std::optional<int>>();
+    obtainedVersion = newDb.createStatement("PRAGMA user_version")->execute<stdx::optional<int>>();
     // The default version is 0.
     EXPECT_EQ(0, obtainedVersion);
 }

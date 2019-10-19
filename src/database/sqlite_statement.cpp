@@ -16,9 +16,9 @@ void Statement::executeVoid() {
     }
 }
 
-std::optional<int> Statement::executeOptionalInt() {
+stdx::optional<int> Statement::executeOptionalInt() {
     int status = sqlite3_step(stmt);
-    auto result = std::optional<int>();
+    auto result = stdx::optional<int>();
     if (status == SQLITE_DONE) {
         // If there are no rows to read, the value is absent.
         return result;
@@ -52,9 +52,9 @@ int Statement::executeInt() {
     return *result;
 }
 
-std::optional<std::string> Statement::executeOptionalString() {
+stdx::optional<std::string> Statement::executeOptionalString() {
     int status = sqlite3_step(stmt);
-    auto result = std::optional<std::string>();
+    auto result = stdx::optional<std::string>();
     if (status == SQLITE_DONE) {
         // If there are no rows to read, the value is absent.
         return result;
