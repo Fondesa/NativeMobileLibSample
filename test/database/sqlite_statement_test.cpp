@@ -48,7 +48,7 @@ TEST_F(SQLiteStatementTest, givenDoneResultWhenExecuteVoidIsInvokedThenException
 TEST_F(SQLiteStatementTest, givenZeroRowResultWhenExecuteOptionalIntIsInvokedThenNullOptionalIsReturned) {
     auto statement = Db::Sql::Statement(db, "PRAGMA user_version = 2");
 
-    auto result = statement.execute<std::optional<int>>();
+    auto result = statement.execute<stdx::optional<int>>();
 
     ASSERT_FALSE(result.has_value());
 }
@@ -67,14 +67,14 @@ TEST_F(SQLiteStatementTest, givenErrorInSqliteStepWhenExecuteOptionalIntIsInvoke
 
     // We try to insert a record with the same id to simulate a constraint violation.
     // The error code will be SQLITE_CONSTRAINT.
-    ASSERT_THROW(statement.execute<std::optional<int>>(), Db::Sql::Exception);
+    ASSERT_THROW(statement.execute<stdx::optional<int>>(), Db::Sql::Exception);
 }
 
 TEST_F(SQLiteStatementTest, givenDifferentTypeOfColumnWhenExecuteOptionalIntIsInvokedThenExceptionIsThrown) {
     // The returned journal mode will be a string.
     auto statement = Db::Sql::Statement(db, "PRAGMA journal_mode");
 
-    ASSERT_THROW(statement.execute<std::optional<int>>(), Db::Sql::Exception);
+    ASSERT_THROW(statement.execute<stdx::optional<int>>(), Db::Sql::Exception);
 }
 
 TEST_F(SQLiteStatementTest, givenMoreThanOneRowWhenExecuteOptionalIntIsInvokedThenExceptionIsThrown) {
@@ -90,19 +90,19 @@ TEST_F(SQLiteStatementTest, givenMoreThanOneRowWhenExecuteOptionalIntIsInvokedTh
 
     auto statement = Db::Sql::Statement(db, "SELECT id FROM dummy_table");
     // The result should contain two rows.
-    ASSERT_THROW(statement.execute<std::optional<int>>(), Db::Sql::Exception);
+    ASSERT_THROW(statement.execute<stdx::optional<int>>(), Db::Sql::Exception);
 }
 
 TEST_F(SQLiteStatementTest, givenResetViolationWhenExecuteOptionalIntIsInvokedThenExceptionIsThrown) {
     auto statement = ResetViolationStatement(db, "PRAGMA user_version");
 
-    ASSERT_THROW(statement.execute<std::optional<int>>(), Db::Sql::Exception);
+    ASSERT_THROW(statement.execute<stdx::optional<int>>(), Db::Sql::Exception);
 }
 
 TEST_F(SQLiteStatementTest, givenClearBindingsViolationWhenExecuteOptionalIntIsInvokedThenExceptionIsThrown) {
     auto statement = ClearBindingsViolationStatement(db, "PRAGMA user_version");
 
-    ASSERT_THROW(statement.execute<std::optional<int>>(), Db::Sql::Exception);
+    ASSERT_THROW(statement.execute<stdx::optional<int>>(), Db::Sql::Exception);
 }
 
 TEST_F(SQLiteStatementTest, givenOneIntRowResultWhenExecuteOptionalIntIsInvokedThenIntIsReturned) {
@@ -111,7 +111,7 @@ TEST_F(SQLiteStatementTest, givenOneIntRowResultWhenExecuteOptionalIntIsInvokedT
     ASSERT_EQ(SQLITE_DONE, rc);
     auto statement = Db::Sql::Statement(db, "PRAGMA user_version");
 
-    auto result = statement.execute<std::optional<int>>();
+    auto result = statement.execute<stdx::optional<int>>();
 
     ASSERT_EQ(2, result);
 }
@@ -188,7 +188,7 @@ TEST_F(SQLiteStatementTest, givenOneIntRowResultWhenExecuteIntIsInvokedThenIntIs
 TEST_F(SQLiteStatementTest, givenZeroRowResultWhenExecuteOptionalStringIsInvokedThenNullOptionalIsReturned) {
     auto statement = Db::Sql::Statement(db, "PRAGMA user_version = 2");
 
-    auto result = statement.execute<std::optional<std::string>>();
+    auto result = statement.execute<stdx::optional<std::string>>();
 
     ASSERT_FALSE(result.has_value());
 }
@@ -207,14 +207,14 @@ TEST_F(SQLiteStatementTest, givenErrorInSqliteStepWhenExecuteOptionalStringIsInv
 
     // We try to insert a record with the same id to simulate a constraint violation.
     // The error code will be SQLITE_CONSTRAINT.
-    ASSERT_THROW(statement.execute<std::optional<std::string>>(), Db::Sql::Exception);
+    ASSERT_THROW(statement.execute<stdx::optional<std::string>>(), Db::Sql::Exception);
 }
 
 TEST_F(SQLiteStatementTest, givenDifferentTypeOfColumnWhenExecuteOptionalStringIsInvokedThenExceptionIsThrown) {
     // The returned DB version mode will be an integer.
     auto statement = Db::Sql::Statement(db, "PRAGMA user_version");
 
-    ASSERT_THROW(statement.execute<std::optional<std::string>>(), Db::Sql::Exception);
+    ASSERT_THROW(statement.execute<stdx::optional<std::string>>(), Db::Sql::Exception);
 }
 
 TEST_F(SQLiteStatementTest, givenMoreThanOneRowWhenExecuteOptionalStringIsInvokedThenExceptionIsThrown) {
@@ -230,19 +230,19 @@ TEST_F(SQLiteStatementTest, givenMoreThanOneRowWhenExecuteOptionalStringIsInvoke
 
     auto statement = Db::Sql::Statement(db, "SELECT title FROM dummy_table");
     // The result should contain two rows.
-    ASSERT_THROW(statement.execute<std::optional<std::string>>(), Db::Sql::Exception);
+    ASSERT_THROW(statement.execute<stdx::optional<std::string>>(), Db::Sql::Exception);
 }
 
 TEST_F(SQLiteStatementTest, givenResetViolationWhenExecuteOptionalStringIsInvokedThenExceptionIsThrown) {
     auto statement = ResetViolationStatement(db, "PRAGMA journal_mode");
 
-    ASSERT_THROW(statement.execute<std::optional<std::string>>(), Db::Sql::Exception);
+    ASSERT_THROW(statement.execute<stdx::optional<std::string>>(), Db::Sql::Exception);
 }
 
 TEST_F(SQLiteStatementTest, givenClearBindingsViolationWhenExecuteOptionalStringIsInvokedThenExceptionIsThrown) {
     auto statement = ClearBindingsViolationStatement(db, "PRAGMA journal_mode");
 
-    ASSERT_THROW(statement.execute<std::optional<std::string>>(), Db::Sql::Exception);
+    ASSERT_THROW(statement.execute<stdx::optional<std::string>>(), Db::Sql::Exception);
 }
 
 TEST_F(SQLiteStatementTest, givenOneStringRowResultWhenExecuteOptionalStringIsInvokedThenIntIsReturned) {
@@ -254,7 +254,7 @@ TEST_F(SQLiteStatementTest, givenOneStringRowResultWhenExecuteOptionalStringIsIn
     ASSERT_EQ(SQLITE_DONE, rc);
     auto statement = Db::Sql::Statement(db, "SELECT title FROM dummy_table");
 
-    auto result = statement.execute<std::optional<std::string>>();
+    auto result = statement.execute<stdx::optional<std::string>>();
 
     ASSERT_EQ("first", result);
 }

@@ -1,9 +1,9 @@
 #pragma once
 
-#include <optional>
 #include <vector>
 #include "note.hpp"
 #include "draft.hpp"
+#include "std_optional_compat.hpp"
 
 class NotesInteractor {
    public:
@@ -23,9 +23,9 @@ class NotesInteractor {
 
     virtual std::vector<Note> getNotesByText(std::string text) = 0;
 
-    virtual std::optional<Draft> getNewDraft() = 0;
+    virtual stdx::optional<Draft> getNewDraft() = 0;
 
-    virtual std::optional<Draft> getExistingDraft(int id) = 0;
+    virtual stdx::optional<Draft> getExistingDraft(int id) = 0;
 
     virtual void deleteNote(int id) = 0;
 

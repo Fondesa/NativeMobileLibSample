@@ -97,14 +97,14 @@ void DraftsRepositoryImpl::deleteExisting(int id) {
     stmt->execute<void>();
 }
 
-std::optional<Draft> DraftsRepositoryImpl::getNew() {
+stdx::optional<Draft> DraftsRepositoryImpl::getNew() {
     if (pendingNew) {
         return pendingNew->toDraft();
     }
     return getNewFromDb();
 }
 
-std::optional<Draft> DraftsRepositoryImpl::getExisting(int id) {
+stdx::optional<Draft> DraftsRepositoryImpl::getExisting(int id) {
     auto existingEntry = pendingExisting.find(id);
     if (existingEntry != pendingExisting.end()) {
         return existingEntry->second.toDraft();
@@ -183,13 +183,13 @@ void DraftsRepositoryImpl::persistExisting(const std::map<int, MutableDraft> &dr
     }
 }
 
-std::optional<Draft> DraftsRepositoryImpl::getNewFromDb() {
+stdx::optional<Draft> DraftsRepositoryImpl::getNewFromDb() {
     auto stmt = db->createStatement(
         "SELECT title, description "
         "FROM pending_draft_creation "
         "LIMIT 1"
     );
-    auto draft = std::optional<Draft>();
+    auto draft = stdx::optional<Draft>();
     auto cursor = stmt->execute<std::shared_ptr<Db::Cursor>>();
     while (cursor->next()) {
         auto title = cursor->get<std::string>(0);
@@ -199,7 +199,7 @@ std::optional<Draft> DraftsRepositoryImpl::getNewFromDb() {
     return draft;
 }
 
-std::optional<Draft> DraftsRepositoryImpl::getExistingFromDb(int id) {
+stdx::optional<Draft> DraftsRepositoryImpl::getExistingFromDb(int id) {
     auto stmt = db->createStatement(
         "SELECT title, description "
         "FROM pending_drafts_update "
@@ -208,7 +208,7 @@ std::optional<Draft> DraftsRepositoryImpl::getExistingFromDb(int id) {
     );
     stmt->bind(1, id);
 
-    auto draft = std::optional<Draft>();
+    auto draft = stdx::optional<Draft>();
     auto cursor = stmt->execute<std::shared_ptr<Db::Cursor>>();
     while (cursor->next()) {
         auto title = cursor->get<std::string>(0);
@@ -218,23 +218,23 @@ std::optional<Draft> DraftsRepositoryImpl::getExistingFromDb(int id) {
     return draft;
 }
 
-std::optional<std::string> DraftsRepositoryImpl::getNewTitleFromDb() {
+stdx::optional<std::string> DraftsRepositoryImpl::getNewTitleFromDb() {
     return db->createStatement(
         "SELECT title "
         "FROM pending_draft_creation "
         "LIMIT 1"
-    )->execute<std::optional<std::string>>();
+    )->execute<stdx::optional<std::string>>();
 }
 
-std::optional<std::string> DraftsRepositoryImpl::getNewDescriptionFromDb() {
+stdx::optional<std::string> DraftsRepositoryImpl::getNewDescriptionFromDb() {
     return db->createStatement(
         "SELECT description "
         "FROM pending_draft_creation "
         "LIMIT 1"
-    )->execute<std::optional<std::string>>();
+    )->execute<stdx::optional<std::string>>();
 }
 
-std::optional<std::string> DraftsRepositoryImpl::getExistingTitleFromDb(int id) {
+stdx::optional<std::string> DraftsRepositoryImpl::getExistingTitleFromDb(int id) {
     auto stmt = db->createStatement(
         "SELECT title "
         "FROM pending_drafts_update "
@@ -242,10 +242,10 @@ std::optional<std::string> DraftsRepositoryImpl::getExistingTitleFromDb(int id) 
         "LIMIT 1"
     );
     stmt->bind(1, id);
-    return stmt->execute<std::optional<std::string>>();
+    return stmt->execute<stdx::optional<std::string>>();
 }
 
-std::optional<std::string> DraftsRepositoryImpl::getExistingDescriptionFromDb(int id) {
+stdx::optional<std::string> DraftsRepositoryImpl::getExistingDescriptionFromDb(int id) {
     auto stmt = db->createStatement(
         "SELECT description "
         "FROM pending_drafts_update "
@@ -253,5 +253,5 @@ std::optional<std::string> DraftsRepositoryImpl::getExistingDescriptionFromDb(in
         "LIMIT 1"
     );
     stmt->bind(1, id);
-    return stmt->execute<std::optional<std::string>>();
+    return stmt->execute<stdx::optional<std::string>>();
 }
