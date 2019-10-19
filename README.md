@@ -14,3 +14,7 @@ The build script can generate the dynamic library for the following operative sy
 - Darwin -> generates
 - Android since 
 -->
+
+## Supported compilers:
+- GCC 6.5 - 9.2 (and possibly later)
+- AppleClang 
