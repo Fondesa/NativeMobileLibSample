@@ -26,7 +26,7 @@ int DraftsRepositoryImplTest::getPendingExistingDraftsCount() {
 TEST_F(DraftsRepositoryImplTest, givenNoPendingNewWhenGetNewIsInvokedThenNullOptionalIsReturned) {
     auto draft = repository->getNew();
 
-    ASSERT_FALSE(draft.has_value());
+    ASSERT_FALSE(draft);
 }
 
 TEST_F(DraftsRepositoryImplTest, givenPendingNewInDbWhenGetNewIsInvokedThenDraftIsReturned) {
@@ -39,7 +39,7 @@ TEST_F(DraftsRepositoryImplTest, givenPendingNewInDbWhenGetNewIsInvokedThenDraft
 
     auto draft = repository->getNew();
 
-    ASSERT_TRUE(draft.has_value());
+    ASSERT_TRUE(draft);
     EXPECT_EQ(expectedTitle, draft->getTitle());
     EXPECT_EQ(expectedDescription, draft->getDescription());
 }
@@ -62,7 +62,7 @@ TEST_F(DraftsRepositoryImplTest, givenNewDraftWithOnlyTitleWhenGetNewIsInvokedTh
 
     auto draft = repository->getNew();
 
-    ASSERT_TRUE(draft.has_value());
+    ASSERT_TRUE(draft);
     EXPECT_EQ(expectedTitle, draft->getTitle());
     EXPECT_EQ("", draft->getDescription());
 }
@@ -73,7 +73,7 @@ TEST_F(DraftsRepositoryImplTest, givenNewDraftWithOnlyDescriptionWhenGetNewIsInv
 
     auto draft = repository->getNew();
 
-    ASSERT_TRUE(draft.has_value());
+    ASSERT_TRUE(draft);
     EXPECT_EQ("", draft->getTitle());
     EXPECT_EQ(expectedDescription, draft->getDescription());
 }
@@ -92,7 +92,7 @@ TEST_F(DraftsRepositoryImplTest,
 
     auto draft = repository->getNew();
 
-    ASSERT_TRUE(draft.has_value());
+    ASSERT_TRUE(draft);
     EXPECT_EQ(expectedTitle, draft->getTitle());
     EXPECT_EQ(expectedDescription, draft->getDescription());
 }
@@ -111,7 +111,7 @@ TEST_F(DraftsRepositoryImplTest,
 
     auto draft = repository->getNew();
 
-    ASSERT_TRUE(draft.has_value());
+    ASSERT_TRUE(draft);
     EXPECT_EQ(expectedTitle, draft->getTitle());
     EXPECT_EQ(expectedDescription, draft->getDescription());
 }
@@ -125,7 +125,7 @@ TEST_F(DraftsRepositoryImplTest,
 
     auto draft = repository->getNew();
 
-    ASSERT_TRUE(draft.has_value());
+    ASSERT_TRUE(draft);
     EXPECT_EQ(expectedTitle, draft->getTitle());
     EXPECT_EQ(expectedDescription, draft->getDescription());
 }
@@ -139,7 +139,7 @@ TEST_F(DraftsRepositoryImplTest,
 
     auto draft = repository->getNew();
 
-    ASSERT_TRUE(draft.has_value());
+    ASSERT_TRUE(draft);
     EXPECT_EQ(expectedTitle, draft->getTitle());
     EXPECT_EQ(expectedDescription, draft->getDescription());
 }
@@ -151,7 +151,7 @@ TEST_F(DraftsRepositoryImplTest, givenDraftInMemoryWhenDeleteNewIsInvokedThenDra
     repository->deleteNew();
 
     auto draft = repository->getNew();
-    ASSERT_FALSE(draft.has_value());
+    ASSERT_FALSE(draft);
 }
 
 TEST_F(DraftsRepositoryImplTest, givenDraftInDbWhenDeleteNewIsInvokedThenDraftIsNotAccessibleAnymore) {
@@ -163,13 +163,13 @@ TEST_F(DraftsRepositoryImplTest, givenDraftInDbWhenDeleteNewIsInvokedThenDraftIs
     repository->deleteNew();
 
     auto draft = repository->getNew();
-    ASSERT_FALSE(draft.has_value());
+    ASSERT_FALSE(draft);
 }
 
 TEST_F(DraftsRepositoryImplTest, givenNoPendingExistingWhenGetExistingIsInvokedThenNullOptionalIsReturned) {
     auto draft = repository->getExisting(1);
 
-    ASSERT_FALSE(draft.has_value());
+    ASSERT_FALSE(draft);
 }
 
 TEST_F(DraftsRepositoryImplTest, givenPendingExistingInDbWhenGetExistingIsInvokedThenDraftIsReturned) {
@@ -184,7 +184,7 @@ TEST_F(DraftsRepositoryImplTest, givenPendingExistingInDbWhenGetExistingIsInvoke
 
     auto draft = repository->getExisting(draftId);
 
-    ASSERT_TRUE(draft.has_value());
+    ASSERT_TRUE(draft);
     EXPECT_EQ(expectedTitle, draft->getTitle());
     EXPECT_EQ(expectedDescription, draft->getDescription());
 }
@@ -232,7 +232,7 @@ TEST_F(DraftsRepositoryImplTest,
 
     auto draft = repository->getExisting(draftId);
 
-    ASSERT_TRUE(draft.has_value());
+    ASSERT_TRUE(draft);
     EXPECT_EQ(expectedTitle, draft->getTitle());
     EXPECT_EQ(expectedDescription, draft->getDescription());
 }
@@ -253,7 +253,7 @@ TEST_F(DraftsRepositoryImplTest,
 
     auto draft = repository->getExisting(draftId);
 
-    ASSERT_TRUE(draft.has_value());
+    ASSERT_TRUE(draft);
     EXPECT_EQ(expectedTitle, draft->getTitle());
     EXPECT_EQ(expectedDescription, draft->getDescription());
 }
@@ -268,7 +268,7 @@ TEST_F(DraftsRepositoryImplTest,
 
     auto draft = repository->getExisting(draftId);
 
-    ASSERT_TRUE(draft.has_value());
+    ASSERT_TRUE(draft);
     EXPECT_EQ(expectedTitle, draft->getTitle());
     EXPECT_EQ(expectedDescription, draft->getDescription());
 }
@@ -283,7 +283,7 @@ TEST_F(DraftsRepositoryImplTest,
 
     auto draft = repository->getExisting(draftId);
 
-    ASSERT_TRUE(draft.has_value());
+    ASSERT_TRUE(draft);
     EXPECT_EQ(expectedTitle, draft->getTitle());
     EXPECT_EQ(expectedDescription, draft->getDescription());
 }
@@ -296,7 +296,7 @@ TEST_F(DraftsRepositoryImplTest, givenDraftInMemoryWhenDeleteExistingIsInvokedTh
     repository->deleteExisting(draftId);
 
     auto draft = repository->getExisting(draftId);
-    ASSERT_FALSE(draft.has_value());
+    ASSERT_FALSE(draft);
 }
 
 TEST_F(DraftsRepositoryImplTest, givenDraftInDbWhenDeleteExistingIsInvokedThenDraftIsNotAccessibleAnymore) {
@@ -310,7 +310,7 @@ TEST_F(DraftsRepositoryImplTest, givenDraftInDbWhenDeleteExistingIsInvokedThenDr
     repository->deleteExisting(draftId);
 
     auto draft = repository->getExisting(draftId);
-    ASSERT_FALSE(draft.has_value());
+    ASSERT_FALSE(draft);
 }
 
 TEST_F(DraftsRepositoryImplTest, givenDraftsInMemoryWhenDeleteAllIsInvokedThenAllDraftsAreNotAccessibleAnymore) {
@@ -326,11 +326,11 @@ TEST_F(DraftsRepositoryImplTest, givenDraftsInMemoryWhenDeleteAllIsInvokedThenAl
     repository->deleteAll();
 
     auto draft = repository->getNew();
-    EXPECT_FALSE(draft.has_value());
+    EXPECT_FALSE(draft);
     draft = repository->getExisting(firstExistingId);
-    EXPECT_FALSE(draft.has_value());
+    EXPECT_FALSE(draft);
     draft = repository->getExisting(secondExistingId);
-    EXPECT_FALSE(draft.has_value());
+    EXPECT_FALSE(draft);
 }
 
 TEST_F(DraftsRepositoryImplTest, givenDraftsInDbWhenDeleteAllIsInvokedThenAllDraftsAreNotAccessibleAnymore) {
@@ -354,11 +354,11 @@ TEST_F(DraftsRepositoryImplTest, givenDraftsInDbWhenDeleteAllIsInvokedThenAllDra
     repository->deleteAll();
 
     auto draft = repository->getNew();
-    EXPECT_FALSE(draft.has_value());
+    EXPECT_FALSE(draft);
     draft = repository->getExisting(firstExistingId);
-    EXPECT_FALSE(draft.has_value());
+    EXPECT_FALSE(draft);
     draft = repository->getExisting(secondExistingId);
-    EXPECT_FALSE(draft.has_value());
+    EXPECT_FALSE(draft);
 }
 
 TEST_F(DraftsRepositoryImplTest, givenNewDraftInMemoryWhenPersistIsInvokedThenDraftIsPersisted) {

@@ -50,7 +50,7 @@ TEST_F(SQLiteStatementTest, givenZeroRowResultWhenExecuteOptionalIntIsInvokedThe
 
     auto result = statement.execute<stdx::optional<int>>();
 
-    ASSERT_FALSE(result.has_value());
+    ASSERT_FALSE(result);
 }
 
 TEST_F(SQLiteStatementTest, givenErrorInSqliteStepWhenExecuteOptionalIntIsInvokedThenExceptionIsThrown) {
@@ -190,7 +190,7 @@ TEST_F(SQLiteStatementTest, givenZeroRowResultWhenExecuteOptionalStringIsInvoked
 
     auto result = statement.execute<stdx::optional<std::string>>();
 
-    ASSERT_FALSE(result.has_value());
+    ASSERT_FALSE(result);
 }
 
 TEST_F(SQLiteStatementTest, givenErrorInSqliteStepWhenExecuteOptionalStringIsInvokedThenExceptionIsThrown) {
