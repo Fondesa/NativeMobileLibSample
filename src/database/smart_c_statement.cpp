@@ -1,5 +1,6 @@
 #include "smart_c_statement.hpp"
 #include "sqlite_exception.hpp"
+#include "core/exception_macros.hpp"
 
 namespace Db::Sql {
 
@@ -9,11 +10,11 @@ SmartCStatement::SmartCStatement(sqlite3 *db, const std::string &query) :
 
     int rc = sqlite3_prepare_v2(db, query.c_str(), -1, &originalStmt, nullptr);
     if (rc != SQLITE_OK) {
-        throw Db::Sql::Exception(db);
+        THROW(Db::Sql::Exception(db));
     }
     if (!originalStmt) {
         // When the query is empty for example, SQLite returns SQLITE_OK without initializing the statement.
-        throw Db::Sql::Exception("Can't generate any statement from the query \"" + query + "\".");
+        THROW(Db::Sql::Exception("Can't generate any statement from the query \"" + query + "\"."));
     }
     // The reference count is 1 since we have to count the object which created this statement.
     refCount = new unsigned int(1);

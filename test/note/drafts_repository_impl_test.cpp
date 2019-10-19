@@ -2,6 +2,7 @@
 #include "note_database_initializer.hpp"
 #include "drafts_repository_impl_test.hpp"
 #include "note/incomplete_draft_exception.hpp"
+#include "core/test_exceptions_macros.hpp"
 
 void DraftsRepositoryImplTest::SetUp() {
     NoteDb::initialize(":memory:");
@@ -206,14 +207,14 @@ TEST_F(DraftsRepositoryImplTest, givenExistingDraftWithOnlyTitleWhenGetExistingI
     int draftId = 45;
     repository->updateExistingTitle(draftId, "dummy-title");
 
-    ASSERT_THROW(repository->getExisting(draftId), IncompleteDraftException);
+    ASSERT_LIB_THROW(repository->getExisting(draftId), IncompleteDraftException);
 }
 
 TEST_F(DraftsRepositoryImplTest, givenExistingDraftWithOnlyDescriptionWhenGetExistingIsInvokedThenExceptionIsThrown) {
     int draftId = 45;
     repository->updateExistingDescription(draftId, "dummy-description");
 
-    ASSERT_THROW(repository->getExisting(draftId), IncompleteDraftException);
+    ASSERT_LIB_THROW(repository->getExisting(draftId), IncompleteDraftException);
 }
 
 TEST_F(DraftsRepositoryImplTest,
@@ -452,5 +453,5 @@ TEST_F(DraftsRepositoryImplTest, givenEmptyNewDraftInMemoryWhenPersistIsInvokedT
 TEST_F(DraftsRepositoryImplTest, givenIncompleteExistingDraftInMemoryWhenPersistIsInvokedThenExceptionIsThrown) {
     repository->updateExistingTitle(45, "dummy-title");
 
-    ASSERT_THROW(repository->persist(), IncompleteDraftException);
+    ASSERT_LIB_THROW(repository->persist(), IncompleteDraftException);
 }
