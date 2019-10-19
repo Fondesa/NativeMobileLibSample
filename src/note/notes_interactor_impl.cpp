@@ -26,11 +26,11 @@ std::vector<Note> NotesInteractorImpl::getNotesByText(std::string text) {
     return notesRepository->getByText(text);
 }
 
-std::optional<Draft> NotesInteractorImpl::getNewDraft() {
+stdx::optional<Draft> NotesInteractorImpl::getNewDraft() {
     return draftsRepository->getNew();
 }
 
-std::optional<Draft> NotesInteractorImpl::getExistingDraft(int id) {
+stdx::optional<Draft> NotesInteractorImpl::getExistingDraft(int id) {
     return draftsRepository->getExisting(id);
 }
 

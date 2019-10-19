@@ -13,6 +13,36 @@ cache:
 
 matrix:
   include:
+    - name: GCC 5??
+      os: linux
+      addons:
+        apt:
+          sources:
+            # It contains the g++-7 package.
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-5
+      script:
+        - ./build.sh --system
+        - ./run_tests.sh
+      env:
+        - CC=gcc-5
+        - CXX=g++-5
+    - name: GCC 6.5
+      os: linux
+      addons:
+        apt:
+          sources:
+            # It contains the g++-6 package.
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-6
+      script:
+        - ./build.sh --system
+        - ./run_tests.sh
+      env:
+        - CC=gcc-6
+        - CXX=g++-6
     - name: GCC 7.4
       os: linux
       addons:
