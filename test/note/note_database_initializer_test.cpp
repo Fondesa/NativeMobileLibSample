@@ -3,6 +3,10 @@
 #include "note_database_initializer.hpp"
 #include "note_database_initializer_test.hpp"
 
+#if !__cpp_inline_variables
+const std::string NoteDatabaseInitializerTest::testDbPath = "note_database_initializer_test.db";
+#endif
+
 void NoteDatabaseInitializerTest::changeVersion(int version) {
     // The DB is opened only to execute the PRAGMA statement and closed rightly after.
     Db::Client::create(testDbPath);
