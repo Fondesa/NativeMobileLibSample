@@ -1,9 +1,9 @@
 #pragma once
 
 #include <string>
-#include <optional>
 #include "note.hpp"
 #include "draft.hpp"
+#include "std_optional_compat.hpp"
 
 class DraftsRepository {
    public:
@@ -23,7 +23,7 @@ class DraftsRepository {
 
     virtual void deleteExisting(int id) = 0;
 
-    virtual std::optional<Draft> getNew() = 0;
+    virtual stdx::optional<Draft> getNew() = 0;
 
-    virtual std::optional<Draft> getExisting(int id) = 0;
+    virtual stdx::optional<Draft> getExisting(int id) = 0;
 };

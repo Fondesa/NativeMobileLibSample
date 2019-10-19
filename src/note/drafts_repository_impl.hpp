@@ -9,9 +9,9 @@ class DraftsRepositoryImpl : public DraftsRepository {
    public:
     explicit DraftsRepositoryImpl(std::shared_ptr<Db::Database> db);
 
-    std::optional<Draft> getNew() override;
+    stdx::optional<Draft> getNew() override;
 
-    std::optional<Draft> getExisting(int id) override;
+    stdx::optional<Draft> getExisting(int id) override;
 
     void updateNewTitle(std::string title) override;
 
@@ -31,22 +31,22 @@ class DraftsRepositoryImpl : public DraftsRepository {
 
    private:
     std::shared_ptr<Db::Database> db;
-    std::optional<MutableDraft> pendingNew;
+    stdx::optional<MutableDraft> pendingNew;
     std::map<int, MutableDraft> pendingExisting;
 
     void persistNew(const MutableDraft &draft);
 
     void persistExisting(const std::map<int, MutableDraft> &drafts);
 
-    std::optional<Draft> getNewFromDb();
+    stdx::optional<Draft> getNewFromDb();
 
-    std::optional<Draft> getExistingFromDb(int id);
+    stdx::optional<Draft> getExistingFromDb(int id);
 
-    std::optional<std::string> getNewTitleFromDb();
+    stdx::optional<std::string> getNewTitleFromDb();
 
-    std::optional<std::string> getNewDescriptionFromDb();
+    stdx::optional<std::string> getNewDescriptionFromDb();
 
-    std::optional<std::string> getExistingTitleFromDb(int id);
+    stdx::optional<std::string> getExistingTitleFromDb(int id);
 
-    std::optional<std::string> getExistingDescriptionFromDb(int id);
+    stdx::optional<std::string> getExistingDescriptionFromDb(int id);
 };

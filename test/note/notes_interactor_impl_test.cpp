@@ -58,8 +58,8 @@ TEST_F(NotesInteractorImplTest, givenTextFilterWhenGetNotesByTextIsInvokedThenRe
 TEST_F(NotesInteractorImplTest, whenGetNewDraftIsInvokedThenRepositoryReturnsNewDraft) {
     auto draft = Draft("dummy-title", "dummy-description");
     EXPECT_CALL(*draftsRepository, getNew()).Times(2)
-        .WillOnce(Return(std::optional<Draft>(draft)))
-        .WillOnce(Return(std::optional<Draft>()));
+        .WillOnce(Return(stdx::optional<Draft>(draft)))
+        .WillOnce(Return(stdx::optional<Draft>()));
 
     EXPECT_EQ(draft, interactor->getNewDraft());
     EXPECT_FALSE(interactor->getNewDraft());
@@ -69,8 +69,8 @@ TEST_F(NotesInteractorImplTest, givenNoteIdWhenGetExistingDraftIsInvokedThenRepo
     int id = 3;
     auto draft = Draft("dummy-title", "dummy-description");
     EXPECT_CALL(*draftsRepository, getExisting(id)).Times(2)
-        .WillOnce(Return(std::optional<Draft>(draft)))
-        .WillOnce(Return(std::optional<Draft>()));
+        .WillOnce(Return(stdx::optional<Draft>(draft)))
+        .WillOnce(Return(stdx::optional<Draft>()));
 
     EXPECT_EQ(draft, interactor->getExistingDraft(id));
     EXPECT_FALSE(interactor->getExistingDraft(id));

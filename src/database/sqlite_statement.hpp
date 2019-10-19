@@ -14,11 +14,11 @@ class Statement : public Db::Statement {
    protected:
     void executeVoid() override;
 
-    std::optional<int> executeOptionalInt() override;
+    stdx::optional<int> executeOptionalInt() override;
 
     int executeInt() override;
 
-    std::optional<std::string> executeOptionalString() override;
+    stdx::optional<std::string> executeOptionalString() override;
 
     std::shared_ptr<Db::Cursor> executeCursor() override;
 

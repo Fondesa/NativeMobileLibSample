@@ -21,7 +21,7 @@ class DraftsRepositoryMock : public DraftsRepository {
 
     MOCK_METHOD(void, deleteExisting, (int id), (override));
 
-    MOCK_METHOD(std::optional<Draft>, getNew, (), (override));
+    MOCK_METHOD(stdx::optional<Draft>, getNew, (), (override));
 
-    MOCK_METHOD(std::optional<Draft>, getExisting, (int id), (override));
+    MOCK_METHOD(stdx::optional<Draft>, getExisting, (int id), (override));
 };

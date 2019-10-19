@@ -6,6 +6,11 @@ sudo: true
 
 before_cache: ci/before-cache.sh
 
+# Default Xcode version when "os" is "osx".
+osx_image: xcode11.2
+# Default Linux distribution when "os" is "linux".
+dist: xenial
+
 cache:
   directories:
     # Cache the Homebrew's downloaded bottles on macOS.
@@ -13,6 +18,21 @@ cache:
 
 matrix:
   include:
+    - name: GCC 6.5
+      os: linux
+      addons:
+        apt:
+          sources:
+            # It contains the g++-6 package.
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-6
+      script:
+        - ./build.sh --system
+        - ./run_tests.sh
+      env:
+        - CC=gcc-6
+        - CXX=g++-6
     - name: GCC 7.4
       os: linux
       addons:
@@ -61,6 +81,114 @@ matrix:
         - CC=gcc-9
         - CXX=g++-9
 
+    - name: Clang 3.9
+      os: linux
+      addons:
+        apt:
+          sources:
+            # It contains the g++-6 package.
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-xenial-3.9
+          packages:
+            - g++-6
+            - clang-3.9
+      script:
+        - ./build.sh --system
+        - ./run_tests.sh
+      env:
+        - CC=clang-3.9
+        - CXX=clang++-3.9
+
+    - name: Clang 4.0
+      os: linux
+      addons:
+        apt:
+          sources:
+            # It contains the g++-6 package.
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-xenial-4.0
+          packages:
+            - g++-6
+            - clang-4.0
+      script:
+        - ./build.sh --system
+        - ./run_tests.sh
+      env:
+        - CC=clang-4.0
+        - CXX=clang++-4.0
+
+    - name: Clang 5.0
+      os: linux
+      addons:
+        apt:
+          sources:
+            # It contains the g++-6 package.
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-xenial-5.0
+          packages:
+            - g++-6
+            - clang-5.0
+      script:
+        - ./build.sh --system
+        - ./run_tests.sh
+      env:
+        - CC=clang-5.0
+        - CXX=clang++-5.0
+
+    - name: Clang 6.0
+      os: linux
+      addons:
+        apt:
+          sources:
+            # It contains the g++-6 package.
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-xenial-6.0
+          packages:
+            - g++-6
+            - clang-6.0
+      script:
+        - ./build.sh --system
+        - ./run_tests.sh
+      env:
+        - CC=clang-6.0
+        - CXX=clang++-6.0
+
+    - name: Clang 7.0 - Clang++ 7.1
+      os: linux
+      addons:
+        apt:
+          sources:
+            # It contains the g++-7 package.
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-xenial-7
+          packages:
+            - g++-7
+            - clang-7
+      script:
+        - ./build.sh --system
+        - ./run_tests.sh
+      env:
+        - CC=clang-7
+        - CXX=clang++-7
+
+    - name: Clang 8.0
+      os: linux
+      addons:
+        apt:
+          sources:
+            # It contains the g++-8 package.
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-xenial-8
+          packages:
+            - g++-8
+            - clang-8
+      script:
+        - ./build.sh --system
+        - ./run_tests.sh
+      env:
+        - CC=clang-8
+        - CXX=clang++-8
+
     - name: Clang 9.0
       os: linux
       before_install:
@@ -81,9 +209,21 @@ matrix:
         - CC=clang-9
         - CXX=clang++-9
 
+    - name: GCC 6.5
+      os: osx
+      addons:
+        homebrew:
+          packages:
+            - gcc@6
+      script:
+        - ./build.sh --system
+        - ./run_tests.sh
+      env:
+        - CC=/usr/local/bin/gcc-6
+        - CXX=/usr/local/bin/g++-6
+
     - name: GCC 7.4
       os: osx
-      osx_image: xcode11
       addons:
         homebrew:
           packages:
@@ -97,7 +237,6 @@ matrix:
 
     - name: GCC 8.3
       os: osx
-      osx_image: xcode11
       addons:
         homebrew:
           packages:
@@ -111,7 +250,6 @@ matrix:
 
     - name: GCC 9.2
       os: osx
-      osx_image: xcode11
       addons:
         homebrew:
           packages:
@@ -123,13 +261,66 @@ matrix:
         - CC=/usr/local/bin/gcc-9
         - CXX=/usr/local/bin/g++-9
 
-    - name: AppleClang 11.0 + coverage
+    - name: AppleClang 8.1
       os: osx
-      osx_image: xcode11
+      osx_image: xcode8.3
       addons:
         homebrew:
           packages:
-            # Not needed to update Homebrew for LCOV.
+            # The CMake version should be updated for the iOS build.
+            - cmake
+          update: true
+      before_install:
+        - source ci/install-android-ndk.sh
+      script:
+        - ./build.sh --system
+        - ./build.sh --android
+        - ./build.sh --ios
+        - ./run_tests.sh
+      env:
+        - CC=clang
+        - CXX=clang++
+
+    - name: AppleClang 9.1
+      os: osx
+      osx_image: xcode9.4
+      addons:
+        homebrew:
+          packages:
+            # The CMake version should be updated for the iOS build.
+            - cmake
+          update: true
+      before_install:
+        - source ci/install-android-ndk.sh
+      script:
+        - ./build.sh --system
+        - ./build.sh --android
+        - ./build.sh --ios
+        - ./run_tests.sh
+      env:
+        - CC=clang
+        - CXX=clang++
+
+    - name: AppleClang 10.0
+      os: osx
+      osx_image: xcode10.3
+      before_install:
+        - source ci/install-android-ndk.sh
+      script:
+        - ./build.sh --system
+        - ./build.sh --android
+        - ./build.sh --ios
+        - ./run_tests.sh
+      env:
+        - CC=clang
+        - CXX=clang++
+
+    - name: AppleClang 11.0 + coverage
+      os: osx
+      osx_image: xcode11.2
+      addons:
+        homebrew:
+          packages:
             - lcov
       before_install:
         - source ci/install-android-ndk.sh

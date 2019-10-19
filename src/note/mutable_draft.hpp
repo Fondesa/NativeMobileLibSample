@@ -1,8 +1,8 @@
 #pragma once
 
 #include <string>
-#include <optional>
 #include <draft.hpp>
+#include "std_optional_compat.hpp"
 
 class MutableDraft {
    public:
@@ -25,6 +25,6 @@ class MutableDraft {
     friend bool operator==(const MutableDraft &first, const MutableDraft &second);
 
    private:
-    std::optional<std::string> title;
-    std::optional<std::string> description;
+    stdx::optional<std::string> title;
+    stdx::optional<std::string> description;
 };
