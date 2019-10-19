@@ -96,7 +96,7 @@ matrix:
         - ./build.sh --system
         - ./run_tests.sh
       env:
-        - CC=clang-6
+        - CC=clang-6.0
         - CXX=clang++-6
 
     - name: Clang 7
@@ -114,10 +114,10 @@ matrix:
         - ./build.sh --system
         - ./run_tests.sh
       env:
-        - CC=clang-8
-        - CXX=clang++-8
+        - CC=clang-7
+        - CXX=clang++-7
 
-    - name: Clang 8
+    - name: Clang 8.0
       os: linux
       addons:
         apt:
@@ -128,24 +128,6 @@ matrix:
           packages:
             - g++-8
             - clang-8
-      script:
-        - ./build.sh --system
-        - ./run_tests.sh
-      env:
-        - CC=clang-8
-        - CXX=clang++-8
-
-    - name: Clang 9 auto
-      os: linux
-      addons:
-        apt:
-          sources:
-            # It contains the g++-9 package.
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-xenial-9
-          packages:
-            - g++-9
-            - clang-9
       script:
         - ./build.sh --system
         - ./run_tests.sh
