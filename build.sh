@@ -60,6 +60,11 @@ function build_android_abi() {
 }
 
 function ios() {
+    if [[ ! -x "$(command -v xcodebuild)" ]]; then
+        echo "Xcode must be installed before building the library for iOS."
+        exit 1
+    fi
+
     echo "Building iOS shared lib..."
     cmake ${projectDir} -B${iosBuildDir} -GXcode \
         -DENABLE_TESTS=OFF \
@@ -112,7 +117,7 @@ function build_framework_for_sdk() {
         build)
 
     if [[ $? != 0 ]]; then
-        exit 1;
+        exit 1
     fi
 }
 

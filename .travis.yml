@@ -96,7 +96,7 @@ matrix:
         - CC=clang-9
         - CXX=clang++-9
 
-    - name: GCC 6???
+    - name: GCC 6.5
       os: osx
       osx_image: xcode11.2
       addons:
@@ -152,7 +152,7 @@ matrix:
         - CC=/usr/local/bin/gcc-9
         - CXX=/usr/local/bin/g++-9
 
-    - name: AppleClang 8.3
+    - name: AppleClang 8.1
       os: osx
       osx_image: xcode8.3
       addons:
@@ -172,26 +172,12 @@ matrix:
         - CC=clang
         - CXX=clang++
 
-    - name: AppleClang 9.4
-      os: osx
-      osx_image: xcode9.4
-      before_install:
-        #- sudo xcode-select --reset
-        - source ci/install-android-ndk.sh
-      script:
-        - ./build.sh --system
-        - ./build.sh --android
-        - ./build.sh --ios
-        - ./run_tests.sh
-      env:
-        - CC=clang
-        - CXX=clang++
-
-    - name: AppleClang 9.4 fixed
+    - name: AppleClang 9.1
       os: osx
       osx_image: xcode9.4
       before_install:
         - sudo xcode-select --reset
+        - sudo xcodebuild -license accept
         - source ci/install-android-ndk.sh
       script:
         - ./build.sh --system
@@ -202,7 +188,7 @@ matrix:
         - CC=clang
         - CXX=clang++
 
-    - name: AppleClang 10.3
+    - name: AppleClang 10.0
       os: osx
       osx_image: xcode10.3
       before_install:
@@ -216,7 +202,7 @@ matrix:
         - CC=clang
         - CXX=clang++
 
-    - name: AppleClang 11.2 + coverage
+    - name: AppleClang 11.0 + coverage
       os: osx
       osx_image: xcode11.2
       addons:
