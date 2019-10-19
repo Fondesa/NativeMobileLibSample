@@ -331,7 +331,7 @@ jobs:
         - CXX=clang++
 
     - stage: coverage
-      name: Measure and upload code coverage on Coveralls
+      name: Generate and upload code coverage report
       os: osx
       osx_image: xcode11.2
       addons:
