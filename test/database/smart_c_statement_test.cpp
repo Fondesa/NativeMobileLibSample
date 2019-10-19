@@ -1,6 +1,7 @@
 #include "smart_c_statement_test.hpp"
 #include "database/smart_c_statement.hpp"
 #include "database/sqlite_exception.hpp"
+#include "core/test_exceptions_macros.hpp"
 
 void SmartCStatementTest::SetUp() {
     sqlite3_open(":memory:", &db);
@@ -42,11 +43,11 @@ TEST_F(SmartCStatementTest, givenValidQueryWhenSmartCStatementIsExecutedThenOrig
 TEST_F(SmartCStatementTest, givenInvalidQueryWhenSmartCStatementIsCreatedThenExceptionIsThrown) {
     std::string query = "INVALID_INSERT INTO dummy_table (col_int) VALUES (1)";
 
-    EXPECT_THROW(Db::Sql::SmartCStatement(db, query), Db::Sql::Exception);
+    EXPECT_LIB_THROW(Db::Sql::SmartCStatement(db, query), Db::Sql::Exception);
 }
 
 TEST_F(SmartCStatementTest, givenEmptyQueryWhenSmartCStatementIsCreatedThenExceptionIsThrown) {
-    EXPECT_THROW(Db::Sql::SmartCStatement(db, ""), Db::Sql::Exception);
+    EXPECT_LIB_THROW(Db::Sql::SmartCStatement(db, ""), Db::Sql::Exception);
 }
 
 TEST_F(SmartCStatementTest, givenTwoOwnersWhenBothDestructorsAreInvokedThenStatementIsFinalized) {

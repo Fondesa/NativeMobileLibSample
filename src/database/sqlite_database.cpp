@@ -1,8 +1,8 @@
+#include <iostream>
 #include "sqlite_database.hpp"
 #include "sqlite_exception.hpp"
 #include "sqlite_statement.hpp"
-#include <iostream>
-#include <stdexcept>
+#include "core/exception_macros.hpp"
 
 namespace Db::Sql {
 
@@ -10,7 +10,7 @@ Database::Database(std::string dbPath, int flags) {
     auto movedPath = std::move(dbPath);
     int rc = sqlite3_open_v2(movedPath.c_str(), &db, flags, nullptr);
     if (rc != SQLITE_OK) {
-        throw Db::Sql::Exception(db);
+        THROW(Db::Sql::Exception(db));
     }
     std::cout << "Opened database successfully" << std::endl;
 }
@@ -24,7 +24,7 @@ void Database::executeTransaction(std::function<void()> transact) const {
     auto transaction = std::move(transact);
     int rc = sqlite3_exec(db, "BEGIN TRANSACTION", nullptr, nullptr, nullptr);
     if (rc != SQLITE_OK) {
-        throw Db::Sql::Exception(db);
+        THROW(Db::Sql::Exception(db));
     }
 
     // Execute the transaction.
@@ -32,7 +32,7 @@ void Database::executeTransaction(std::function<void()> transact) const {
 
     rc = sqlite3_exec(db, "END TRANSACTION", nullptr, nullptr, nullptr);
     if (rc != SQLITE_OK) {
-        throw Db::Sql::Exception(db);
+        THROW(Db::Sql::Exception(db));
     }
 }
 

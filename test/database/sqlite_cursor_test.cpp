@@ -1,6 +1,7 @@
 #include "sqlite_cursor_test.hpp"
 #include "database/smart_c_statement.hpp"
 #include "database/sqlite_exception.hpp"
+#include "core/test_exceptions_macros.hpp"
 
 void SQLiteCursorTest::SetUp() {
     sqlite3_open(":memory:", &db);
@@ -61,7 +62,7 @@ TEST_F(SQLiteCursorTest, givenFalseNextWhenGetIntIsInvokedThenExceptionIsThrown)
     auto cursor = selectAll();
     cursor->next();
 
-    EXPECT_THROW(cursor->get<int>(2), Db::Sql::Exception);
+    EXPECT_LIB_THROW(cursor->get<int>(2), Db::Sql::Exception);
 }
 
 TEST_F(SQLiteCursorTest, givenTrueNextWhenGetIntIsInvokedOnOutOfIndexColumnThenExceptionIsThrown) {
@@ -69,7 +70,7 @@ TEST_F(SQLiteCursorTest, givenTrueNextWhenGetIntIsInvokedOnOutOfIndexColumnThenE
     auto cursor = selectAll();
     cursor->next();
 
-    EXPECT_THROW(cursor->get<int>(67), Db::Sql::Exception);
+    EXPECT_LIB_THROW(cursor->get<int>(67), Db::Sql::Exception);
 }
 
 TEST_F(SQLiteCursorTest, givenTrueNextWhenGetIntIsInvokedOnDifferentTypeColumnThenExceptionIsThrown) {
@@ -77,7 +78,7 @@ TEST_F(SQLiteCursorTest, givenTrueNextWhenGetIntIsInvokedOnDifferentTypeColumnTh
     auto cursor = selectAll();
     cursor->next();
 
-    EXPECT_THROW(cursor->get<int>(1), Db::Sql::Exception);
+    EXPECT_LIB_THROW(cursor->get<int>(1), Db::Sql::Exception);
 }
 
 TEST_F(SQLiteCursorTest, givenTrueNextWhenGetIntIsInvokedOnCorrectColumnThenValueIsReturned) {
@@ -95,7 +96,7 @@ TEST_F(SQLiteCursorTest, givenFalseNextWhenGetDoubleIsInvokedThenExceptionIsThro
     auto cursor = selectAll();
     cursor->next();
 
-    EXPECT_THROW(cursor->get<double>(1), Db::Sql::Exception);
+    EXPECT_LIB_THROW(cursor->get<double>(1), Db::Sql::Exception);
 }
 
 TEST_F(SQLiteCursorTest, givenTrueNextWhenGetDoubleIsInvokedOnOutOfIndexColumnThenExceptionIsThrown) {
@@ -103,7 +104,7 @@ TEST_F(SQLiteCursorTest, givenTrueNextWhenGetDoubleIsInvokedOnOutOfIndexColumnTh
     auto cursor = selectAll();
     cursor->next();
 
-    EXPECT_THROW(cursor->get<double>(67), Db::Sql::Exception);
+    EXPECT_LIB_THROW(cursor->get<double>(67), Db::Sql::Exception);
 }
 
 TEST_F(SQLiteCursorTest, givenTrueNextWhenGetDoubleIsInvokedOnDifferentTypeColumnThenExceptionIsThrown) {
@@ -111,7 +112,7 @@ TEST_F(SQLiteCursorTest, givenTrueNextWhenGetDoubleIsInvokedOnDifferentTypeColum
     auto cursor = selectAll();
     cursor->next();
 
-    EXPECT_THROW(cursor->get<double>(2), Db::Sql::Exception);
+    EXPECT_LIB_THROW(cursor->get<double>(2), Db::Sql::Exception);
 }
 
 TEST_F(SQLiteCursorTest, givenTrueNextWhenGetDoubleIsInvokedOnCorrectColumnThenValueIsReturned) {
@@ -129,7 +130,7 @@ TEST_F(SQLiteCursorTest, givenFalseNextWhenGetBoolIsInvokedThenExceptionIsThrown
     auto cursor = selectAll();
     cursor->next();
 
-    EXPECT_THROW(cursor->get<bool>(3), Db::Sql::Exception);
+    EXPECT_LIB_THROW(cursor->get<bool>(3), Db::Sql::Exception);
 }
 
 TEST_F(SQLiteCursorTest, givenTrueNextWhenGetBoolIsInvokedOnOutOfIndexColumnThenExceptionIsThrown) {
@@ -137,7 +138,7 @@ TEST_F(SQLiteCursorTest, givenTrueNextWhenGetBoolIsInvokedOnOutOfIndexColumnThen
     auto cursor = selectAll();
     cursor->next();
 
-    EXPECT_THROW(cursor->get<bool>(67), Db::Sql::Exception);
+    EXPECT_LIB_THROW(cursor->get<bool>(67), Db::Sql::Exception);
 }
 
 TEST_F(SQLiteCursorTest, givenTrueNextWhenGetBoolIsInvokedOnDifferentTypeColumnThenExceptionIsThrown) {
@@ -145,7 +146,7 @@ TEST_F(SQLiteCursorTest, givenTrueNextWhenGetBoolIsInvokedOnDifferentTypeColumnT
     auto cursor = selectAll();
     cursor->next();
 
-    EXPECT_THROW(cursor->get<bool>(1), Db::Sql::Exception);
+    EXPECT_LIB_THROW(cursor->get<bool>(1), Db::Sql::Exception);
 }
 
 TEST_F(SQLiteCursorTest, givenTrueNextWhenGetBoolIsInvokedOnIntColumnWithValueZeroThenFalseIsReturned) {
@@ -183,7 +184,7 @@ TEST_F(SQLiteCursorTest, givenFalseNextWhenGetStringIsInvokedThenExceptionIsThro
     auto cursor = selectAll();
     cursor->next();
 
-    EXPECT_THROW(cursor->get<std::string>(0), Db::Sql::Exception);
+    EXPECT_LIB_THROW(cursor->get<std::string>(0), Db::Sql::Exception);
 }
 
 TEST_F(SQLiteCursorTest, givenTrueNextWhenGetStringIsInvokedOnOutOfIndexColumnThenExceptionIsThrown) {
@@ -191,7 +192,7 @@ TEST_F(SQLiteCursorTest, givenTrueNextWhenGetStringIsInvokedOnOutOfIndexColumnTh
     auto cursor = selectAll();
     cursor->next();
 
-    EXPECT_THROW(cursor->get<std::string>(67), Db::Sql::Exception);
+    EXPECT_LIB_THROW(cursor->get<std::string>(67), Db::Sql::Exception);
 }
 
 TEST_F(SQLiteCursorTest, givenTrueNextWhenGetStringIsInvokedOnDifferentTypeColumnThenExceptionIsThrown) {
@@ -199,7 +200,7 @@ TEST_F(SQLiteCursorTest, givenTrueNextWhenGetStringIsInvokedOnDifferentTypeColum
     auto cursor = selectAll();
     cursor->next();
 
-    EXPECT_THROW(cursor->get<std::string>(2), Db::Sql::Exception);
+    EXPECT_LIB_THROW(cursor->get<std::string>(2), Db::Sql::Exception);
 }
 
 TEST_F(SQLiteCursorTest, givenTrueNextWhenGetStringIsInvokedOnCorrectColumnThenValueIsReturned) {
@@ -223,7 +224,7 @@ TEST_F(SQLiteCursorTest, givenErrorInSqliteStepWhenNextIsInvokedThenExceptionIsT
         "VALUES (\"test\", 6.7, 1, 0)"
     ));
 
-    EXPECT_THROW(cursor->next(), Db::Sql::Exception);
+    EXPECT_LIB_THROW(cursor->next(), Db::Sql::Exception);
 }
 
 TEST_F(SQLiteCursorTest, givenErrorInResetWhenNextIsInvokedThenExceptionIsThrown) {
@@ -235,7 +236,7 @@ TEST_F(SQLiteCursorTest, givenErrorInResetWhenNextIsInvokedThenExceptionIsThrown
         "SELECT col_string, col_double, col_int, col_bool FROM dummy_table")
     );
 
-    EXPECT_THROW(cursor->next(), Db::Sql::Exception);
+    EXPECT_LIB_THROW(cursor->next(), Db::Sql::Exception);
 }
 
 TEST_F(SQLiteCursorTest, givenErrorInClearBindingsWhenNextIsInvokedThenExceptionIsThrown) {
@@ -247,5 +248,5 @@ TEST_F(SQLiteCursorTest, givenErrorInClearBindingsWhenNextIsInvokedThenException
         "SELECT col_string, col_double, col_int, col_bool FROM dummy_table")
     );
 
-    EXPECT_THROW(cursor->next(), Db::Sql::Exception);
+    EXPECT_LIB_THROW(cursor->next(), Db::Sql::Exception);
 }

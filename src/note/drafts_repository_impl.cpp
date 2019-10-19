@@ -1,5 +1,6 @@
 #include "drafts_repository_impl.hpp"
 #include "incomplete_draft_exception.hpp"
+#include "core/exception_macros.hpp"
 
 DraftsRepositoryImpl::DraftsRepositoryImpl(std::shared_ptr<Db::Database> db) :
     db(std::move(db)) {}
@@ -173,7 +174,7 @@ void DraftsRepositoryImpl::persistExisting(const std::map<int, MutableDraft> &dr
             auto draft = draftPair.second;
 #endif
         if (draft.isIncomplete()) {
-            throw IncompleteDraftException(id, draft);
+            THROW(IncompleteDraftException(id, draft));
         }
 
         auto title = draft.requireTitle();

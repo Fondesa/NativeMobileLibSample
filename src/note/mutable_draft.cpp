@@ -1,17 +1,18 @@
 #include "mutable_draft.hpp"
 #include "core/compat_bad_optional_access_exception.hpp"
 #include "incomplete_draft_exception.hpp"
+#include "core/exception_macros.hpp"
 
 std::string MutableDraft::requireTitle() const {
     if (!title) {
-        throw CompatBadOptionalAccessException();
+        THROW(CompatBadOptionalAccessException());
     }
     return *title;
 }
 
 std::string MutableDraft::requireDescription() const {
     if (!description) {
-        throw CompatBadOptionalAccessException();
+        THROW(CompatBadOptionalAccessException());
     }
     return *description;
 }
@@ -38,7 +39,7 @@ bool MutableDraft::isIncomplete() const {
 
 Draft MutableDraft::toDraft() {
     if (isIncomplete()) {
-        throw IncompleteDraftException(*this);
+        THROW(IncompleteDraftException(*this));
     }
     return Draft(*title, *description);
 }

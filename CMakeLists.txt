@@ -130,21 +130,11 @@ elseif (${CMAKE_SYSTEM_NAME} STREQUAL iOS)
         )
 
 elseif (${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
-    if (${CMAKE_CXX_COMPILER_ID} STREQUAL AppleClang)
-        set(GCOV_TOOL ${CMAKE_SOURCE_DIR}/gcov/xcrun-llvm-cov-gcov.sh)
-    elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
-        set(GCOV_TOOL gcov-9)
-    endif ()
     if (DEFINED ENV{PREBUILT_LIBS})
         set(LIB_FILE_PATH ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/lib${LIB_NAME}.dylib)
         set(LIB_SYM_PATH ${QUALIFIED_EXPORTED_LIB_PATH}/lib${LIB_NAME}.dylib)
     endif ()
 elseif (${CMAKE_SYSTEM_NAME} STREQUAL Linux)
-    if (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang)
-        set(GCOV_TOOL ${CMAKE_SOURCE_DIR}/gcov/llvm-cov-9-gcov.sh)
-    elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
-        set(GCOV_TOOL gcov-9)
-    endif ()
     if (DEFINED ENV{PREBUILT_LIBS})
         set(LIB_FILE_PATH ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/lib${LIB_NAME}.so)
         set(LIB_SYM_PATH ${QUALIFIED_EXPORTED_LIB_PATH}/lib${LIB_NAME}.so)
@@ -188,6 +178,10 @@ if (ENABLE_TESTS)
     enable_testing()
     add_subdirectory(test)
 
+    target_include_directories(${TARGET_NAME}
+        PUBLIC test
+        )
+
     add_custom_target(run-tests
         # Run lib-tests.
         COMMAND lib_tests
@@ -197,10 +191,6 @@ if (ENABLE_TESTS)
     add_dependencies(run-tests lib_tests)
 
     if (ENABLE_TESTS_COVERAGE)
-        if (NOT DEFINED GCOV_TOOL)
-            message(FATAL_ERROR "The GCOV tool is not defined! Aborting...")
-        endif ()
-
         find_program(LCOV_PATH lcov)
         if (NOT LCOV_PATH)
             message(FATAL_ERROR "lcov not found! Aborting...")
@@ -216,6 +206,8 @@ if (ENABLE_TESTS)
             -g
             -fprofile-arcs
             -ftest-coverage
+            -fno-exceptions
+            -fno-inline
             )
 
         if (CMAKE_VERSION VERSION_GREATER_EQUAL 3.13)
@@ -241,14 +233,18 @@ if (ENABLE_TESTS)
         # In this way, we can be sure the new report will use only the tracefiles from the latest run.
         add_dependencies(run-tests coverage-clean)
 
+        if (DEFINED GCOV_TOOL)
+            set(GCOV_TOOL_ARG --gcov-tool ${GCOV_TOOL})
+        endif ()
+
         add_custom_target(coverage-raw
             # Create the output dir of the coverage reports.
             COMMAND ${CMAKE_COMMAND} -E make_directory ${COVERAGE_OUTPUT_DIR}
             # Generate the raw coverage report containing all the files.
             COMMAND ${LCOV_PATH}
             --directory ${CMAKE_BINARY_DIR}
-            --gcov-tool ${GCOV_TOOL}
             --capture
+            ${GCOV_TOOL_ARG}
             --rc lcov_branch_coverage=1
             -o ${COVERAGE_OUTPUT_RAW_FILE_PATH}
             # Exclude the unwanted files from the generated report.

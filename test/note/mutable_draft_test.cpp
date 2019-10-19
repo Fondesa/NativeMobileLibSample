@@ -1,12 +1,13 @@
 #include "note/mutable_draft.hpp"
 #include <gtest/gtest.h>
-#include <core/compat_bad_optional_access_exception.hpp>
-#include <note/incomplete_draft_exception.hpp>
+#include "core/compat_bad_optional_access_exception.hpp"
+#include "note/incomplete_draft_exception.hpp"
+#include "core/test_exceptions_macros.hpp"
 
 TEST(MutableDraftTest, givenMutableDraftWithoutTitleWhenRequireTitleIsInvokedThenExceptionIsThrown) {
     auto draft = MutableDraft();
 
-    ASSERT_THROW(draft.requireTitle(), CompatBadOptionalAccessException);
+    ASSERT_LIB_THROW(draft.requireTitle(), CompatBadOptionalAccessException);
 }
 
 TEST(MutableDraftTest, givenMutableDraftWithTitleWhenRequireTitleIsInvokedThenTitleIsReturned) {
@@ -19,7 +20,7 @@ TEST(MutableDraftTest, givenMutableDraftWithTitleWhenRequireTitleIsInvokedThenTi
 TEST(MutableDraftTest, givenMutableDraftWithoutDescriptionWhenRequireDescriptionIsInvokedThenExceptionIsThrown) {
     auto draft = MutableDraft();
 
-    ASSERT_THROW(draft.requireDescription(), CompatBadOptionalAccessException);
+    ASSERT_LIB_THROW(draft.requireDescription(), CompatBadOptionalAccessException);
 }
 
 TEST(MutableDraftTest, givenMutableDraftWithDescriptioneWhenRequireDescriptionIsInvokedThenDescriptionIsReturned) {
@@ -105,21 +106,21 @@ TEST(MutableDraftTest, givenDraftWithTitleAndDescriptionWhenIsIncompleteIsInvoke
 TEST(MutableDraftTest, givenEmptyDraftWhenToDraftIsInvokedThenExceptionIsThrown) {
     auto draft = MutableDraft();
 
-    ASSERT_THROW(draft.toDraft(), IncompleteDraftException);
+    ASSERT_LIB_THROW(draft.toDraft(), IncompleteDraftException);
 }
 
 TEST(MutableDraftTest, givenDraftWithoutTitleWhenToDraftIsInvokedThenExceptionIsThrown) {
     auto draft = MutableDraft();
     draft.updateDescription("dummy-description");
 
-    ASSERT_THROW(draft.toDraft(), IncompleteDraftException);
+    ASSERT_LIB_THROW(draft.toDraft(), IncompleteDraftException);
 }
 
 TEST(MutableDraftTest, givenDraftWithoutDescriptionWhenToDraftIsInvokedThenExceptionIsThrown) {
     auto draft = MutableDraft();
     draft.updateTitle("dummy-title");
 
-    ASSERT_THROW(draft.toDraft(), IncompleteDraftException);
+    ASSERT_LIB_THROW(draft.toDraft(), IncompleteDraftException);
 }
 
 TEST(MutableDraftTest, givenDraftWithTitleAndDescriptionWhenToDraftIsInvokedThenCompleteDraftIsReturned) {

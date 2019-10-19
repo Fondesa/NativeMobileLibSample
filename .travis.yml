@@ -16,9 +16,10 @@ cache:
     # Cache the Homebrew's downloaded bottles on macOS.
     - $HOME/Library/Caches/Homebrew
 
-matrix:
+jobs:
   include:
-    - name: GCC 6.5
+    - stage: build
+      name: GCC 6.5
       os: linux
       addons:
         apt:
@@ -315,7 +316,22 @@ matrix:
         - CC=clang
         - CXX=clang++
 
-    - name: AppleClang 11.0 + coverage
+    - name: AppleClang 11.0
+      os: osx
+      osx_image: xcode11.2
+      before_install:
+        - source ci/install-android-ndk.sh
+      script:
+        - ./build.sh --system
+        - ./build.sh --android
+        - ./build.sh --ios
+        - ./run_tests.sh
+      env:
+        - CC=clang
+        - CXX=clang++
+
+    - stage: coverage
+      name: Generate and upload code coverage report
       os: osx
       osx_image: xcode11.2
       addons:
@@ -323,14 +339,10 @@ matrix:
           packages:
             - lcov
       before_install:
-        - source ci/install-android-ndk.sh
         # Necessary to publish the coverage on coveralls.
         - gem install coveralls-lcov
       script:
-        - ./build.sh --system
-        - ./build.sh --android
-        - ./build.sh --ios
-        - ./run_tests.sh --coverage-raw
+        - ./run_tests.sh --coverage=raw --gcov-tool=$TRAVIS_BUILD_DIR/gcov/xcrun-llvm-cov-gcov.sh
         # Publish the coverage results to Coveralls.io.
         - coveralls-lcov build/tests/out/coverage/filtered.info
       env:

@@ -2,11 +2,12 @@
 #include <database/sqlite_exception.hpp>
 #include "database/sqlite_database.hpp"
 #include "database/sqlite_statement.hpp"
+#include "core/test_exceptions_macros.hpp"
 
 TEST(SQLiteDatabaseTest, givenInvalidDbPathWhenDatabaseIsCreatedThenItCanNotBeOpened) {
     // Without using the flag SQLITE_OPEN_CREATE, the database won't be created if it doesn't exist so the api
     // sqlite3_open_v2 won't return SQLITE_OK.
-    EXPECT_THROW(Db::Sql::Database("invalid_path.db", SQLITE_OPEN_READWRITE), Db::Sql::Exception);
+    EXPECT_LIB_THROW(Db::Sql::Database("invalid_path.db", SQLITE_OPEN_READWRITE), Db::Sql::Exception);
 }
 
 TEST(SQLiteDatabaseTest, givenValidDbPathWhenDestructorIsInvokedThenDatabaseIsClosed) {
@@ -59,14 +60,14 @@ TEST(SQLiteDatabaseTest, givenInitializedDbWhenBeginTransactionFailsThenExceptio
     // Calling BEGIN_TRANSACTION after the SQLite db has been closed won't return SQLITE_OK.
     sqlite3_close(rawDb);
 
-    EXPECT_THROW(db.executeTransaction({}), Db::Sql::Exception);
+    EXPECT_LIB_THROW(db.executeTransaction({}), Db::Sql::Exception);
 }
 
 TEST(SQLiteDatabaseTest, givenInitializedDbWhenEndTransactionFailsThenExceptionIsThrown) {
     auto db = Db::Sql::Database(":memory:", SQLITE_OPEN_READWRITE);
     auto rawDb = db.db;
 
-    EXPECT_THROW(db.executeTransaction([rawDb]{
+    EXPECT_LIB_THROW(db.executeTransaction([rawDb]{
         // Calling END_TRANSACTION after the SQLite db has been closed won't return SQLITE_OK.
         sqlite3_close(rawDb);
     }), Db::Sql::Exception);
