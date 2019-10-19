@@ -331,25 +331,20 @@ jobs:
         - CXX=clang++
 
     - stage: coverage
-      name: Calculate and upload coverage on Coveralls.io
-      os: linux
+      name: Measure and upload code coverage on Coveralls
+      os: osx
+      osx_image: xcode11.2
       addons:
-        apt:
-          sources:
-            # It contains the g++-8 package.
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-xenial-8
+        homebrew:
           packages:
-            - g++-8
-            - clang-8
             - lcov
       before_install:
         # Necessary to publish the coverage on coveralls.
         - gem install coveralls-lcov
       script:
-        - ./run_tests.sh --coverage=raw --gcov-tool=$TRAVIS_BUILD_DIR/gcov/llvm-cov-8-gcov.sh
+        - ./run_tests.sh --coverage=raw --gcov-tool=$TRAVIS_BUILD_DIR/gcov/xcrun-llvm-cov-gcov.sh
         # Publish the coverage results to Coveralls.io.
         - coveralls-lcov build/tests/out/coverage/filtered.info
       env:
-        - CC=clang-8
-        - CXX=clang++-8
+        - CC=clang
+        - CXX=clang++
