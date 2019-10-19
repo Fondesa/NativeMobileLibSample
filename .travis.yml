@@ -16,9 +16,10 @@ cache:
     # Cache the Homebrew's downloaded bottles on macOS.
     - $HOME/Library/Caches/Homebrew
 
-matrix:
+jobs:
   include:
-    - name: GCC 6.5
+    - stage: build
+      name: GCC 6.5
       os: linux
       addons:
         apt:
@@ -189,29 +190,6 @@ matrix:
         - CC=clang-8
         - CXX=clang++-8
 
-    - name: Clang 8.0 + coverage
-      os: linux
-      addons:
-        apt:
-          sources:
-            # It contains the g++-8 package.
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-xenial-8
-            - lcov
-          packages:
-            - g++-8
-            - clang-8
-      before_install:
-        # Necessary to publish the coverage on coveralls.
-        - gem install coveralls-lcov
-      script:
-        - ./run_tests.sh --coverage=raw --gcov-tool=$TRAVIS_BUILD_DIR/gcov/llvm-cov-8-gcov.sh
-        # Publish the coverage results to Coveralls.io.
-        - coveralls-lcov build/tests/out/coverage/filtered.info
-      env:
-        - CC=clang-8
-        - CXX=clang++-8
-
     - name: Clang 9.0
       os: linux
       before_install:
@@ -338,7 +316,7 @@ matrix:
         - CC=clang
         - CXX=clang++
 
-    - name: AppleClang 11.0 + coverage
+    - name: AppleClang 11.0
       os: osx
       osx_image: xcode11.2
       before_install:
@@ -351,3 +329,27 @@ matrix:
       env:
         - CC=clang
         - CXX=clang++
+
+    - stage: coverage
+      name: Calculate and upload coverage on Coveralls.io
+      os: linux
+      addons:
+        apt:
+          sources:
+            # It contains the g++-8 package.
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-xenial-8
+          packages:
+            - g++-8
+            - clang-8
+            - lcov
+      before_install:
+        # Necessary to publish the coverage on coveralls.
+        - gem install coveralls-lcov
+      script:
+        - ./run_tests.sh --coverage=raw --gcov-tool=$TRAVIS_BUILD_DIR/gcov/llvm-cov-8-gcov.sh
+        # Publish the coverage results to Coveralls.io.
+        - coveralls-lcov build/tests/out/coverage/filtered.info
+      env:
+        - CC=clang-8
+        - CXX=clang++-8

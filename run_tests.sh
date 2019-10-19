@@ -52,17 +52,20 @@ EOF
 fi
 
 if [ -z "${gcovTool}" ]; then
-    cat <<EOF
-The Gcov tool path must be specified.
-EOF
-    exit 1
+    cmake ${projectDir} -B${testsBuildDir} \
+        -DCMAKE_C_COMPILER=${CC} \
+        -DCMAKE_CXX_COMPILER=${CXX} \
+        -DENABLE_TESTS=ON \
+        -DENABLE_TESTS_COVERAGE=${enableCoverage} \
+        -DGENERATE_HTML_REPORT=${generateHtmlReport}
+else
+    cmake ${projectDir} -B${testsBuildDir} \
+        -DCMAKE_C_COMPILER=${CC} \
+        -DCMAKE_CXX_COMPILER=${CXX} \
+        -DENABLE_TESTS=ON \
+        -DENABLE_TESTS_COVERAGE=${enableCoverage} \
+        -DGENERATE_HTML_REPORT=${generateHtmlReport} \
+        -DGCOV_TOOL=${gcovTool}
 fi
 
-cmake ${projectDir} -B${testsBuildDir} \
-    -DCMAKE_C_COMPILER=${CC} \
-    -DCMAKE_CXX_COMPILER=${CXX} \
-    -DENABLE_TESTS=ON \
-    -DENABLE_TESTS_COVERAGE=${enableCoverage} \
-    -DGENERATE_HTML_REPORT=${generateHtmlReport} \
-    -DGCOV_TOOL=${gcovTool}
 (cd ${testsBuildDir} && make $targetName)
