@@ -80,7 +80,7 @@ void DraftsRepositoryImpl::deleteAll() {
 
 void DraftsRepositoryImpl::deleteNew() {
     // Remove it from in-memory storage.
-    pendingNew.reset();
+    pendingNew = stdx::nullopt;
     // Remove it from database.
     db->createStatement("DELETE FROM pending_draft_creation")->execute<void>();
 }
@@ -117,7 +117,7 @@ void DraftsRepositoryImpl::persist() {
     auto tempPendingExisting = pendingExisting;
 
     // Reset the in-memory storage since they will be persisted.
-    pendingNew.reset();
+    pendingNew = stdx::nullopt;
     pendingExisting.clear();
 
     auto dbTransaction = [&]() {
@@ -165,7 +165,13 @@ void DraftsRepositoryImpl::persistExisting(const std::map<int, MutableDraft> &dr
         "DO UPDATE SET title = ?, description = ?"
     );
 
+#if __cpp_structured_bindings
     for (auto const&[id, draft] : drafts) {
+#else
+        for (auto const& draftPair : drafts) {
+            auto id = draftPair.first;
+            auto draft = draftPair.second;
+#endif
         if (draft.isIncomplete()) {
             throw IncompleteDraftException(id, draft);
         }
