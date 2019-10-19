@@ -2,6 +2,7 @@
 #include "database_exception.hpp"
 #include "note_database_initializer.hpp"
 #include "iostream"
+#include "core/exception_macros.hpp"
 
 namespace NoteDb {
 
@@ -19,10 +20,10 @@ void initialize(std::string path) {
     }
 
     if (version < currentVersion) {
-        throw Db::Exception(std::string("Can't downgrade database from version ") +
+        THROW(Db::Exception(std::string("Can't downgrade database from version ") +
             std::to_string(currentVersion) +
             " to version " +
-            std::to_string(version));
+            std::to_string(version)));
     }
 
     db->executeTransaction([&] {

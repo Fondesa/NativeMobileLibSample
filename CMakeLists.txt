@@ -130,21 +130,11 @@ elseif (${CMAKE_SYSTEM_NAME} STREQUAL iOS)
         )
 
 elseif (${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
-    if (${CMAKE_CXX_COMPILER_ID} STREQUAL AppleClang)
-        set(GCOV_TOOL ${CMAKE_SOURCE_DIR}/gcov/xcrun-llvm-cov-gcov.sh)
-    elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
-        set(GCOV_TOOL gcov-9)
-    endif ()
     if (DEFINED ENV{PREBUILT_LIBS})
         set(LIB_FILE_PATH ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/lib${LIB_NAME}.dylib)
         set(LIB_SYM_PATH ${QUALIFIED_EXPORTED_LIB_PATH}/lib${LIB_NAME}.dylib)
     endif ()
 elseif (${CMAKE_SYSTEM_NAME} STREQUAL Linux)
-    if (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang)
-        set(GCOV_TOOL ${CMAKE_SOURCE_DIR}/gcov/llvm-cov-9-gcov.sh)
-    elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
-        set(GCOV_TOOL gcov-9)
-    endif ()
     if (DEFINED ENV{PREBUILT_LIBS})
         set(LIB_FILE_PATH ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/lib${LIB_NAME}.so)
         set(LIB_SYM_PATH ${QUALIFIED_EXPORTED_LIB_PATH}/lib${LIB_NAME}.so)
@@ -188,6 +178,10 @@ if (ENABLE_TESTS)
     enable_testing()
     add_subdirectory(test)
 
+    target_include_directories(${TARGET_NAME}
+        PUBLIC test
+        )
+
     add_custom_target(run-tests
         # Run lib-tests.
         COMMAND lib_tests
@@ -216,6 +210,8 @@ if (ENABLE_TESTS)
             -g
             -fprofile-arcs
             -ftest-coverage
+            -fno-exceptions
+            -fno-inline
             )
 
         if (CMAKE_VERSION VERSION_GREATER_EQUAL 3.13)

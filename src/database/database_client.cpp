@@ -2,6 +2,7 @@
 #include <iostream>
 #include "database_exception.hpp"
 #include "sqlite_database.hpp"
+#include "core/exception_macros.hpp"
 
 namespace Db {
 
@@ -16,7 +17,7 @@ void Client::create(std::string dbPath) {
 
 std::shared_ptr<Database> Client::get() {
     if (databaseInstance == nullptr) {
-        throw Exception("The database should be created before.");
+        THROW(Exception("The database should be created before."));
     }
     return databaseInstance;
 }

@@ -2,6 +2,7 @@
 #include <vector>
 #include "sqlite_cursor.hpp"
 #include "sqlite_exception.hpp"
+#include "core/exception_macros.hpp"
 
 namespace Db::Sql {
 
@@ -9,10 +10,10 @@ Statement::Statement(sqlite3 *db, std::string sql) : db(db), stmt(db, sql) {}
 
 void Statement::executeVoid() {
     if (sqlite3_step(stmt) != SQLITE_DONE) {
-        throw Db::Sql::Exception(db);
+        THROW(Db::Sql::Exception(db));
     }
     if (clearBindings() != SQLITE_OK || reset() != SQLITE_OK) {
-        throw Db::Sql::Exception(db);
+        THROW(Db::Sql::Exception(db));
     }
 }
 
@@ -24,22 +25,22 @@ stdx::optional<int> Statement::executeOptionalInt() {
         return result;
     }
     if (status != SQLITE_ROW) {
-        throw Db::Sql::Exception(db);
+        THROW(Db::Sql::Exception(db));
     }
     int columnType = sqlite3_column_type(stmt, 0);
     if (columnType != SQLITE_INTEGER) {
-        throw Db::Sql::Exception(
-            "The result should be of type " +
-            std::to_string(SQLITE_INTEGER) +
-            " instead of " +
-            std::to_string(columnType));
+        THROW(Db::Sql::Exception(
+                  "The result should be of type " +
+                      std::to_string(SQLITE_INTEGER) +
+                      " instead of " +
+                      std::to_string(columnType)));
     }
     result = sqlite3_column_int(stmt, 0);
     if (sqlite3_step(stmt) != SQLITE_DONE) {
-        throw Db::Sql::Exception(db);
+        THROW(Db::Sql::Exception(db));
     }
     if (clearBindings() != SQLITE_OK || reset() != SQLITE_OK) {
-        throw Db::Sql::Exception(db);
+        THROW(Db::Sql::Exception(db));
     }
     return result;
 }
@@ -47,7 +48,7 @@ stdx::optional<int> Statement::executeOptionalInt() {
 int Statement::executeInt() {
     auto result = executeOptionalInt();
     if (!result) {
-        throw Db::Sql::Exception("The statement didn't return any row.");
+        THROW(Db::Sql::Exception("The statement didn't return any row."));
     }
     return *result;
 }
@@ -60,23 +61,23 @@ stdx::optional<std::string> Statement::executeOptionalString() {
         return result;
     }
     if (status != SQLITE_ROW) {
-        throw Db::Sql::Exception(db);
+        THROW(Db::Sql::Exception(db));
     }
     int columnType = sqlite3_column_type(stmt, 0);
     if (columnType != SQLITE_TEXT) {
-        throw Db::Sql::Exception(
-            "The result should be of type " +
-            std::to_string(SQLITE_TEXT) +
-            " instead of " +
-            std::to_string(columnType));
+        THROW(Db::Sql::Exception(
+                  "The result should be of type " +
+                      std::to_string(SQLITE_TEXT) +
+                      " instead of " +
+                      std::to_string(columnType)));
     }
     auto text = sqlite3_column_text(stmt, 0);
     result = std::string(reinterpret_cast<const char *>(text));
     if (sqlite3_step(stmt) != SQLITE_DONE) {
-        throw Db::Sql::Exception(db);
+        THROW(Db::Sql::Exception(db));
     }
     if (clearBindings() != SQLITE_OK || reset() != SQLITE_OK) {
-        throw Db::Sql::Exception(db);
+        THROW(Db::Sql::Exception(db));
     }
     return result;
 }
@@ -88,14 +89,14 @@ std::shared_ptr<Db::Cursor> Statement::executeCursor() {
 void Statement::bindInt(int colIndex, int value) {
     int rc = sqlite3_bind_int(stmt, colIndex, value);
     if (rc != SQLITE_OK) {
-        throw Db::Sql::Exception(db);
+        THROW(Db::Sql::Exception(db));
     }
 }
 
 void Statement::bindDouble(int colIndex, double value) {
     int rc = sqlite3_bind_double(stmt, colIndex, value);
     if (rc != SQLITE_OK) {
-        throw Db::Sql::Exception(db);
+        THROW(Db::Sql::Exception(db));
     }
 }
 
@@ -103,7 +104,7 @@ void Statement::bindString(int colIndex, std::string value) {
     auto movedValue = std::move(value);
     int rc = sqlite3_bind_text(stmt, colIndex, movedValue.c_str(), -1, SQLITE_TRANSIENT);
     if (rc != SQLITE_OK) {
-        throw Db::Sql::Exception(db);
+        THROW(Db::Sql::Exception(db));
     }
 }
 
