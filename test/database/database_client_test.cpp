@@ -2,20 +2,21 @@
 #include "database/sqlite_database.hpp"
 #include "database_client_test.hpp"
 #include "database_client.hpp"
+#include "core/test_exceptions_macros.hpp"
 
 void DatabaseClientTest::TearDown() {
     Db::Client::release();
 }
 
 TEST_F(DatabaseClientTest, givenUninitializedDbWhenGetIsInvokedThenExceptionIsThrown) {
-    EXPECT_THROW(Db::Client::get(), Db::Exception);
+    EXPECT_LIB_THROW(Db::Client::get(), Db::Exception);
 }
 
 TEST_F(DatabaseClientTest, givenReleasedDbWhenGetIsInvokedThenExceptionIsThrown) {
     Db::Client::create(":memory:");
     Db::Client::release();
 
-    EXPECT_THROW(Db::Client::get(), Db::Exception);
+    EXPECT_LIB_THROW(Db::Client::get(), Db::Exception);
 }
 
 TEST_F(DatabaseClientTest, givenInitializedDbWhenGetIsInvokedThenDbIsReturned) {

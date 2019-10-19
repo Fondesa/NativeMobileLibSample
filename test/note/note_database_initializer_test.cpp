@@ -2,6 +2,7 @@
 #include "database_exception.hpp"
 #include "note_database_initializer.hpp"
 #include "note_database_initializer_test.hpp"
+#include "core/test_exceptions_macros.hpp"
 
 #if !__cpp_inline_variables
 const std::string NoteDatabaseInitializerTest::testDbPath = "note_database_initializer_test.db";
@@ -40,7 +41,7 @@ TEST_F(NoteDatabaseInitializerTest, givenSameVersionWhenInitializeIsInvokedThenD
 TEST_F(NoteDatabaseInitializerTest, givenMinorVersionWhenInitializeIsInvokedThenExceptionIsThrown) {
     changeVersion(NoteDb::version + 1);
 
-    EXPECT_THROW(NoteDb::initialize(testDbPath), Db::Exception);
+    EXPECT_LIB_THROW(NoteDb::initialize(testDbPath), Db::Exception);
 }
 
 TEST_F(NoteDatabaseInitializerTest, givenFirstCreationWhenInitializeIsInvokedThenSchemaIsCreated) {
