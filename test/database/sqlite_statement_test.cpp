@@ -256,7 +256,7 @@ TEST_F(SQLiteStatementTest, givenOneStringRowResultWhenExecuteOptionalStringIsIn
 
     auto result = statement.execute<stdx::optional<std::string>>();
 
-    ASSERT_EQ("first", result);
+    ASSERT_EQ("first", *result);
 }
 
 TEST_F(SQLiteStatementTest, givenValidStatementWhenExecuteCursorIsInvokedThenCursorIsReturned) {
