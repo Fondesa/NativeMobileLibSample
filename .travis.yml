@@ -175,9 +175,13 @@ matrix:
     - name: AppleClang 9.1
       os: osx
       osx_image: xcode9.4
+      addons:
+        homebrew:
+          packages:
+            # The given CMake version is less than 3.10 so it should be updated.
+            - cmake
+          update: true
       before_install:
-        - sudo xcode-select --reset
-        - sudo xcodebuild -license accept
         - source ci/install-android-ndk.sh
       script:
         - ./build.sh --system
