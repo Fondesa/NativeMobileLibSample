@@ -6,6 +6,11 @@ sudo: true
 
 before_cache: ci/before-cache.sh
 
+# Default Xcode version when "os" is "osx".
+osx_image: xcode11.2
+# Default Linux distribution when "os" is "linux".
+dist: xenial
+
 cache:
   directories:
     # Cache the Homebrew's downloaded bottles on macOS.
@@ -76,6 +81,78 @@ matrix:
         - CC=gcc-9
         - CXX=g++-9
 
+    - name: Clang 6
+      os: linux
+      addons:
+        apt:
+          sources:
+            # It contains the g++-6 package.
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-xenial-6.0
+          packages:
+            - g++-6
+            - clang-6
+      script:
+        - ./build.sh --system
+        - ./run_tests.sh
+      env:
+        - CC=clang-6
+        - CXX=clang++-6
+
+    - name: Clang 7
+      os: linux
+      addons:
+        apt:
+          sources:
+            # It contains the g++-7 package.
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-xenial-7
+          packages:
+            - g++-7
+            - clang-7
+      script:
+        - ./build.sh --system
+        - ./run_tests.sh
+      env:
+        - CC=clang-8
+        - CXX=clang++-8
+
+    - name: Clang 8
+      os: linux
+      addons:
+        apt:
+          sources:
+            # It contains the g++-8 package.
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-xenial-8
+          packages:
+            - g++-8
+            - clang-8
+      script:
+        - ./build.sh --system
+        - ./run_tests.sh
+      env:
+        - CC=clang-8
+        - CXX=clang++-8
+
+    - name: Clang 9 auto
+      os: linux
+      addons:
+        apt:
+          sources:
+            # It contains the g++-9 package.
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-xenial-9
+          packages:
+            - g++-9
+            - clang-9
+      script:
+        - ./build.sh --system
+        - ./run_tests.sh
+      env:
+        - CC=clang-8
+        - CXX=clang++-8
+
     - name: Clang 9.0
       os: linux
       before_install:
@@ -98,7 +175,6 @@ matrix:
 
     - name: GCC 6.5
       os: osx
-      osx_image: xcode11.2
       addons:
         homebrew:
           packages:
@@ -112,7 +188,6 @@ matrix:
 
     - name: GCC 7.4
       os: osx
-      osx_image: xcode11.2
       addons:
         homebrew:
           packages:
@@ -126,7 +201,6 @@ matrix:
 
     - name: GCC 8.3
       os: osx
-      osx_image: xcode11.2
       addons:
         homebrew:
           packages:
@@ -140,7 +214,6 @@ matrix:
 
     - name: GCC 9.2
       os: osx
-      osx_image: xcode11.2
       addons:
         homebrew:
           packages:
@@ -158,7 +231,7 @@ matrix:
       addons:
         homebrew:
           packages:
-            # The given CMake version is less than 3.10 so it should be updated.
+            # The CMake version should be updated for the iOS build.
             - cmake
           update: true
       before_install:
@@ -178,7 +251,7 @@ matrix:
       addons:
         homebrew:
           packages:
-            # The given CMake version is less than 3.10 so it should be updated.
+            # The CMake version should be updated for the iOS build.
             - cmake
           update: true
       before_install:
