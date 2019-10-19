@@ -81,7 +81,61 @@ matrix:
         - CC=gcc-9
         - CXX=g++-9
 
-    - name: Clang 6
+    - name: Clang 3.9
+      os: linux
+      addons:
+        apt:
+          sources:
+            # It contains the g++-6 package.
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-xenial-3.9
+          packages:
+            - g++-6
+            - clang-3.9
+      script:
+        - ./build.sh --system
+        - ./run_tests.sh
+      env:
+        - CC=clang-3.9
+        - CXX=clang++-3.9
+
+    - name: Clang 4.0
+      os: linux
+      addons:
+        apt:
+          sources:
+            # It contains the g++-6 package.
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-xenial-4.0
+          packages:
+            - g++-6
+            - clang-4.0
+      script:
+        - ./build.sh --system
+        - ./run_tests.sh
+      env:
+        - CC=clang-4.0
+        - CXX=clang++-4.0
+
+    - name: Clang 5.0
+      os: linux
+      addons:
+        apt:
+          sources:
+            # It contains the g++-6 package.
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-xenial-5.0
+          packages:
+            - g++-6
+            - clang-5.0
+      script:
+        - ./build.sh --system
+        - ./run_tests.sh
+      env:
+        - CC=clang-5.0
+        - CXX=clang++-5.0
+
+    - name: Clang 6.0
       os: linux
       addons:
         apt:
@@ -97,9 +151,9 @@ matrix:
         - ./run_tests.sh
       env:
         - CC=clang-6.0
-        - CXX=clang++-6
+        - CXX=clang++-6.0
 
-    - name: Clang 7
+    - name: Clang 7.0 - Clang++ 7.1
       os: linux
       addons:
         apt:
