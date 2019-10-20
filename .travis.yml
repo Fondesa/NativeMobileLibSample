@@ -347,7 +347,7 @@ jobs:
         # Put the LCOV executable in the PATH to make CMake able to find it.
         - export PATH="$TRAVIS_BUILD_DIR/build/lcov-master/bin":$PATH
         # Use a compatible version of Gcov with GCC-9.
-        - cpan PerlIO::gzip
+        - cpan PerlIO::gzip -y
         # Necessary to publish the coverage on coveralls.
         - gem install coveralls-lcov
       script:
