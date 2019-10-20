@@ -170,4 +170,8 @@ TEST(MutableDraftTest, givenDifferentFieldsWhenEqualityOperatorIsInvokedThenItRe
     second.updateTitle("dummy-different-title");
 
     EXPECT_FALSE(first == second);
+
+    second.updateTitle("dummy-title");
+
+    EXPECT_FALSE(first == second);
 }

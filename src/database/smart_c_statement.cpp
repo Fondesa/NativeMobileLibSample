@@ -34,7 +34,12 @@ SmartCStatement::~SmartCStatement() {
         // Since we are in the destructor, there's no need to check the result code of this API because it won't be used.
         sqlite3_finalize(originalStmt);
         // Delete the reference counter.
-        delete refCount;
+        // Coverage-related info:
+        // This line seems to produce two branches in code coverage.
+        // We should just be sure the line is hit and "refCount" is deleted so the branch coverage is disabled.
+        // It would be better to hit both branches using tests but it doesn't seem possible.
+        // Even creating SmartCStatement both on the stack and on the heap, the second branch is not hit.
+        delete refCount; // LCOV_EXCL_BR_LINE
         refCount = nullptr;
         originalStmt = nullptr;
     }

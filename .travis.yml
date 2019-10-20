@@ -332,19 +332,32 @@ jobs:
 
     - stage: coverage
       name: Generate and upload code coverage report
-      os: osx
-      osx_image: xcode11.2
+      os: linux
       addons:
-        homebrew:
+        apt:
+          sources:
+            # It contains the g++-9 package.
+            - ubuntu-toolchain-r-test
           packages:
+            - g++-9
             - lcov
       before_install:
+        # Get the latest version of LCOV (it's necessary to support GCC-9).
+        - git clone https://github.com/linux-test-project/lcov.git build/lcov-master
+        # Put the LCOV executable in the PATH to make CMake able to find it.
+        - export PATH="$TRAVIS_BUILD_DIR/build/lcov-master/bin":$PATH
+        # Automatically accept CPAN configuration.
+#        - export PERL_MM_USE_DEFAULT=1
+        - curl -L https://cpanmin.us | sudo perl - --sudo App::cpanminus
+        - sudo cpanm --notest PerlIO::gzip
+        - sudo cpanm --notest JSON
         # Necessary to publish the coverage on coveralls.
         - gem install coveralls-lcov
       script:
-        - ./run_tests.sh --coverage=raw --gcov-tool=$TRAVIS_BUILD_DIR/gcov/xcrun-llvm-cov-gcov.sh
+        # Use a compatible version of Gcov with GCC-9.
+        - ./run_tests.sh --coverage=raw --gcov-tool=gcov-9
         # Publish the coverage results to Coveralls.io.
         - coveralls-lcov build/tests/out/coverage/filtered.info
       env:
-        - CC=clang
-        - CXX=clang++
+        - CC=gcc-9
+        - CXX=g++-9
