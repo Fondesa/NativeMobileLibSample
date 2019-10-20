@@ -350,6 +350,7 @@ jobs:
 #        - export PERL_MM_USE_DEFAULT=1
         - curl -L https://cpanmin.us | sudo perl - --sudo App::cpanminus
         - sudo cpanm PerlIO::gzip
+        - sudo cpanm JSON
         # Necessary to publish the coverage on coveralls.
         - gem install coveralls-lcov
       script:
