@@ -348,11 +348,12 @@ jobs:
         - export PATH="$TRAVIS_BUILD_DIR/build/lcov-master/bin":$PATH
         # Automatically accept CPAN configuration.
 #        - export PERL_MM_USE_DEFAULT=1
-        # Use a compatible version of Gcov with GCC-9.
+        - curl -L https://cpanmin.us | sudo perl - --sudo App::cpanminus
         - sudo cpanm PerlIO::gzip
         # Necessary to publish the coverage on coveralls.
         - gem install coveralls-lcov
       script:
+        # Use a compatible version of Gcov with GCC-9.
         - ./run_tests.sh --coverage=raw --gcov-tool=gcov-9
         # Publish the coverage results to Coveralls.io.
         - coveralls-lcov build/tests/out/coverage/filtered.info
