@@ -362,7 +362,8 @@ TEST_F(DraftsRepositoryImplTest, givenDraftsInDbWhenDeleteAllIsInvokedThenAllDra
     EXPECT_FALSE(draft);
 }
 
-TEST_F(DraftsRepositoryImplTest, givenNewDraftInMemoryWhenPersistIsInvokedThenDraftIsPersisted) {
+TEST_F(DraftsRepositoryImplTest,
+       givenNewDraftWithBothTitleAndDescriptionInMemoryWhenPersistIsInvokedThenDraftIsPersisted) {
     std::string expectedTitle = "dummy-title";
     std::string expectedDescription = "dummy-description";
     repository->updateNewTitle(expectedTitle);
@@ -376,6 +377,42 @@ TEST_F(DraftsRepositoryImplTest, givenNewDraftInMemoryWhenPersistIsInvokedThenDr
     ASSERT_TRUE(cursor->next());
     EXPECT_EQ(expectedTitle, cursor->get<std::string>(0));
     EXPECT_EQ(expectedDescription, cursor->get<std::string>(1));
+    // Only one record should have been inserted.
+    ASSERT_FALSE(cursor->next());
+}
+
+TEST_F(DraftsRepositoryImplTest, givenNewDraftWithEmptyTitleInMemoryWhenPersistIsInvokedThenDraftIsPersisted) {
+    std::string expectedDescription = "dummy-description";
+    repository->updateNewTitle("dummy-title");
+    repository->updateNewDescription(expectedDescription);
+    repository->updateNewTitle("");
+
+    repository->persist();
+
+    auto stmt = db->createStatement("SELECT title, description FROM pending_draft_creation");
+    auto cursor = stmt->execute<std::shared_ptr<Db::Cursor>>();
+    // The table should contain one record.
+    ASSERT_TRUE(cursor->next());
+    EXPECT_EQ("", cursor->get<std::string>(0));
+    EXPECT_EQ(expectedDescription, cursor->get<std::string>(1));
+    // Only one record should have been inserted.
+    ASSERT_FALSE(cursor->next());
+}
+
+TEST_F(DraftsRepositoryImplTest, givenNewDraftWithEmptyDescriptionInMemoryWhenPersistIsInvokedThenDraftIsPersisted) {
+    std::string expectedTitle = "dummy-title";
+    repository->updateNewTitle(expectedTitle);
+    repository->updateNewDescription("dummy-description");
+    repository->updateNewDescription("");
+
+    repository->persist();
+
+    auto stmt = db->createStatement("SELECT title, description FROM pending_draft_creation");
+    auto cursor = stmt->execute<std::shared_ptr<Db::Cursor>>();
+    // The table should contain one record.
+    ASSERT_TRUE(cursor->next());
+    EXPECT_EQ(expectedTitle, cursor->get<std::string>(0));
+    EXPECT_EQ("", cursor->get<std::string>(1));
     // Only one record should have been inserted.
     ASSERT_FALSE(cursor->next());
 }

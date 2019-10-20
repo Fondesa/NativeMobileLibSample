@@ -28,7 +28,8 @@ SmartCStatement::SmartCStatement(const SmartCStatement &other) :
 }
 
 SmartCStatement::~SmartCStatement() {
-    if (refCount && --(*refCount) == 0) {
+    // Since "refCount" is initialized in the constructor, dereferencing it without checking is safe.
+    if (--(*refCount) == 0) {
         // If the count reaches zero, finalize the sqlite3_stmt, as it's not owned by someone anymore.
         // Since we are in the destructor, there's no need to check the result code of this API because it won't be used.
         sqlite3_finalize(originalStmt);

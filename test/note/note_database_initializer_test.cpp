@@ -64,3 +64,15 @@ TEST_F(NoteDatabaseInitializerTest, givenFirstCreationWhenInitializeIsInvokedThe
     EXPECT_EQ("pending_draft_creation", tableCursor->get<std::string>(0));
     EXPECT_FALSE(tableCursor->next());
 }
+
+TEST_F(NoteDatabaseInitializerTest, givenMajorVersionWhenInitializeIsInvokedThenVersionIsUpdated) {
+    changeVersion(NoteDb::version - 1);
+
+    NoteDb::initialize(testDbPath);
+
+    auto db = Db::Client::get();
+    ASSERT_TRUE(db != nullptr);
+    auto version = db->createStatement("PRAGMA user_version")->execute<int>();
+    // The version should be set to NoteDb::version.
+    EXPECT_EQ(NoteDb::version, version);
+}

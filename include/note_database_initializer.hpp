@@ -5,7 +5,7 @@
 
 namespace NoteDb {
 
-const int version = 1;
+const int version = 2;
 
 void initialize(std::string path);
 
