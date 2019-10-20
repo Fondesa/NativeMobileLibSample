@@ -346,8 +346,10 @@ jobs:
         - git clone https://github.com/linux-test-project/lcov.git build/lcov-master
         # Put the LCOV executable in the PATH to make CMake able to find it.
         - export PATH="$TRAVIS_BUILD_DIR/build/lcov-master/bin":$PATH
+        # Automatically accept CPAN configuration.
+        - export PERL_MM_USE_DEFAULT=1
         # Use a compatible version of Gcov with GCC-9.
-        - cpan PerlIO::gzip -y
+        - cpan PerlIO::gzip
         # Necessary to publish the coverage on coveralls.
         - gem install coveralls-lcov
       script:
