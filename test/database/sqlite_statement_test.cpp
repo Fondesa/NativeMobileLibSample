@@ -361,7 +361,7 @@ TEST_F(SQLiteStatementTest, givenErrorInSqlBindingWhenBindBoolIsInvokedThenExcep
     ASSERT_LIB_THROW(statement.bind<bool>(0, true), Db::Sql::Exception);
 }
 
-TEST_F(SQLiteStatementTest, givenValidSqlBindingWhenBindBoolIsInvokedThenValueIsBoundCorrectly) {
+TEST_F(SQLiteStatementTest, givenValidSqlBindingWhenBindBoolTrueIsInvokedThenValueIsBoundCorrectly) {
     int rc = sqlite3_step(Db::Sql::SmartCStatement(db, "CREATE TABLE dummy_table (is_true INTEGER PRIMARY KEY)"));
     // The statement should be executed correctly.
     ASSERT_EQ(SQLITE_DONE, rc);
@@ -374,4 +374,19 @@ TEST_F(SQLiteStatementTest, givenValidSqlBindingWhenBindBoolIsInvokedThenValueIs
 
     ASSERT_TRUE(cursor->next());
     ASSERT_EQ(true, cursor->get<bool>(0));
+}
+
+TEST_F(SQLiteStatementTest, givenValidSqlBindingWhenBindBoolFalseIsInvokedThenValueIsBoundCorrectly) {
+    int rc = sqlite3_step(Db::Sql::SmartCStatement(db, "CREATE TABLE dummy_table (is_true INTEGER PRIMARY KEY)"));
+    // The statement should be executed correctly.
+    ASSERT_EQ(SQLITE_DONE, rc);
+    auto statement = Db::Sql::Statement(db, "INSERT INTO dummy_table (is_true) VALUES (?)");
+
+    statement.bind<bool>(1, false);
+    statement.execute<void>();
+    auto readStmt = Db::Sql::Statement(db, "SELECT is_true FROM dummy_table");
+    auto cursor = readStmt.execute<std::shared_ptr<Db::Cursor>>();
+
+    ASSERT_TRUE(cursor->next());
+    ASSERT_EQ(false, cursor->get<bool>(0));
 }
