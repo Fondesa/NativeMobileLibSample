@@ -342,14 +342,15 @@ jobs:
             - g++-9
             - lcov
       before_install:
-        # Necessary to publish the coverage on coveralls.
-        - gem install coveralls-lcov
-      script:
         # Get the latest version of LCOV (it's necessary to support GCC-9).
         - git clone https://github.com/linux-test-project/lcov.git build/lcov-master
         # Put the LCOV executable in the PATH to make CMake able to find it.
         - export PATH="$TRAVIS_BUILD_DIR/build/lcov-master/bin":$PATH
         # Use a compatible version of Gcov with GCC-9.
+        - cpan PerlIO::gzip
+        # Necessary to publish the coverage on coveralls.
+        - gem install coveralls-lcov
+      script:
         - ./run_tests.sh --coverage=raw --gcov-tool=gcov-9
         # Publish the coverage results to Coveralls.io.
         - coveralls-lcov build/tests/out/coverage/filtered.info
