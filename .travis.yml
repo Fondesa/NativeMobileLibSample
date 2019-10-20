@@ -349,7 +349,7 @@ jobs:
         # Automatically accept CPAN configuration.
 #        - export PERL_MM_USE_DEFAULT=1
         # Use a compatible version of Gcov with GCC-9.
-        - cpanm PerlIO::gzip
+        - sudo cpanm PerlIO::gzip
         # Necessary to publish the coverage on coveralls.
         - gem install coveralls-lcov
       script:
