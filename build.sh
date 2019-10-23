@@ -3,7 +3,6 @@
 scriptDir="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 projectDir=${scriptDir}
 libName="notesnative"
-libTarget=${projectDir}/lib
 libBuildDir=${projectDir}/build/lib
 systemBuildDir=${libBuildDir}/system
 androidBuildDir=${libBuildDir}/android
@@ -18,7 +17,6 @@ Supported args:
 --system
 --android
 --ios
---all
 EOF
     exit 1
 }
@@ -132,11 +130,6 @@ case $system in
     android
     ;;
 "--ios")
-    ios
-    ;;
-"--all")
-    system
-    android
     ios
     ;;
 *)
