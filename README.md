@@ -4,17 +4,32 @@ This library contains all the cross-platform native code, written in C/C++, curr
 - [Android](https://github.com/Fondesa/notes-android)
 - [iOS](https://github.com/Fondesa/notes-ios)
 
-## Setup
+## Prerequisites
+- One of the supported compilers listed in the section below
+- CMake 3.10 or above
+- Having Xcode installed if the library should be built for iOS
+- Having the Android NDK R20 installed if the library should be built for Android
+- The following environment variables:
+  - `CC` &rarr; specifies the C compiler
+  - `CXX` &rarr; specifies the C++ compiler
+  - `ANDROID_NDK` (needed only to build the library for Android) &rarr; indicates the absolute path of the directory in which the Android NDK are contained (e.g. in MacOS `/Users/myuser/Library/Android/sdk/ndk/20.0.5594570`)
 
-- Add the environment variable `PREBUILT_LIBS` indicating the absolute path of the directory in which this library will be published.
-- If you are going to build this library for Android, add the environment variable `ANDROID_NDK` indicating the absolute path of the directory in which the Android NDK are contained (e.g. in MacOS `/Users/myuser/Library/Android/sdk/ndk/20.0.5594570`.
+## Build
 
-<!--
-The build script can generate the dynamic library for the following operative systems:
-- Darwin -> generates
-- Android since 
--->
+The library can be built through `./build.sh` which supports the following args:
+- `--system` &rarr; builds the library for the host system
+- `--android` &rarr; builds the library for Android generating the multiple `.so` libraries for the architectures _armeabi-v7a_, _arm64-v8a_, _x86_, _x86_64_
+- `--ios` &rarr; builds the library for iOS generating a single `.framework` for all the architectures used by _iphoneos_ and _iphonesimulator_
+
+The build files can be cleaned with `./clean.sh`
+
+## Tests
+All the tests can be run with `./run_tests.sh`.
+It supports two additional args:
+- `--coverage=raw|html` &rarr; runs the tests with coverage generating a Gcov raw report or an HTML report
+- `--gcov-tool=path/to/gcov` &rarr; specifies the Gcov tool which should be used to generate the coverage report, otherwise it will be found with CMake's `find_program()`
 
 ## Supported compilers:
 - GCC 6.5 - 9.2 (and possibly later)
-- AppleClang 
+- AppleClang 8.1 - 11.0 (and possibly later)
+- Clang 3.9 - 9.0 (and possibly later)
