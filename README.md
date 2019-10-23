@@ -1,5 +1,8 @@
 # Notes - native library
 
+[![Build Status](https://travis-ci.org/Fondesa/notes-native.svg?branch=master)](https://travis-ci.org/Fondesa/notes-native)
+[![Coverage Status](https://coveralls.io/repos/github/Fondesa/notes-native/badge.svg?branch=master)](https://coveralls.io/github/Fondesa/notes-native?branch=master)
+
 This library contains all the cross-platform native code, written in C/C++, currently used by the _Notes_ mobile apps:
 - [Android](https://github.com/Fondesa/notes-android)
 - [iOS](https://github.com/Fondesa/notes-ios)
