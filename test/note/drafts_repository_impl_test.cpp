@@ -476,6 +476,13 @@ TEST_F(DraftsRepositoryImplTest, givenMultipleDraftsInMemoryWhenPersistIsInvoked
     EXPECT_FALSE(existingCursor->next());
 }
 
+TEST_F(DraftsRepositoryImplTest, givenZeroOperationsWhenPersistIsInvokedThenNothingIsPersisted) {
+    repository->persist();
+
+    ASSERT_EQ(0, getPendingNewDraftsCount());
+    ASSERT_EQ(0, getPendingExistingDraftsCount());
+}
+
 TEST_F(DraftsRepositoryImplTest, givenEmptyNewDraftInMemoryWhenPersistIsInvokedThenNothingIsPersisted) {
     repository->updateNewTitle("dummy-title");
     repository->updateNewDescription("dummy-description");

@@ -116,17 +116,27 @@ stdx::optional<Draft> DraftsRepositoryImpl::getExisting(int id) {
 void DraftsRepositoryImpl::persist() {
     auto tempPendingNew = pendingNew;
     auto tempPendingExisting = pendingExisting;
+    bool shouldPersistNew = (bool) tempPendingNew;
+    if (shouldPersistNew) {
+        // Reset the in-memory storage for the new draft since it will be persisted.
+        pendingNew = stdx::nullopt;
+    }
+    bool shouldPersistExisting = !tempPendingExisting.empty();
+    if (shouldPersistExisting) {
+        // Reset the in-memory storage for the existing drafts since they will be persisted.
+        pendingExisting.clear();
+    }
 
-    // Reset the in-memory storage since they will be persisted.
-    pendingNew = stdx::nullopt;
-    pendingExisting.clear();
-
+    if (!shouldPersistNew && !shouldPersistExisting) {
+        // Nothing to persist.
+        return;
+    }
     auto dbTransaction = [&]() {
-        if (tempPendingNew) {
+        if (shouldPersistNew) {
             // Persist in DB the new draft note.
             persistNew(*tempPendingNew);
         }
-        if (!tempPendingExisting.empty()) {
+        if (shouldPersistExisting) {
             // Persist in DB the draft notes which should be updated.
             persistExisting(tempPendingExisting);
         }
