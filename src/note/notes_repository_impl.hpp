@@ -2,10 +2,11 @@
 
 #include "notes_repository.hpp"
 #include "database.hpp"
+#include "clock.hpp"
 
 class NotesRepositoryImpl : public NotesRepository {
    public:
-    explicit NotesRepositoryImpl(std::shared_ptr<Db::Database> db);
+    NotesRepositoryImpl(std::shared_ptr<Db::Database> db, std::shared_ptr<Time::Clock> clock);
 
     void insert(Draft note) override;
 
@@ -21,4 +22,5 @@ class NotesRepositoryImpl : public NotesRepository {
 
    private:
     std::shared_ptr<Db::Database> db;
+    std::shared_ptr<Time::Clock> clock;
 };

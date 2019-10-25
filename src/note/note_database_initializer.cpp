@@ -50,7 +50,8 @@ void createSchema(const std::shared_ptr<Db::Database> &db) {
     db->createStatement(
         "CREATE TABLE notes ("
         "title TEXT NOT NULL, "
-        "description TEXT NOT NULL"
+        "description TEXT NOT NULL, "
+        "last_update_date TEXT NOT NULL"
         ")"
     )->execute<void>();
 

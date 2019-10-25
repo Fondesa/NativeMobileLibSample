@@ -34,7 +34,6 @@ option(ENABLE_TESTS_COVERAGE "Enable the coverage for tests" OFF)
 set(LIB_SOURCE_FILES
     src/core/compat_bad_optional_access_exception.cpp
     src/database/smart_c_statement.cpp
-    src/date/date_iso.cpp
     src/note/note.cpp
     src/note/draft.cpp
     src/note/notes_repository_impl.cpp
@@ -54,6 +53,8 @@ set(LIB_SOURCE_FILES
     src/note/drafts_repository_factory.cpp
     src/note/notes_repository_factory.cpp
     src/note/mutable_draft.cpp
+    src/time/clock_impl.cpp
+    src/time/time_format.cpp
     )
 
 set(PUBLIC_HEADER_FILES
