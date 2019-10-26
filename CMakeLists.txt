@@ -30,6 +30,7 @@ endif ()
 
 option(ENABLE_TESTS "Enable the test target" ON)
 option(ENABLE_TESTS_COVERAGE "Enable the coverage for tests" OFF)
+option(SINGLE_HEADER "Link the library against a single header file" OFF)
 
 set(LIB_SOURCE_FILES
     src/core/compat_bad_optional_access_exception.cpp
@@ -57,17 +58,26 @@ set(LIB_SOURCE_FILES
     src/time/time_format.cpp
     )
 
-set(PUBLIC_HEADER_FILES
-    include/database.hpp
-    include/database_client.hpp
-    include/database_cursor.hpp
-    include/database_exception.hpp
-    include/draft.hpp
-    include/note.hpp
-    include/note_database_initializer.hpp
-    include/notes_interactor.hpp
-    include/notes_interactor_factory.hpp
-    )
+if (SINGLE_HEADER)
+    set(INCLUDE_DIR single_include)
+    set(PUBLIC_HEADER_FILES single_include/notes.hpp)
+else ()
+    set(INCLUDE_DIR include)
+    set(PUBLIC_HEADER_FILES
+        include/clock.hpp
+        include/database.hpp
+        include/database_client.hpp
+        include/database_cursor.hpp
+        include/database_exception.hpp
+        include/draft.hpp
+        include/note.hpp
+        include/note_database_initializer.hpp
+        include/notes_interactor.hpp
+        include/notes_interactor_factory.hpp
+        include/std_optional_compat.hpp
+        include/time_format.hpp
+        )
+endif ()
 
 set(SQLITE3_SOURCE_FILES
     # This will be downloaded using ExternalProject_Add().
@@ -88,7 +98,7 @@ set_target_properties(${TARGET_NAME} PROPERTIES
     )
 
 target_include_directories(${TARGET_NAME}
-    PUBLIC include
+    PUBLIC ${INCLUDE_DIR}
     PUBLIC src
     # Includes the directories downloaded with ExternalProject_Add().
     PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/libs/src
@@ -151,7 +161,7 @@ if (DEFINED LIB_FILE_PATH AND DEFINED LIB_SYM_PATH)
     # Get the directory containing the symlink.
     get_filename_component(LIB_SYM_PATH_DIR ${LIB_SYM_PATH} DIRECTORY)
 
-    set(INCLUDE_DIR_PATH ${CMAKE_SOURCE_DIR}/include)
+    set(INCLUDE_DIR_PATH ${CMAKE_SOURCE_DIR}/${INCLUDE_DIR})
     set(INCLUDE_SYM_PATH ${EXPORTED_LIB_PATH}/include)
 
     add_custom_command(OUTPUT export-headers SYMBOLIC
