@@ -20,7 +20,7 @@ std::string Note::getDescription() const {
 }
 
 std::string Note::getLastUpdateDate() const {
-    return description;
+    return lastUpdateDate;
 }
 
 bool operator==(const Note &first, const Note &second) {

@@ -3,11 +3,10 @@
 namespace Time::Format {
 
 ISO_8601 format(time_t time) {
+    // Create a buffer of the same result's size.
     char timeBuffer[sizeof "0000-00-00T00:00:00Z"];
+    // Convert the time in seconds to the ISO-8601 format.
     strftime(timeBuffer, sizeof timeBuffer, "%FT%TZ", gmtime(&time));
-    // TODO remove
-    // this will work too, if your compiler doesn't support %F or %T:
-    //strftime(timeBuffer, sizeof timeBuffer, "%Y-%m-%dT%H:%M:%SZ", gmtime(&now));
     return timeBuffer;
 }
 }

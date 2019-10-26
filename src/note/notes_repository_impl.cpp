@@ -49,7 +49,7 @@ std::vector<Note> NotesRepositoryImpl::getAll() {
         notes.emplace_back(id, title, description,lastUpdateDate);
     }
     return notes;
-}
+} // LCOV_EXCL_BR_LINE
 
 std::vector<Note> NotesRepositoryImpl::getByText(std::string text) {
     std::vector<Note> notes;
@@ -72,4 +72,4 @@ std::vector<Note> NotesRepositoryImpl::getByText(std::string text) {
         notes.emplace_back(id, title, description, lastUpdateDate);
     }
     return notes;
-}
+} // LCOV_EXCL_BR_LINE

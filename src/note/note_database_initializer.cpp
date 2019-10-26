@@ -36,7 +36,7 @@ void initialize(std::string path) {
         auto writeVersionStmt = db->createStatement("PRAGMA user_version = " + std::to_string(version));
         writeVersionStmt->execute<void>();
     });
-}
+} // LCOV_EXCL_BR_LINE
 
 /* PRIVATE */ namespace {
 

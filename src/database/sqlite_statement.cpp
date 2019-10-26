@@ -80,7 +80,7 @@ stdx::optional<std::string> Statement::executeOptionalString() {
         THROW(Db::Sql::Exception(db));
     }
     return result;
-}
+} // LCOV_EXCL_BR_LINE
 
 std::shared_ptr<Db::Cursor> Statement::executeCursor() {
     return std::make_shared<Cursor>(db, stmt);
