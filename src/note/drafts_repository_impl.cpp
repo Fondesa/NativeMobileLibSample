@@ -142,7 +142,7 @@ void DraftsRepositoryImpl::persist() {
         }
     };
     db->executeTransaction(dbTransaction);
-}
+} // LCOV_EXCL_BR_LINE
 
 void DraftsRepositoryImpl::persistNew(const MutableDraft &draft) {
     auto title = draft.requireTitle();
@@ -166,7 +166,7 @@ void DraftsRepositoryImpl::persistNew(const MutableDraft &draft) {
     stmt->bind(3, title);
     stmt->bind(4, description);
     stmt->execute<void>();
-}
+} // LCOV_EXCL_BR_LINE
 
 void DraftsRepositoryImpl::persistExisting(const std::map<int, MutableDraft> &drafts) {
     auto stmt = db->createStatement(
@@ -214,7 +214,7 @@ stdx::optional<Draft> DraftsRepositoryImpl::getNewFromDb() {
         draft = Draft(title, description);
     }
     return draft;
-}
+} // LCOV_EXCL_BR_LINE
 
 stdx::optional<Draft> DraftsRepositoryImpl::getExistingFromDb(int id) {
     auto stmt = db->createStatement(
@@ -233,7 +233,7 @@ stdx::optional<Draft> DraftsRepositoryImpl::getExistingFromDb(int id) {
         draft = Draft(title, description);
     }
     return draft;
-}
+} // LCOV_EXCL_BR_LINE
 
 stdx::optional<std::string> DraftsRepositoryImpl::getNewTitleFromDb() {
     return db->createStatement(

@@ -2,10 +2,13 @@
 #include "note_database_initializer.hpp"
 #include "notes_repository_impl_test.hpp"
 
+using ::testing::Return;
+
 void NotesRepositoryImplTest::SetUp() {
     NoteDb::initialize(":memory:");
     db = Db::Client::get();
-    repository = std::make_shared<NotesRepositoryImpl>(db);
+    clock = std::make_shared<Time::ClockMock>();
+    repository = std::make_shared<NotesRepositoryImpl>(db, clock);
 }
 
 void NotesRepositoryImplTest::TearDown() {
@@ -109,6 +112,11 @@ TEST_F(NotesRepositoryImplTest, givenZeroNotesWhenGetAllIsInvokedThenEmptyListIs
 TEST_F(NotesRepositoryImplTest, givenMultipleNotesWhenGetAllIsInvokedThenListContainingAllNotesIsReturned) {
     auto firstDraft = Draft("dummy-title", "dummy-description");
     auto secondDraft = Draft("dummy-title-2", "dummy-description-2");
+    EXPECT_CALL(*clock, currentTimeSeconds())
+        .Times(2)
+        .WillOnce(Return(1572085165 /* ISO-8601: 2019-10-26T10:19:25Z */))
+        .WillOnce(Return(1572085166 /* ISO-8601: 2019-10-26T10:19:26Z */));
+
     repository->insert(firstDraft);
     int firstId = getLastRowId();
     repository->insert(secondDraft);
@@ -117,8 +125,8 @@ TEST_F(NotesRepositoryImplTest, givenMultipleNotesWhenGetAllIsInvokedThenListCon
     auto notes = repository->getAll();
 
     ASSERT_EQ(2, notes.size());
-    EXPECT_EQ(Note(firstId, firstDraft.getTitle(), firstDraft.getDescription()), notes[0]);
-    EXPECT_EQ(Note(secondId, secondDraft.getTitle(), secondDraft.getDescription()), notes[1]);
+    EXPECT_EQ(Note(firstId, firstDraft.getTitle(), firstDraft.getDescription(), "2019-10-26T10:19:25Z"), notes[0]);
+    EXPECT_EQ(Note(secondId, secondDraft.getTitle(), secondDraft.getDescription(), "2019-10-26T10:19:26Z"), notes[1]);
 }
 
 TEST_F(NotesRepositoryImplTest, givenZeroNotesWhenGetByTextIsInvokedThenEmptyListIsReturned) {
@@ -130,6 +138,11 @@ TEST_F(NotesRepositoryImplTest, givenZeroNotesWhenGetByTextIsInvokedThenEmptyLis
 TEST_F(NotesRepositoryImplTest, givenAllNotesMatchingFilterWhenGetByTextIsInvokedThenAllNotesAreReturned) {
     auto firstDraft = Draft("first", "second");
     auto secondDraft = Draft("third", "fourth");
+    EXPECT_CALL(*clock, currentTimeSeconds())
+        .Times(2)
+        .WillOnce(Return(1572085165 /* ISO-8601: 2019-10-26T10:19:25Z */))
+        .WillOnce(Return(1572085166 /* ISO-8601: 2019-10-26T10:19:26Z */));
+
     repository->insert(firstDraft);
     int firstId = getLastRowId();
     repository->insert(secondDraft);
@@ -138,13 +151,18 @@ TEST_F(NotesRepositoryImplTest, givenAllNotesMatchingFilterWhenGetByTextIsInvoke
     auto notes = repository->getByText("o");
 
     ASSERT_EQ(2, notes.size());
-    EXPECT_EQ(Note(firstId, firstDraft.getTitle(), firstDraft.getDescription()), notes[0]);
-    EXPECT_EQ(Note(secondId, secondDraft.getTitle(), secondDraft.getDescription()), notes[1]);
+    EXPECT_EQ(Note(firstId, firstDraft.getTitle(), firstDraft.getDescription(), "2019-10-26T10:19:25Z"), notes[0]);
+    EXPECT_EQ(Note(secondId, secondDraft.getTitle(), secondDraft.getDescription(), "2019-10-26T10:19:26Z"), notes[1]);
 }
 
 TEST_F(NotesRepositoryImplTest, givenSomeNotesMatchingFilterWhenGetByTextIsInvokedThenOnlyMatchingNotesAreReturned) {
     auto firstDraft = Draft("first", "second");
     auto secondDraft = Draft("third", "fourth");
+    EXPECT_CALL(*clock, currentTimeSeconds())
+        .Times(2)
+        .WillOnce(Return(1572085165 /* ISO-8601: 2019-10-26T10:19:25Z */))
+        .WillRepeatedly(Return(1572085166 /* ISO-8601: 2019-10-26T10:19:26Z */));
+
     repository->insert(firstDraft);
     repository->insert(secondDraft);
     int secondId = getLastRowId();
@@ -152,12 +170,16 @@ TEST_F(NotesRepositoryImplTest, givenSomeNotesMatchingFilterWhenGetByTextIsInvok
     auto notes = repository->getByText("urt");
 
     ASSERT_EQ(1, notes.size());
-    EXPECT_EQ(Note(secondId, secondDraft.getTitle(), secondDraft.getDescription()), notes[0]);
+    EXPECT_EQ(Note(secondId, secondDraft.getTitle(), secondDraft.getDescription(), "2019-10-26T10:19:26Z"), notes[0]);
 }
 
 TEST_F(NotesRepositoryImplTest, givenZeroNotesMatchingFilterWhenGetByTextIsInvokedThenEmptyListIsReturned) {
     auto firstDraft = Draft("first", "second");
     auto secondDraft = Draft("third", "fourth");
+    EXPECT_CALL(*clock, currentTimeSeconds())
+        .Times(2)
+        .WillOnce(Return(1572085165 /* ISO-8601: 2019-10-26T10:19:25Z */))
+        .WillOnce(Return(1572085166 /* ISO-8601: 2019-10-26T10:19:26Z */));
     repository->insert(firstDraft);
     repository->insert(secondDraft);
 

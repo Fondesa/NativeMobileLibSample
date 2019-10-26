@@ -36,7 +36,7 @@ void initialize(std::string path) {
         auto writeVersionStmt = db->createStatement("PRAGMA user_version = " + std::to_string(version));
         writeVersionStmt->execute<void>();
     });
-}
+} // LCOV_EXCL_BR_LINE
 
 /* PRIVATE */ namespace {
 
@@ -50,7 +50,8 @@ void createSchema(const std::shared_ptr<Db::Database> &db) {
     db->createStatement(
         "CREATE TABLE notes ("
         "title TEXT NOT NULL, "
-        "description TEXT NOT NULL"
+        "description TEXT NOT NULL, "
+        "last_update_date TEXT NOT NULL"
         ")"
     )->execute<void>();
 

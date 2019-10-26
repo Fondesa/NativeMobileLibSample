@@ -52,6 +52,8 @@ set(TEST_FILES
     note/notes_interactor_impl_test.cpp
     note/notes_repository_factory_test.cpp
     note/notes_repository_impl_test.cpp
+    time/clock_impl_test.cpp
+    time/time_format_test.cpp
     )
 
 string(TOLOWER ${CMAKE_SYSTEM_NAME} SYSTEM_QUALIFIER)

@@ -53,6 +53,8 @@ set(LIB_SOURCE_FILES
     src/note/drafts_repository_factory.cpp
     src/note/notes_repository_factory.cpp
     src/note/mutable_draft.cpp
+    src/time/clock_impl.cpp
+    src/time/time_format.cpp
     )
 
 set(PUBLIC_HEADER_FILES
