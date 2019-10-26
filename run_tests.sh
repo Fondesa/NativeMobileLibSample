@@ -3,7 +3,7 @@
 scriptDir="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 projectDir=${scriptDir}
 testsBuildDir=${projectDir}/build/tests
-cmakeSingleHeader=OFF
+cmakeAmalgamation=OFF
 
 while [ $# -gt 0 ]; do
     case "$1" in
@@ -13,8 +13,8 @@ while [ $# -gt 0 ]; do
     --gcov-tool=*)
         gcovTool="${1#*=}"
         ;;
-    --single-header)
-        cmakeSingleHeader=ON
+    --amalgamation)
+        cmakeAmalgamation=ON
         ;;
     *)
         cat <<EOF
@@ -24,7 +24,7 @@ Supported args:
     - raw -> run the tests with coverage generating a Gcov raw report
     - html -> run the tests with coverage generating an HTML report
 
---single-header: links the library to a single header generated from the original ones
+--amalgamation: links the library to a single header generated from the original ones
 EOF
         exit 1
         ;;
@@ -58,7 +58,7 @@ if [ -z "${gcovTool}" ]; then
     cmake ${projectDir} -B${testsBuildDir} \
         -DCMAKE_C_COMPILER=${CC} \
         -DCMAKE_CXX_COMPILER=${CXX} \
-        -DSINGLE_HEADER=$cmakeSingleHeader \
+        -DAMALGAMATION=$cmakeAmalgamation \
         -DENABLE_TESTS=ON \
         -DENABLE_TESTS_COVERAGE=${enableCoverage} \
         -DGENERATE_HTML_REPORT=${generateHtmlReport}
@@ -66,7 +66,7 @@ else
     cmake ${projectDir} -B${testsBuildDir} \
         -DCMAKE_C_COMPILER=${CC} \
         -DCMAKE_CXX_COMPILER=${CXX} \
-        -DSINGLE_HEADER=$cmakeSingleHeader \
+        -DAMALGAMATION=$cmakeAmalgamation \
         -DENABLE_TESTS=ON \
         -DENABLE_TESTS_COVERAGE=${enableCoverage} \
         -DGENERATE_HTML_REPORT=${generateHtmlReport} \

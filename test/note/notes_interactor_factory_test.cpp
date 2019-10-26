@@ -1,7 +1,8 @@
-#include "database_client.hpp"
-#include "notes_interactor_factory.hpp"
+#include "core/include_macros.hpp"
 #include "notes_interactor_factory_test.hpp"
 #include "note/notes_interactor_impl.hpp"
+#include AMALGAMATION(database_client.hpp)
+#include AMALGAMATION(notes_interactor_factory.hpp)
 
 void NotesInteractorFactoryTest::SetUp() {
     Db::Client::create(":memory:");

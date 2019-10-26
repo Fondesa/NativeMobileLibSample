@@ -1,8 +1,9 @@
-#include "database_client.hpp"
 #include <iostream>
-#include "database_exception.hpp"
+#include "core/include_macros.hpp"
 #include "sqlite_database.hpp"
 #include "core/exception_macros.hpp"
+#include AMALGAMATION(database_client.hpp)
+#include AMALGAMATION(database_exception.hpp)
 
 namespace Db {
 

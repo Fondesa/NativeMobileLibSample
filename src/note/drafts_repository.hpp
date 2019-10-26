@@ -1,9 +1,10 @@
 #pragma once
 
 #include <string>
-#include "note.hpp"
-#include "draft.hpp"
-#include "std_optional_compat.hpp"
+#include "core/include_macros.hpp"
+#include AMALGAMATION(note.hpp)
+#include AMALGAMATION(draft.hpp)
+#include AMALGAMATION(std_optional_compat.hpp)
 
 class DraftsRepository {
    public:

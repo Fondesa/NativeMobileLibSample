@@ -1,5 +1,5 @@
-#include "note/mutable_draft.hpp"
 #include <gtest/gtest.h>
+#include "note/mutable_draft.hpp"
 #include "core/compat_bad_optional_access_exception.hpp"
 #include "note/incomplete_draft_exception.hpp"
 #include "core/test_exceptions_macros.hpp"

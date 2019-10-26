@@ -1,8 +1,9 @@
 #pragma once
 
-#include "database.hpp"
-#include "database_statement.hpp"
+#include "core/include_macros.hpp"
 #include "sqlite3/sqlite3.h"
+#include AMALGAMATION(database.hpp)
+#include AMALGAMATION(database_statement.hpp)
 
 namespace Db::Sql {
 

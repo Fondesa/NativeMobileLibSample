@@ -1,8 +1,9 @@
 #pragma once
 
 #include <gtest/gtest.h>
+#include "core/include_macros.hpp"
 #include "note/drafts_repository_impl.hpp"
-#include "database.hpp"
+#include AMALGAMATION(database.hpp)
 
 class DraftsRepositoryImplTest : public ::testing::Test {
    protected:

@@ -1,7 +1,8 @@
-#include "database_client.hpp"
+#include "core/include_macros.hpp"
 #include "notes_repository_factory_test.hpp"
 #include "note/notes_repository_factory.hpp"
 #include "note/notes_repository_impl.hpp"
+#include AMALGAMATION(database_client.hpp)
 
 void NotesRepositoryFactoryTest::SetUp() {
     Db::Client::create(":memory:");

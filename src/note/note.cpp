@@ -1,4 +1,5 @@
-#include "note.hpp"
+#include "core/include_macros.hpp"
+#include AMALGAMATION(note.hpp)
 
 Note::Note(int id, std::string title, std::string description, Time::Format::ISO_8601 lastUpdateDate) {
     this->id = id;

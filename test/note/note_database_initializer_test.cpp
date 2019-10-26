@@ -1,8 +1,9 @@
-#include "database_client.hpp"
-#include "database_exception.hpp"
-#include "note_database_initializer.hpp"
+#include "core/include_macros.hpp"
 #include "note_database_initializer_test.hpp"
 #include "core/test_exceptions_macros.hpp"
+#include AMALGAMATION(database_client.hpp)
+#include AMALGAMATION(database_exception.hpp)
+#include AMALGAMATION(note_database_initializer.hpp)
 
 #if !__cpp_inline_variables
 const std::string NoteDatabaseInitializerTest::testDbPath = "note_database_initializer_test.db";

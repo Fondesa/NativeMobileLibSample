@@ -1,7 +1,8 @@
 #pragma once
 
 #include <gmock/gmock.h>
-#include "clock.hpp"
+#include "core/include_macros.hpp"
+#include AMALGAMATION(clock.hpp)
 
 namespace Time {
 

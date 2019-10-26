@@ -1,5 +1,6 @@
-#include "database_exception.hpp"
+#include "core/include_macros.hpp"
 #include <gtest/gtest.h>
+#include AMALGAMATION(database_exception.hpp)
 
 TEST(DatabaseExceptionTest, givenMsgWhenWhatIsInvokedThenMsgIsReturned) {
     std::string msg = "A dummy message.";

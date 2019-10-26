@@ -1,5 +1,4 @@
 #include <utility>
-
 #include "sqlite_exception.hpp"
 
 namespace Db::Sql {

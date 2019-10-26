@@ -1,5 +1,6 @@
-#include "note.hpp"
 #include <gtest/gtest.h>
+#include "core/include_macros.hpp"
+#include AMALGAMATION(note.hpp)
 
 TEST(NoteTest, givenIdInConstructorWhenGetTitleIsInvokedThenTitleIsReturned) {
     auto note = Note(2, "dummy-title", "dummy-description", "2019-10-26T10:03:38Z");

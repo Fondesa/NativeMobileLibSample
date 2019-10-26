@@ -1,8 +1,9 @@
-#include "database_exception.hpp"
 #include "database/sqlite_database.hpp"
 #include "database_client_test.hpp"
-#include "database_client.hpp"
+#include "core/include_macros.hpp"
 #include "core/test_exceptions_macros.hpp"
+#include AMALGAMATION(database_client.hpp)
+#include AMALGAMATION(database_exception.hpp)
 
 void DatabaseClientTest::TearDown() {
     Db::Client::release();

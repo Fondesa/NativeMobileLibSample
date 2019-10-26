@@ -330,6 +330,20 @@ jobs:
         - CC=clang
         - CXX=clang++
 
+    - name: AppleClang 11.0 + Amalgamation
+        os: osx
+        osx_image: xcode11.2
+        before_install:
+          - source ci/install-android-ndk.sh
+        script:
+          - ./build.sh --target=system --amalgamation
+          - ./build.sh --target=android --amalgamation
+          - ./build.sh --target=ios --amalgamation
+          - ./run_tests.sh --amalgamation
+        env:
+          - CC=clang
+          - CXX=clang++
+
     - stage: coverage
       name: Generate and upload code coverage report
       os: linux

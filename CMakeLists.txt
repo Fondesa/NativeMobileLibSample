@@ -30,7 +30,7 @@ endif ()
 
 option(ENABLE_TESTS "Enable the test target" ON)
 option(ENABLE_TESTS_COVERAGE "Enable the coverage for tests" OFF)
-option(SINGLE_HEADER "Link the library against a single header file" OFF)
+option(AMALGAMATION "Link the library against a single header file" OFF)
 
 set(LIB_SOURCE_FILES
     src/core/compat_bad_optional_access_exception.cpp
@@ -58,9 +58,10 @@ set(LIB_SOURCE_FILES
     src/time/time_format.cpp
     )
 
-if (SINGLE_HEADER)
-    set(INCLUDE_DIR single_include)
-    set(PUBLIC_HEADER_FILES single_include/notes.hpp)
+if (AMALGAMATION)
+    set(INCLUDE_DIR amalgamation)
+    set(PUBLIC_HEADER_FILES amalgamation/notes.hpp)
+    add_definitions(-DINCLUDE_AMALGAMATION)
 else ()
     set(INCLUDE_DIR include)
     set(PUBLIC_HEADER_FILES

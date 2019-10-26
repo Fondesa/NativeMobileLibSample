@@ -10,7 +10,7 @@ iosBuildDir=${libBuildDir}/ios
 iosFrameworkDir=${iosBuildDir}/framework
 iosFrameworkFileName=${libName}.framework
 iosUniversalFrameworkDir=${iosFrameworkDir}/universal
-cmakeSingleHeader=OFF
+cmakeAmalgamation=OFF
 
 function notify_uncorrect_usage() {
     cat <<EOF
@@ -30,7 +30,7 @@ function system() {
         -DCMAKE_C_COMPILER=${CC} \
         -DCMAKE_CXX_COMPILER=${CXX} \
         -DENABLE_TESTS=OFF \
-        -DSINGLE_HEADER=$cmakeSingleHeader
+        -DAMALGAMATION=$cmakeAmalgamation
     (cd ${systemBuildDir} && make build-lib)
 }
 
@@ -54,7 +54,7 @@ function build_android_abi() {
 
     cmake ${projectDir} -B${abiBuildDir} \
         -DENABLE_TESTS=OFF \
-        -DSINGLE_HEADER=$cmakeSingleHeader \
+        -DAMALGAMATION=$cmakeAmalgamation \
         -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
         -DCMAKE_SYSTEM_NAME=Android \
         -DANDROID_PLATFORM=android-16 \
@@ -74,7 +74,7 @@ function ios() {
 
     cmake ${projectDir} -B${iosBuildDir} -GXcode \
         -DENABLE_TESTS=OFF \
-        -DSINGLE_HEADER=$cmakeSingleHeader \
+        -DAMALGAMATION=$cmakeAmalgamation \
         -DCMAKE_SYSTEM_NAME=iOS \
         -DCMAKE_OSX_DEPLOYMENT_TARGET=9.3
 
@@ -133,8 +133,8 @@ while [ $# -gt 0 ]; do
     --target=*)
         target="${1#*=}"
         ;;
-    --single-header)
-        cmakeSingleHeader=ON
+    --amalgamation)
+        cmakeAmalgamation=ON
         ;;
     *)
         cat <<EOF
@@ -145,7 +145,7 @@ Supported args:
     - android -> builds the library for Android
     - ios -> builds the library for iOS
 
---single-header: links the library to a single header generated from the original ones
+--amalgamation: links the library to a single header generated from the original ones
 EOF
         exit 1
         ;;

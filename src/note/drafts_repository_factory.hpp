@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include "core/include_macros.hpp"
 #include "drafts_repository.hpp"
 
 class DraftsRepositoryFactory {

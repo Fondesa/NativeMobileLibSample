@@ -1,5 +1,6 @@
+#include "core/include_macros.hpp"
 #include "notes_repository_impl.hpp"
-#include "database_cursor.hpp"
+#include AMALGAMATION(database_cursor.hpp)
 
 NotesRepositoryImpl::NotesRepositoryImpl(std::shared_ptr<Db::Database> db, std::shared_ptr<Time::Clock> clock)
     : db(std::move(db)), clock(std::move(clock)) {}

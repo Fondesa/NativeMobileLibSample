@@ -2,8 +2,9 @@
 
 #include <string>
 #include <vector>
-#include "draft.hpp"
-#include "note.hpp"
+#include "core/include_macros.hpp"
+#include AMALGAMATION(draft.hpp)
+#include AMALGAMATION(note.hpp)
 
 class NotesRepository {
    public:
