@@ -1,9 +1,10 @@
 #pragma once
 
 #include <string>
-#include "database_statement.hpp"
+#include "core/include_macros.hpp"
 #include "smart_c_statement.hpp"
 #include "sqlite3/sqlite3.h"
+#include AMALGAMATION(database_statement.hpp)
 
 namespace Db::Sql {
 

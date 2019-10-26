@@ -1,4 +1,5 @@
-#include "time_format.hpp"
+#include "core/include_macros.hpp"
+#include AMALGAMATION(time_format.hpp)
 
 namespace Time::Format {
 

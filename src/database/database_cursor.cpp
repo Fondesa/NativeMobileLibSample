@@ -1,4 +1,5 @@
-#include "database_cursor.hpp"
+#include "core/include_macros.hpp"
+#include AMALGAMATION(database_cursor.hpp)
 
 namespace Db {
 

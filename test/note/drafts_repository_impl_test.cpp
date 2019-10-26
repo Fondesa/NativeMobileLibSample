@@ -1,8 +1,9 @@
-#include "database_client.hpp"
-#include "note_database_initializer.hpp"
+#include "core/include_macros.hpp"
 #include "drafts_repository_impl_test.hpp"
 #include "note/incomplete_draft_exception.hpp"
 #include "core/test_exceptions_macros.hpp"
+#include AMALGAMATION(note_database_initializer.hpp)
+#include AMALGAMATION(database_client.hpp)
 
 void DraftsRepositoryImplTest::SetUp() {
     NoteDb::initialize(":memory:");

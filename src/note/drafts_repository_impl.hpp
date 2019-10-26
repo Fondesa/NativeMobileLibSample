@@ -2,8 +2,9 @@
 
 #include <map>
 #include "drafts_repository.hpp"
-#include "database.hpp"
+#include "core/include_macros.hpp"
 #include "mutable_draft.hpp"
+#include AMALGAMATION(database.hpp)
 
 class DraftsRepositoryImpl : public DraftsRepository {
    public:

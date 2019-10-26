@@ -2,8 +2,9 @@
 
 #include <exception>
 #include <string>
+#include "core/include_macros.hpp"
 #include "sqlite3/sqlite3.h"
-#include "database_exception.hpp"
+#include AMALGAMATION(database_exception.hpp)
 
 namespace Db::Sql {
 

@@ -1,6 +1,6 @@
 #include <utility>
-
-#include "draft.hpp"
+#include "core/include_macros.hpp"
+#include AMALGAMATION(draft.hpp)
 
 Draft::Draft(std::string title, std::string description) {
     this->title = std::move(title);

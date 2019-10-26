@@ -1,8 +1,9 @@
-#include "database_client.hpp"
-#include "database_exception.hpp"
-#include "note_database_initializer.hpp"
-#include "iostream"
+#include <iostream>
+#include "core/include_macros.hpp"
 #include "core/exception_macros.hpp"
+#include AMALGAMATION(database_client.hpp)
+#include AMALGAMATION(database_exception.hpp)
+#include AMALGAMATION(note_database_initializer.hpp)
 
 namespace NoteDb {
 

@@ -10,23 +10,27 @@ iosBuildDir=${libBuildDir}/ios
 iosFrameworkDir=${iosBuildDir}/framework
 iosFrameworkFileName=${libName}.framework
 iosUniversalFrameworkDir=${iosFrameworkDir}/universal
+cmakeAmalgamation=OFF
 
 function notify_uncorrect_usage() {
     cat <<EOF
-Supported args:
---system
---android
---ios
+The value of "target" can't be recognized:
+Supported values:
+    - system -> builds the library for this system
+    - android -> builds the library for Android
+    - ios -> builds the library for iOS
 EOF
     exit 1
 }
 
 function system() {
     echo "Building shared lib for this system..."
+
     cmake ${projectDir} -B${systemBuildDir} \
         -DCMAKE_C_COMPILER=${CC} \
         -DCMAKE_CXX_COMPILER=${CXX} \
-        -DENABLE_TESTS=OFF
+        -DENABLE_TESTS=OFF \
+        -DAMALGAMATION=$cmakeAmalgamation
     (cd ${systemBuildDir} && make build-lib)
 }
 
@@ -45,9 +49,12 @@ function android() {
 function build_android_abi() {
     local abi=$1
     local abiBuildDir=${androidBuildDir}/${abi}
+
     echo "Building Android shared lib for ABI $abi..."
+
     cmake ${projectDir} -B${abiBuildDir} \
         -DENABLE_TESTS=OFF \
+        -DAMALGAMATION=$cmakeAmalgamation \
         -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
         -DCMAKE_SYSTEM_NAME=Android \
         -DANDROID_PLATFORM=android-16 \
@@ -64,8 +71,10 @@ function ios() {
     fi
 
     echo "Building iOS shared lib..."
+
     cmake ${projectDir} -B${iosBuildDir} -GXcode \
         -DENABLE_TESTS=OFF \
+        -DAMALGAMATION=$cmakeAmalgamation \
         -DCMAKE_SYSTEM_NAME=iOS \
         -DCMAKE_OSX_DEPLOYMENT_TARGET=9.3
 
@@ -119,20 +128,54 @@ function build_framework_for_sdk() {
     fi
 }
 
-system=$1
-[[ -z "$system" ]] && notify_uncorrect_usage
+while [ $# -gt 0 ]; do
+    case "$1" in
+    --target=*)
+        target="${1#*=}"
+        ;;
+    --amalgamation)
+        cmakeAmalgamation=ON
+        ;;
+    *)
+        cat <<EOF
+The argument "$1" can't be recognized.
+Supported args:
+--target:
+    - system -> builds the library for this system
+    - android -> builds the library for Android
+    - ios -> builds the library for iOS
 
-case $system in
-"--system")
+--amalgamation: links the library to a single header generated from the original ones
+EOF
+        exit 1
+        ;;
+    esac
+    shift
+done
+
+if [[ -z "$target" ]]; then
+    echo "A target should be specified."
+    exit 1
+fi
+
+case $target in
+"system")
     system
     ;;
-"--android")
+"android")
     android
     ;;
-"--ios")
+"ios")
     ios
     ;;
 *)
-    notify_uncorrect_usage
+    cat <<EOF
+The value of "target" can't be recognized:
+Supported values:
+    - system -> builds the library for this system
+    - android -> builds the library for Android
+    - ios -> builds the library for iOS
+EOF
+    exit 1
     ;;
 esac

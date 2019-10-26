@@ -1,9 +1,10 @@
 #pragma once
 
 #include <memory>
-#include "notes_interactor.hpp"
+#include "core/include_macros.hpp"
 #include "notes_repository.hpp"
 #include "drafts_repository.hpp"
+#include AMALGAMATION(notes_interactor.hpp)
 
 class NotesInteractorImpl : public NotesInteractor {
    public:

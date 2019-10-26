@@ -1,5 +1,5 @@
-#include "sqlite_statement.hpp"
 #include <vector>
+#include "sqlite_statement.hpp"
 #include "sqlite_cursor.hpp"
 #include "sqlite_exception.hpp"
 #include "core/exception_macros.hpp"

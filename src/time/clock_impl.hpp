@@ -1,6 +1,7 @@
 #pragma once
 
-#include "clock.hpp"
+#include "core/include_macros.hpp"
+#include AMALGAMATION(clock.hpp)
 
 namespace Time {
 

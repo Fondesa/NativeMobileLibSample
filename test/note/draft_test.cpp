@@ -1,5 +1,6 @@
-#include "draft.hpp"
 #include <gtest/gtest.h>
+#include "core/include_macros.hpp"
+#include AMALGAMATION(draft.hpp)
 
 TEST(DraftTest, givenTitleInConstructorWhenGetTitleIsInvokedThenTitleIsReturned) {
     auto draft = Draft("dummy-title", "dummy-description");

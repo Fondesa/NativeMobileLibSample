@@ -1,7 +1,8 @@
+#include "core/include_macros.hpp"
 #include "notes_interactor_impl.hpp"
 #include "notes_repository_factory.hpp"
 #include "drafts_repository_factory.hpp"
-#include "notes_interactor_factory.hpp"
+#include AMALGAMATION(notes_interactor_factory.hpp)
 
 std::shared_ptr<NotesInteractor> NotesInteractorFactory::create() {
     auto notesRepository = NotesRepositoryFactory::create();

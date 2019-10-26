@@ -1,6 +1,7 @@
-#include "database_client.hpp"
-#include "note_database_initializer.hpp"
+#include "core/include_macros.hpp"
 #include "notes_repository_impl_test.hpp"
+#include AMALGAMATION(database_client.hpp)
+#include AMALGAMATION(note_database_initializer.hpp)
 
 using ::testing::Return;
 

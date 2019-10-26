@@ -1,5 +1,5 @@
-#include "note/incomplete_draft_exception.hpp"
 #include <gtest/gtest.h>
+#include "note/incomplete_draft_exception.hpp"
 
 TEST(IncompleteDraftExceptionTest,
      givenNewEmptyDraftWhenIncompleteDraftExceptionIsThrownThenMessageShowsBothEmptyFields) {

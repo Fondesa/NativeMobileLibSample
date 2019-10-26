@@ -1,8 +1,9 @@
 #pragma once
 
+#include "core/include_macros.hpp"
 #include "notes_repository.hpp"
-#include "database.hpp"
-#include "clock.hpp"
+#include AMALGAMATION(database.hpp)
+#include AMALGAMATION(clock.hpp)
 
 class NotesRepositoryImpl : public NotesRepository {
    public:

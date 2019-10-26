@@ -3,6 +3,7 @@
 scriptDir="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 projectDir=${scriptDir}
 testsBuildDir=${projectDir}/build/tests
+cmakeAmalgamation=OFF
 
 while [ $# -gt 0 ]; do
     case "$1" in
@@ -12,6 +13,9 @@ while [ $# -gt 0 ]; do
     --gcov-tool=*)
         gcovTool="${1#*=}"
         ;;
+    --amalgamation)
+        cmakeAmalgamation=ON
+        ;;
     *)
         cat <<EOF
 The argument "$1" can't be recognized.
@@ -20,8 +24,7 @@ Supported args:
     - raw -> run the tests with coverage generating a Gcov raw report
     - html -> run the tests with coverage generating an HTML report
 
---gcov-tool:
-    - \$path -> specifies the location of Gcov
+--amalgamation: links the library to a single header generated from the original ones
 EOF
         exit 1
         ;;
@@ -55,6 +58,7 @@ if [ -z "${gcovTool}" ]; then
     cmake ${projectDir} -B${testsBuildDir} \
         -DCMAKE_C_COMPILER=${CC} \
         -DCMAKE_CXX_COMPILER=${CXX} \
+        -DAMALGAMATION=$cmakeAmalgamation \
         -DENABLE_TESTS=ON \
         -DENABLE_TESTS_COVERAGE=${enableCoverage} \
         -DGENERATE_HTML_REPORT=${generateHtmlReport}
@@ -62,6 +66,7 @@ else
     cmake ${projectDir} -B${testsBuildDir} \
         -DCMAKE_C_COMPILER=${CC} \
         -DCMAKE_CXX_COMPILER=${CXX} \
+        -DAMALGAMATION=$cmakeAmalgamation \
         -DENABLE_TESTS=ON \
         -DENABLE_TESTS_COVERAGE=${enableCoverage} \
         -DGENERATE_HTML_REPORT=${generateHtmlReport} \

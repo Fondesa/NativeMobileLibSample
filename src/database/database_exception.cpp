@@ -1,4 +1,5 @@
-#include "database_exception.hpp"
+#include "core/include_macros.hpp"
+#include AMALGAMATION(database_exception.hpp)
 
 namespace Db {
 

@@ -29,7 +29,7 @@ jobs:
           packages:
             - g++-6
       script:
-        - ./build.sh --system
+        - ./build.sh --target=system
         - ./run_tests.sh
       env:
         - CC=gcc-6
@@ -44,7 +44,7 @@ jobs:
           packages:
             - g++-7
       script:
-        - ./build.sh --system
+        - ./build.sh --target=system
         - ./run_tests.sh
       env:
         - CC=gcc-7
@@ -60,7 +60,7 @@ jobs:
           packages:
             - g++-8
       script:
-        - ./build.sh --system
+        - ./build.sh --target=system
         - ./run_tests.sh
       env:
         - CC=gcc-8
@@ -76,7 +76,7 @@ jobs:
           packages:
             - g++-9
       script:
-        - ./build.sh --system
+        - ./build.sh --target=system
         - ./run_tests.sh
       env:
         - CC=gcc-9
@@ -94,7 +94,7 @@ jobs:
             - g++-6
             - clang-3.9
       script:
-        - ./build.sh --system
+        - ./build.sh --target=system
         - ./run_tests.sh
       env:
         - CC=clang-3.9
@@ -112,7 +112,7 @@ jobs:
             - g++-6
             - clang-4.0
       script:
-        - ./build.sh --system
+        - ./build.sh --target=system
         - ./run_tests.sh
       env:
         - CC=clang-4.0
@@ -130,7 +130,7 @@ jobs:
             - g++-6
             - clang-5.0
       script:
-        - ./build.sh --system
+        - ./build.sh --target=system
         - ./run_tests.sh
       env:
         - CC=clang-5.0
@@ -148,7 +148,7 @@ jobs:
             - g++-6
             - clang-6.0
       script:
-        - ./build.sh --system
+        - ./build.sh --target=system
         - ./run_tests.sh
       env:
         - CC=clang-6.0
@@ -166,7 +166,7 @@ jobs:
             - g++-7
             - clang-7
       script:
-        - ./build.sh --system
+        - ./build.sh --target=system
         - ./run_tests.sh
       env:
         - CC=clang-7
@@ -184,7 +184,7 @@ jobs:
             - g++-8
             - clang-8
       script:
-        - ./build.sh --system
+        - ./build.sh --target=system
         - ./run_tests.sh
       env:
         - CC=clang-8
@@ -203,8 +203,8 @@ jobs:
         - sudo apt-get install g++-9
         - sudo apt-get install clang-9
       script:
-        - ./build.sh --system
-        - ./build.sh --android
+        - ./build.sh --target=system
+        - ./build.sh --target=android
         - ./run_tests.sh
       env:
         - CC=clang-9
@@ -217,7 +217,7 @@ jobs:
           packages:
             - gcc@6
       script:
-        - ./build.sh --system
+        - ./build.sh --target=system
         - ./run_tests.sh
       env:
         - CC=/usr/local/bin/gcc-6
@@ -230,7 +230,7 @@ jobs:
           packages:
             - gcc@7
       script:
-        - ./build.sh --system
+        - ./build.sh --target=system
         - ./run_tests.sh
       env:
         - CC=/usr/local/bin/gcc-7
@@ -243,7 +243,7 @@ jobs:
           packages:
             - gcc@8
       script:
-        - ./build.sh --system
+        - ./build.sh --target=system
         - ./run_tests.sh
       env:
         - CC=/usr/local/bin/gcc-8
@@ -256,7 +256,7 @@ jobs:
           packages:
             - gcc@9
       script:
-        - ./build.sh --system
+        - ./build.sh --target=system
         - ./run_tests.sh
       env:
         - CC=/usr/local/bin/gcc-9
@@ -274,9 +274,9 @@ jobs:
       before_install:
         - source ci/install-android-ndk.sh
       script:
-        - ./build.sh --system
-        - ./build.sh --android
-        - ./build.sh --ios
+        - ./build.sh --target=system
+        - ./build.sh --target=android
+        - ./build.sh --target=ios
         - ./run_tests.sh
       env:
         - CC=clang
@@ -294,9 +294,9 @@ jobs:
       before_install:
         - source ci/install-android-ndk.sh
       script:
-        - ./build.sh --system
-        - ./build.sh --android
-        - ./build.sh --ios
+        - ./build.sh --target=system
+        - ./build.sh --target=android
+        - ./build.sh --target=ios
         - ./run_tests.sh
       env:
         - CC=clang
@@ -308,9 +308,9 @@ jobs:
       before_install:
         - source ci/install-android-ndk.sh
       script:
-        - ./build.sh --system
-        - ./build.sh --android
-        - ./build.sh --ios
+        - ./build.sh --target=system
+        - ./build.sh --target=android
+        - ./build.sh --target=ios
         - ./run_tests.sh
       env:
         - CC=clang
@@ -322,10 +322,24 @@ jobs:
       before_install:
         - source ci/install-android-ndk.sh
       script:
-        - ./build.sh --system
-        - ./build.sh --android
-        - ./build.sh --ios
+        - ./build.sh --target=system
+        - ./build.sh --target=android
+        - ./build.sh --target=ios
         - ./run_tests.sh
+      env:
+        - CC=clang
+        - CXX=clang++
+
+    - name: AppleClang 11.0 + Amalgamation
+      os: osx
+      osx_image: xcode11.2
+      before_install:
+        - source ci/install-android-ndk.sh
+      script:
+        - ./build.sh --target=system --amalgamation
+        - ./build.sh --target=android --amalgamation
+        - ./build.sh --target=ios --amalgamation
+        - ./run_tests.sh --amalgamation
       env:
         - CC=clang
         - CXX=clang++

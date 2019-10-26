@@ -1,9 +1,10 @@
 #pragma once
 
 #include <gtest/gtest.h>
+#include "core/include_macros.hpp"
 #include "note/notes_repository_impl.hpp"
-#include "database.hpp"
 #include "time/mock/clock_mock.hpp"
+#include AMALGAMATION(database.hpp)
 
 class NotesRepositoryImplTest : public ::testing::Test {
    protected:

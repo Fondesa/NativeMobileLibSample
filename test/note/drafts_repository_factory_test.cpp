@@ -1,7 +1,8 @@
-#include "database_client.hpp"
+#include "core/include_macros.hpp"
 #include "drafts_repository_factory_test.hpp"
 #include "note/drafts_repository_factory.hpp"
 #include "note/drafts_repository_impl.hpp"
+#include AMALGAMATION(database_client.hpp)
 
 void DraftsRepositoryFactoryTest::SetUp() {
     Db::Client::create(":memory:");
