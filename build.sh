@@ -31,23 +31,28 @@ EOF
     shift
 done
 
-if [[ -z "$target" ]]; then
-    echo "A target should be specified."
-    exit 1
+if [[ ! "$target" ]]; then
+    echo "The target wasn't specified, trying to build for the host system."
+    target=$("${projectDir}"/.scripts/get-os.sh)
+    # shellcheck disable=SC2181
+    if [[ $? != 0 ]]; then
+        echo "The OS \"$target\" isn't supported."
+        exit 1
+    fi
 fi
 
 case $target in
-"darwin")
-    ${projectDir}/.scripts/build-darwin.sh $cmakeAmalgamation
+"darwin" | "Darwin")
+    "${projectDir}"/.scripts/build-darwin.sh $cmakeAmalgamation
     ;;
-"linux")
-    ${projectDir}/.scripts/build-linux.sh $cmakeAmalgamation
+"linux" | "Linux")
+    "${projectDir}"/.scripts/build-linux.sh $cmakeAmalgamation
     ;;
-"android")
-    ${projectDir}/.scripts/build-android.sh $cmakeAmalgamation
+"android" | "Android")
+    "${projectDir}"/.scripts/build-android.sh $cmakeAmalgamation
     ;;
-"ios")
-    ${projectDir}/.scripts/build-ios.sh $cmakeAmalgamation
+"ios" | "iOS")
+    "${projectDir}"/.scripts/build-ios.sh $cmakeAmalgamation
     ;;
 *)
     cat <<EOF

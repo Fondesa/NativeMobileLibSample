@@ -19,19 +19,19 @@ function build_android_abi() {
 
     echo "Building Android shared lib for ABI $abi..."
 
-    cmake ${projectDir} -B${abiBuildDir} \
+    cmake "${projectDir}" -B"${abiBuildDir}" \
         -DENABLE_TESTS=OFF \
-        -DAMALGAMATION=$cmakeAmalgamation \
-        -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
+        -DAMALGAMATION="$cmakeAmalgamation" \
+        -DCMAKE_TOOLCHAIN_FILE="${ANDROID_NDK}"/build/cmake/android.toolchain.cmake \
         -DCMAKE_SYSTEM_NAME=Android \
         -DANDROID_PLATFORM=android-16 \
-        -DANDROID_TOOLCHAIN=${CC} \
-        -DANDROID_ABI=${abi}
+        -DANDROID_TOOLCHAIN="${CC}" \
+        -DANDROID_ABI="${abi}"
 
-    (cd ${abiBuildDir} && make build-lib)
+    (cd "${abiBuildDir}" && make build-lib)
 }
 
 abis=(armeabi-v7a arm64-v8a x86 x86_64)
 for abi in "${abis[@]}"; do
-    build_android_abi ${abi}
+    build_android_abi "${abi}"
 done
