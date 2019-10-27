@@ -5,10 +5,11 @@ projectDir=${scriptDir}
 
 testsBuildDir=${projectDir}/build/tests
 cmakeAmalgamation=OFF
+# Check if the OS is supported.
 cmakeOS=$("${projectDir}"/.scripts/get-os.sh)
 # shellcheck disable=SC2181
 if [[ $? != 0 ]]; then
-    echo "This OS can't run the tests."
+    echo "This OS \"${cmakeOS}\" can't run the tests."
     exit 1
 fi
 
@@ -43,11 +44,11 @@ if [[ ! "${coverageType}" ]]; then
     enableCoverage=OFF
     targetName=run-tests
     generateHtmlReport=OFF
-elif [[ "${coverageType}" == "html" ]]; then
+elif [[ "${coverageType}" = "html" ]]; then
     enableCoverage=ON
     targetName=coverage-report
     generateHtmlReport=ON
-elif [[ "${coverageType}" == "raw" ]]; then
+elif [[ "${coverageType}" = "raw" ]]; then
     enableCoverage=ON
     targetName=coverage-report
     generateHtmlReport=OFF
@@ -65,7 +66,6 @@ if [[ ! "${gcovTool}" ]]; then
     cmake "${projectDir}" -B"${testsBuildDir}" \
         -DCMAKE_C_COMPILER="${CC}" \
         -DCMAKE_CXX_COMPILER="${CXX}" \
-        -DCMAKE_SYSTEM_NAME="${cmakeOS}" \
         -DAMALGAMATION=$cmakeAmalgamation \
         -DENABLE_TESTS=ON \
         -DENABLE_TESTS_COVERAGE=${enableCoverage} \
@@ -74,7 +74,6 @@ else
     cmake "${projectDir}" -B"${testsBuildDir}" \
         -DCMAKE_C_COMPILER="${CC}" \
         -DCMAKE_CXX_COMPILER="${CXX}" \
-        -DCMAKE_SYSTEM_NAME="${cmakeOS}" \
         -DAMALGAMATION=$cmakeAmalgamation \
         -DENABLE_TESTS=ON \
         -DENABLE_TESTS_COVERAGE=${enableCoverage} \

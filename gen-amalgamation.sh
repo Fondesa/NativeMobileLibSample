@@ -13,12 +13,12 @@ fi
 
 includeDir=$projectDir/include
 amalgamationFile=$projectDir/amalgamation/notes.hpp
-headers=$(ls $includeDir)
-(cd $includeDir && pcpp $headers \
+headers=$(ls "$includeDir")
+(cd "$includeDir" && pcpp "$headers" \
     --passthru-unfound-includes \
     --passthru-unknown-exprs \
     --line-directive \
-    -o $amalgamationFile)
+    -o "$amalgamationFile")
 
 # Prepend "#pragma once" at the start of the file since pcpp doesn't prepend it automatically.
-echo -e "#pragma once\n\n$(cat $amalgamationFile)" > $amalgamationFile
+echo -e "#pragma once\n\n$(cat "$amalgamationFile")" > "$amalgamationFile"
