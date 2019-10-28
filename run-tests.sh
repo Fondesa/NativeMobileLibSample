@@ -2,8 +2,16 @@
 
 scriptDir="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 projectDir=${scriptDir}
+
 testsBuildDir=${projectDir}/build/tests
 cmakeAmalgamation=OFF
+# Check if the OS is supported.
+cmakeOS=$("${projectDir}"/.scripts/get-os.sh)
+# shellcheck disable=SC2181
+if [[ $? != 0 ]]; then
+    echo "This OS \"${cmakeOS}\" can't run the tests."
+    exit 1
+fi
 
 while [ $# -gt 0 ]; do
     case "$1" in
@@ -32,15 +40,15 @@ EOF
     shift
 done
 
-if [ -z "${coverageType}" ]; then
+if [[ ! "${coverageType}" ]]; then
     enableCoverage=OFF
     targetName=run-tests
     generateHtmlReport=OFF
-elif [ ${coverageType} = "html" ]; then
+elif [[ "${coverageType}" = "html" ]]; then
     enableCoverage=ON
     targetName=coverage-report
     generateHtmlReport=ON
-elif [ ${coverageType} = "raw" ]; then
+elif [[ "${coverageType}" = "raw" ]]; then
     enableCoverage=ON
     targetName=coverage-report
     generateHtmlReport=OFF
@@ -54,23 +62,23 @@ EOF
     exit 1
 fi
 
-if [ -z "${gcovTool}" ]; then
-    cmake ${projectDir} -B${testsBuildDir} \
-        -DCMAKE_C_COMPILER=${CC} \
-        -DCMAKE_CXX_COMPILER=${CXX} \
+if [[ ! "${gcovTool}" ]]; then
+    cmake "${projectDir}" -B"${testsBuildDir}" \
+        -DCMAKE_C_COMPILER="${CC}" \
+        -DCMAKE_CXX_COMPILER="${CXX}" \
         -DAMALGAMATION=$cmakeAmalgamation \
         -DENABLE_TESTS=ON \
         -DENABLE_TESTS_COVERAGE=${enableCoverage} \
         -DGENERATE_HTML_REPORT=${generateHtmlReport}
 else
-    cmake ${projectDir} -B${testsBuildDir} \
-        -DCMAKE_C_COMPILER=${CC} \
-        -DCMAKE_CXX_COMPILER=${CXX} \
+    cmake "${projectDir}" -B"${testsBuildDir}" \
+        -DCMAKE_C_COMPILER="${CC}" \
+        -DCMAKE_CXX_COMPILER="${CXX}" \
         -DAMALGAMATION=$cmakeAmalgamation \
         -DENABLE_TESTS=ON \
         -DENABLE_TESTS_COVERAGE=${enableCoverage} \
         -DGENERATE_HTML_REPORT=${generateHtmlReport} \
-        -DGCOV_TOOL=${gcovTool}
+        -DGCOV_TOOL="${gcovTool}"
 fi
 
-(cd ${testsBuildDir} && make $targetName)
+(cd "${testsBuildDir}" && make $targetName)

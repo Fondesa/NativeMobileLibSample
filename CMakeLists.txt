@@ -196,7 +196,7 @@ if (ENABLE_TESTS)
         )
 
     add_custom_target(run-tests
-        # Run lib-tests.
+        # Run lib_tests.
         COMMAND lib_tests
         COMMENT "Running all the tests..."
         )
