@@ -2,8 +2,8 @@
 #include "core/include_macros.hpp"
 #include "sqlite_database.hpp"
 #include "core/exception_macros.hpp"
+#include "database_exception.hpp"
 #include AMALGAMATION(database_client.hpp)
-#include AMALGAMATION(database_exception.hpp)
 
 namespace Db {
 

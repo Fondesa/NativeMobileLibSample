@@ -69,7 +69,6 @@ else ()
         include/database.hpp
         include/database_client.hpp
         include/database_cursor.hpp
-        include/database_exception.hpp
         include/draft.hpp
         include/note.hpp
         include/note_database_initializer.hpp
