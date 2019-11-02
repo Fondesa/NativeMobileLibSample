@@ -7,7 +7,7 @@ namespace Time {
 
 class Clock {
    public:
-    virtual time_t currentTimeSeconds() = 0;
+    virtual std::time_t currentTimeSeconds() = 0;
 };
 }
 #include <string>
@@ -84,7 +84,7 @@ class Database {
    public:
     virtual void executeTransaction(std::function<void()> transact) const = 0;
 
-    virtual std::shared_ptr<Statement> createStatement(std::string sql) const = 0;
+    [[nodiscard]] virtual std::shared_ptr<Statement> createStatement(std::string sql) const = 0;
 };
 }
 #include <string>
@@ -116,32 +116,26 @@ class Draft {
    public:
     Draft(std::string title, std::string description);
 
-    std::string getTitle() const;
+    [[nodiscard]] std::string getTitle() const;
 
-    std::string getDescription() const;
+    [[nodiscard]] std::string getDescription() const;
 
     friend bool operator==(const Draft &first, const Draft &second);
 };
 #include <string>
-#include <string>
+#include <ctime>
 
-namespace Time::Format {
-
-typedef std::string ISO_8601;
-
-ISO_8601 format(time_t time);
-}
 class Note {
    public:
-    Note(int id, std::string title, std::string description, Time::Format::ISO_8601 lastUpdateDate);
+    Note(int id, std::string title, std::string description, std::time_t lastUpdateDate);
 
-    int getId() const;
+    [[nodiscard]] int getId() const;
 
-    std::string getTitle() const;
+    [[nodiscard]] std::string getTitle() const;
 
-    std::string getDescription() const;
+    [[nodiscard]] std::string getDescription() const;
 
-    Time::Format::ISO_8601 getLastUpdateDate() const;
+    [[nodiscard]] std::time_t getLastUpdateTime() const;
 
     friend bool operator==(const Note &first, const Note &second);
 
@@ -149,7 +143,7 @@ class Note {
     int id;
     std::string title;
     std::string description;
-    Time::Format::ISO_8601 lastUpdateDate;
+    std::time_t lastUpdateDate;
 };
 #include <string>
 
@@ -207,3 +201,14 @@ class NotesInteractorFactory {
    public:
     static std::shared_ptr<NotesInteractor> create();
 };
+#include <string>
+#include <ctime>
+
+namespace Time::Format {
+
+typedef std::string ISO_8601;
+
+ISO_8601 format(std::time_t time);
+
+std::time_t parse(ISO_8601 formattedTime);
+}

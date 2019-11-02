@@ -7,6 +7,6 @@ namespace Time {
 
 class Clock {
    public:
-    virtual time_t currentTimeSeconds() = 0;
+    virtual std::time_t currentTimeSeconds() = 0;
 };
 }

@@ -38,8 +38,8 @@ TEST_F(NotesInteractorImplTest,
 
 TEST_F(NotesInteractorImplTest, whenGetAllNotesIsInvokedThenRepositoryReturnsAllNotes) {
     std::vector<Note> notes;
-    notes.emplace_back(1, "first-title", "first-description", "2019-10-26T10:19:25Z");
-    notes.emplace_back(2, "second-title", "second-description", "2019-10-26T10:19:26Z");
+    notes.emplace_back(1, "first-title", "first-description", 1572694125);
+    notes.emplace_back(2, "second-title", "second-description", 1572694126);
     EXPECT_CALL(*notesRepository, getAll()).Times(1).WillOnce(Return(notes));
 
     ASSERT_EQ(notes, interactor->getAllNotes());
@@ -48,8 +48,8 @@ TEST_F(NotesInteractorImplTest, whenGetAllNotesIsInvokedThenRepositoryReturnsAll
 TEST_F(NotesInteractorImplTest, givenTextFilterWhenGetNotesByTextIsInvokedThenRepositoryReturnsFilteredNotes) {
     std::string text = "filter";
     std::vector<Note> notes;
-    notes.emplace_back(1, "first-title", "first-description", "2019-10-26T10:19:25Z");
-    notes.emplace_back(2, "second-title", "second-description", "2019-10-26T10:19:26Z");
+    notes.emplace_back(1, "first-title", "first-description", 1572694125);
+    notes.emplace_back(2, "second-title", "second-description", 1572694126);
     EXPECT_CALL(*notesRepository, getByText(text)).Times(1).WillOnce(Return(notes));
 
     ASSERT_EQ(notes, interactor->getNotesByText(text));

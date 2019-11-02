@@ -2,8 +2,8 @@
 
 namespace Time {
 
-time_t ClockImpl::currentTimeSeconds() {
-    time_t now;
+std::time_t ClockImpl::currentTimeSeconds() {
+    std::time_t now;
     return time(&now);
 }
 }

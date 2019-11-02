@@ -3,7 +3,7 @@
 
 TEST(ClockImplTest, whenCurrentTimeSecondsIsInvokedThenValidTimeIsReturned) {
     auto clock = Time::ClockImpl();
-    time_t now;
+    std::time_t now;
     time(&now);
 
     ASSERT_LE(now, clock.currentTimeSeconds());

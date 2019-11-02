@@ -126,8 +126,8 @@ TEST_F(NotesRepositoryImplTest, givenMultipleNotesWhenGetAllIsInvokedThenListCon
     auto notes = repository->getAll();
 
     ASSERT_EQ(2, notes.size());
-    EXPECT_EQ(Note(firstId, firstDraft.getTitle(), firstDraft.getDescription(), "2019-10-26T10:19:25Z"), notes[0]);
-    EXPECT_EQ(Note(secondId, secondDraft.getTitle(), secondDraft.getDescription(), "2019-10-26T10:19:26Z"), notes[1]);
+    EXPECT_EQ(Note(firstId, firstDraft.getTitle(), firstDraft.getDescription(), 1572085165), notes[0]);
+    EXPECT_EQ(Note(secondId, secondDraft.getTitle(), secondDraft.getDescription(), 1572085166), notes[1]);
 }
 
 TEST_F(NotesRepositoryImplTest, givenZeroNotesWhenGetByTextIsInvokedThenEmptyListIsReturned) {
@@ -152,8 +152,8 @@ TEST_F(NotesRepositoryImplTest, givenAllNotesMatchingFilterWhenGetByTextIsInvoke
     auto notes = repository->getByText("o");
 
     ASSERT_EQ(2, notes.size());
-    EXPECT_EQ(Note(firstId, firstDraft.getTitle(), firstDraft.getDescription(), "2019-10-26T10:19:25Z"), notes[0]);
-    EXPECT_EQ(Note(secondId, secondDraft.getTitle(), secondDraft.getDescription(), "2019-10-26T10:19:26Z"), notes[1]);
+    EXPECT_EQ(Note(firstId, firstDraft.getTitle(), firstDraft.getDescription(), 1572085165), notes[0]);
+    EXPECT_EQ(Note(secondId, secondDraft.getTitle(), secondDraft.getDescription(), 1572085166), notes[1]);
 }
 
 TEST_F(NotesRepositoryImplTest, givenSomeNotesMatchingFilterWhenGetByTextIsInvokedThenOnlyMatchingNotesAreReturned) {
@@ -171,7 +171,7 @@ TEST_F(NotesRepositoryImplTest, givenSomeNotesMatchingFilterWhenGetByTextIsInvok
     auto notes = repository->getByText("urt");
 
     ASSERT_EQ(1, notes.size());
-    EXPECT_EQ(Note(secondId, secondDraft.getTitle(), secondDraft.getDescription(), "2019-10-26T10:19:26Z"), notes[0]);
+    EXPECT_EQ(Note(secondId, secondDraft.getTitle(), secondDraft.getDescription(), 1572085166), notes[0]);
 }
 
 TEST_F(NotesRepositoryImplTest, givenZeroNotesMatchingFilterWhenGetByTextIsInvokedThenEmptyListIsReturned) {

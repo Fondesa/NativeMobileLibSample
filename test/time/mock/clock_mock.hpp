@@ -8,6 +8,6 @@ namespace Time {
 
 class ClockMock : public Clock {
    public:
-    MOCK_METHOD(time_t, currentTimeSeconds, (), (override));
+    MOCK_METHOD(std::time_t, currentTimeSeconds, (), (override));
 };
 }

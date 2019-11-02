@@ -1,20 +1,19 @@
 #pragma once
-#pragma once
 
 #include <string>
-#include "time_format.hpp"
+#include <ctime>
 
 class Note {
    public:
-    Note(int id, std::string title, std::string description, Time::Format::ISO_8601 lastUpdateDate);
+    Note(int id, std::string title, std::string description, std::time_t lastUpdateDate);
 
-    int getId() const;
+    [[nodiscard]] int getId() const;
 
-    std::string getTitle() const;
+    [[nodiscard]] std::string getTitle() const;
 
-    std::string getDescription() const;
+    [[nodiscard]] std::string getDescription() const;
 
-    Time::Format::ISO_8601 getLastUpdateDate() const;
+    [[nodiscard]] std::time_t getLastUpdateTime() const;
 
     friend bool operator==(const Note &first, const Note &second);
 
@@ -22,5 +21,5 @@ class Note {
     int id;
     std::string title;
     std::string description;
-    Time::Format::ISO_8601 lastUpdateDate;
+    std::time_t lastUpdateDate;
 };

@@ -7,6 +7,6 @@ namespace Time {
 
 class ClockImpl : public Clock {
    public:
-    time_t currentTimeSeconds() override;
+    std::time_t currentTimeSeconds() override;
 };
 }
