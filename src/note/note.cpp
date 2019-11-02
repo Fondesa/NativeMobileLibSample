@@ -1,7 +1,7 @@
 #include "core/include_macros.hpp"
 #include AMALGAMATION(note.hpp)
 
-Note::Note(int id, std::string title, std::string description, Time::Format::ISO_8601 lastUpdateDate) {
+Note::Note(int id, std::string title, std::string description, std::time_t lastUpdateDate) {
     this->id = id;
     this->title = std::move(title);
     this->description = std::move(description);
@@ -20,7 +20,7 @@ std::string Note::getDescription() const {
     return description;
 }
 
-std::string Note::getLastUpdateDate() const {
+std::time_t Note::getLastUpdateTime() const {
     return lastUpdateDate;
 }
 
@@ -28,5 +28,5 @@ bool operator==(const Note &first, const Note &second) {
     return first.id == second.id &&
         first.title == second.title &&
         first.description == second.description &&
-        first.lastUpdateDate == second.lastUpdateDate;
+        difftime(first.lastUpdateDate, second.lastUpdateDate) == 0;
 }

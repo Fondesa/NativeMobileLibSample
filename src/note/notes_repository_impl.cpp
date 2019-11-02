@@ -1,5 +1,6 @@
 #include "core/include_macros.hpp"
 #include "notes_repository_impl.hpp"
+#include AMALGAMATION(time_format.hpp)
 #include AMALGAMATION(database_cursor.hpp)
 
 NotesRepositoryImpl::NotesRepositoryImpl(std::shared_ptr<Db::Database> db, std::shared_ptr<Time::Clock> clock)
@@ -46,8 +47,9 @@ std::vector<Note> NotesRepositoryImpl::getAll() {
         auto id = cursor->get<int>(0);
         auto title = cursor->get<std::string>(1);
         auto description = cursor->get<std::string>(2);
-        auto lastUpdateDate = cursor->get<std::string>(3);
-        notes.emplace_back(id, title, description,lastUpdateDate);
+        auto lastUpdateTimeISO_8601 = cursor->get<std::string>(3);
+        auto lastUpdateTime = Time::Format::parse(lastUpdateTimeISO_8601);
+        notes.emplace_back(id, title, description, lastUpdateTime);
     }
     return notes;
 } // LCOV_EXCL_BR_LINE
@@ -69,8 +71,9 @@ std::vector<Note> NotesRepositoryImpl::getByText(std::string text) {
         auto id = cursor->get<int>(0);
         auto title = cursor->get<std::string>(1);
         auto description = cursor->get<std::string>(2);
-        auto lastUpdateDate = cursor->get<std::string>(3);
-        notes.emplace_back(id, title, description, lastUpdateDate);
+        auto lastUpdateTimeISO_8601 = cursor->get<std::string>(3);
+        auto lastUpdateTime = Time::Format::parse(lastUpdateTimeISO_8601);
+        notes.emplace_back(id, title, description, lastUpdateTime);
     }
     return notes;
 } // LCOV_EXCL_BR_LINE
