@@ -1,3 +1,5 @@
+#include <iomanip>
+#include <sstream>
 #include "core/include_macros.hpp"
 #include AMALGAMATION(time_format.hpp)
 
@@ -14,8 +16,9 @@ ISO_8601 format(std::time_t time) {
 std::time_t parse(ISO_8601 formattedDate) {
     auto movedDate = std::move(formattedDate);
     tm tm{};
-    // Convert the ISO-8601 to a time struct.
-    strptime(movedDate.c_str(), "%FT%TZ", &tm);
+    auto ss = std::istringstream(movedDate);
+    // Fill the time struct reading the ISO-8601 time.
+    ss >> std::get_time(&tm, "%FT%TZ");
     // Get the time_t value for the struct.
     return timegm(&tm);
 }
