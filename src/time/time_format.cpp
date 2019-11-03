@@ -18,7 +18,7 @@ std::time_t parse(ISO_8601 formattedDate) {
     tm tm{};
     auto ss = std::istringstream(movedDate);
     // Fill the time struct reading the ISO-8601 time.
-    ss >> std::get_time(&tm, "%FT%TZ");
+    ss >> std::get_time(&tm, "%Y-%m-%dT%TZ");
     // Get the time_t value for the struct.
     return timegm(&tm);
 }
