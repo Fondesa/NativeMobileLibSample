@@ -151,6 +151,8 @@ elseif (${CMAKE_SYSTEM_NAME} STREQUAL Linux)
         set(LIB_FILE_PATH ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/lib${LIB_NAME}.so)
         set(LIB_SYM_PATH ${QUALIFIED_EXPORTED_LIB_PATH}/lib${LIB_NAME}.so)
     endif ()
+elseif (${CMAKE_SYSTEM_NAME} STREQUAL Windows)
+    # TODO
 else ()
     message(FATAL_ERROR "The system ${CMAKE_SYSTEM_NAME} is not supported")
 endif ()
